@@ -1,0 +1,25 @@
+ZENben\FoosballBundle\Entity\User\User:
+    type: entity
+    table: user
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        google_id: 
+            type: string
+            lenght: 255
+        email:
+            type: string
+            lenght: 255
+        username:
+            type: string
+            length: 255
+        profile_picture:
+            type: string
+            lenght: 255
+        roles:
+            type: array
+
+    lifecycleCallbacks: {  }

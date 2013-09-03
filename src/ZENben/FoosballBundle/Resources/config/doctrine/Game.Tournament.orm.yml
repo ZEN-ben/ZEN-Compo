@@ -1,0 +1,30 @@
+ZENben\FoosballBundle\Entity\Game\Tournament:
+    type: entity
+    table: game_tournament
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        dateStart:
+            type: datetime
+            column: date_start
+        dateEnded:
+            type: datetime
+            column: date_ended
+            nullable: true
+        name:
+            type: string
+        description:
+            type: string
+    oneToMany:
+        signups:
+            targetEntity: ZENben\FoosballBundle\Entity\Game\TournamentSignup
+            mappedBy: tournament
+            orderBy: {date: desc}
+        matches:
+            targetEntity: ZENben\FoosballBundle\Entity\Game\Match
+            mappedBy: tournament
+            
+    lifecycleCallbacks: {  }

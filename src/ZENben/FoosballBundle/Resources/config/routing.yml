@@ -1,0 +1,30 @@
+hwi_oauth_redirect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+    prefix:   /connect
+
+google_login:
+    pattern: /login/check-google
+
+foosball_login:
+    pattern: /login/
+    defaults: { _controller: FoosballBundle:Auth:login }
+
+foosball_logout:
+    pattern: /logout/
+
+foosball_homepage:
+    pattern:  /
+    defaults: { _controller: FoosballBundle:Default:index }
+
+foosball_game:
+    pattern:  /game/{id}/
+    defaults: { _controller: FoosballBundle:Game:index }
+
+foosball_signup:
+    pattern:  /sign-up
+    defaults: { _controller: FoosballBundle:Game:signUp, _format: json }
+
+foosball_admin:
+    pattern:  /admin/
+    defaults: { _controller: FoosballBundle:Admin:index }
+

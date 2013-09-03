@@ -1,0 +1,66 @@
+{% trans_default_domain 'game_index' %}
+{% extends 'FoosballBundle::layout.html.twig' %}
+{% block jumbotron_title %}{{game.name}}{% endblock %}
+{% block content %}
+<div class="row">
+{% if app.user is participating(game) %}
+    <div class="col-md-5">
+        <h2>{{'information'|trans}}</h2>
+        <script type="text/javascript">
+            var bracketData = {
+                teams: [
+{% for m in game.matches(1) %}
+                    ['{{m.redplayer.username|default('BYE')}}', '{{m.blueplayer.username|default('BYE')}}'],
+{% endfor %}
+                ],
+                results: [
+{% for round in game.matches %}
+                    [
+{% for match in round %}
+                        [{{match.scorered}},{{match.scoreblue}}],
+{% endfor %}
+                    ],
+{% endfor %}
+                ]
+            }
+        </script>
+        
+        <div id="test"></div>
+        <div class="clearfix"></div>
+    </div>
+{% elseif not game.started %}
+    <div class="confirm-participation col-md-5">
+        <div class="want-to-join">
+            <h2>{{'want.to.join'|trans}} <small>{{'just.x.days.left'|transchoice(game.timeuntilstart.days,{'%days%':game.timeuntilstart.days})}}</small></h2>
+            <div class="comment-container">
+                <textarea maxlength="45" class="comment" placeholder="{{'comment.placeholder'|trans}}"></textarea>
+            </div>
+            <div class="button-container clearfix">
+                <button class="btn btn-success btn-join" data-url="{{path('foosball_signup',{'game':id})}}">{{'button.join'|trans}}</button>
+            </div>
+        </div>
+        <div class="joined" style="display: none;">
+            <h2>{{'thanks.for.joining'|trans}}</h2>
+            <div class="comment-container">
+                <p>What now?</p>
+            </div>
+        </div>
+    </div>
+{% endif %}
+    <div class="players-participating col-md-7">
+        <h2>{{'players.joined'|trans}} <small>{{'future.opponents'|trans}}</small></h2>
+        <div class="dummy" style="display: none; opacity: 0;">
+            {{profile_container(app.user)}} {{'said'|trans}}
+            “<em></em>”
+        </div>
+        {% for signup in game.signups|default(null) %}
+        <div>
+            {{profile_container(signup.user)}} {{'said'|trans}}
+            “<em>{{signup.comment}}</em>”
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}

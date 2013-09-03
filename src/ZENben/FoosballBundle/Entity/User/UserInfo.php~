@@ -1,0 +1,55 @@
+<?php
+
+namespace ZENben\FoosballBundle\Entity\User;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * UserInfo
+ */
+class UserInfo
+{
+    /**
+     * @var integer
+     */
+    protected $id;
+
+    /**
+     * @var string
+     */
+    protected $signup_comment;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set signup_comment
+     *
+     * @param string $signupComment
+     * @return UserInfo
+     */
+    public function setSignupComment($signupComment)
+    {
+        $this->signup_comment = $signupComment;
+    
+        return $this;
+    }
+
+    /**
+     * Get signup_comment
+     *
+     * @return string 
+     */
+    public function getSignupComment()
+    {
+        return $this->signup_comment;
+    }
+}

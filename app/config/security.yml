@@ -1,0 +1,34 @@
+security:
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_SUPER_USER:  ROLE_USER
+
+    providers:
+        oauth_user_provider:
+          id: foosball.oauth.user_provider.service
+
+    firewalls:
+        main:
+            pattern: ^/foosball/
+            logout:
+                path:   /foosball/logout/
+                target: /foosball/login/
+            anonymous: true
+            oauth:
+                resource_owners:
+                    google:   /foosball/login/check-google
+                login_path:   /foosball/login
+                failure_path: /foosball/login
+                check_path:   /foosball/login_check
+                default_target_path: /foosball/
+
+                #anonymous:         ~
+                oauth_user_provider:
+                     service: foosball.oauth.user_provider.service
+
+    access_control:
+        - { path: ^/foosball/admin/, role: ROLE_SUPER_USER }
+        - { path: ^/foosball/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/foosball/connect, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/foosball/, role: ROLE_USER }

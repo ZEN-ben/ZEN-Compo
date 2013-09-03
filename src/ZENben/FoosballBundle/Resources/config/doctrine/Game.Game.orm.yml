@@ -1,0 +1,17 @@
+ZENben\FoosballBundle\Entity\Game\Game:
+    type: entity
+    table: game
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        active:
+            type: boolean
+        type:
+            type: string
+        game_id:
+            type: integer
+        
+    lifecycleCallbacks: {  }

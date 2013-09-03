@@ -1,0 +1,31 @@
+ZENben\FoosballBundle\Entity\Game\Match:
+    type: entity
+    table: game_match
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        match_id:
+            type: string
+        datePlayed:
+            type: datetime
+            column: date_played
+            nullable: true
+        scoreRed:
+            type: integer
+            column: score_red
+            nullable: true
+        scoreBlue:
+            type: integer
+            column: score_blue
+            nullable: true
+        bye:
+            type: boolean
+    manyToOne:
+        red_player:
+            targetEntity: ZENben\FoosballBundle\Entity\User\User
+        blue_player:
+            targetEntity: ZENben\FoosballBundle\Entity\User\User
+    lifecycleCallbacks: {  }

@@ -1,0 +1,24 @@
+ZENben\FoosballBundle\Entity\Game\TournamentSignup:
+    type: entity
+    table: tournamentsignup
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        date:
+            type: datetime
+        comment:
+            type: string
+    manyToOne:
+        
+    
+    manyToOne:
+        tournament:
+            targetEntity: ZENben\FoosballBundle\Entity\Game\Tournament
+            inversedBy: signup
+        user:
+            targetEntity: ZENben\FoosballBundle\Entity\User\User
+
+    lifecycleCallbacks: {  }

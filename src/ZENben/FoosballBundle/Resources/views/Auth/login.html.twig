@@ -1,0 +1,22 @@
+{% trans_default_domain 'login' %}
+{% extends 'FoosballBundle::layout.html.twig' %}
+{% block content %}
+
+{% if error %}
+<span>{{ error }}</span>
+{% endif %}
+
+<div class="row">
+    <div class="col-md-12"><h2>{{'login.to.get.started.title'|trans}}</h2></div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <p><big>{{'login.to.get.started.text'|trans}}</big></p>
+        <p><small>{{'login.to.get.started.disclaimer'|trans}}</small></p>
+    </div>
+    <div class="col-md-5 col-md-offset-1">
+        <a class="btn btn-success btn-lg text-center" href="{{ hwi_oauth_login_url('google') }}">{{ 'login.with.google'|trans }}</a>
+    </div>
+</div>
+
+{% endblock %}

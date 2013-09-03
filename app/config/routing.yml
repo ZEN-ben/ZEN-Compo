@@ -1,0 +1,8 @@
+default:
+    resource: "@DefaultBundle/Resources/config/routing.yml"
+    prefix:   /
+
+foosball:
+    resource: "@FoosballBundle/Resources/config/routing.yml"
+    prefix:   /foosball
+

@@ -1,0 +1,54 @@
+{% trans_default_domain 'default_index' %}
+{% extends 'FoosballBundle::layout.html.twig' %}
+{% block jumbotron_title %}{{'current.games'|trans}}{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>{{'current'|trans}}</h2>
+        <table class="games table">
+            <thead>
+                <tr>
+                    <th>{{'name'|trans}}</th>
+                    <th><span class="hidden-xs">{{'description'|trans}}</span></th>
+                    <th>{{'players'|trans}}</th>
+                    <th><span class="hidden-xs hidden-sm">{{'starts'|trans}}</span></th>
+                    <th><span class="hidden-xs hidden-sm">{{'ended'|trans}}</span></th>
+                    <th>{{'rank'|trans}}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for gameEntity in games %}
+                {% set game = game(gameEntity.id)%}
+                <tr class="state-{{game.state}}">
+                    <td><a href="{{path('foosball_game',{'id':gameEntity.id})}}">{{game.name}}</a></td>
+                    <td>{{game.description|default('')}}</td>
+                    <td>{{game.participants|length}}</td>
+                    <td>
+                        <span class="hidden-xs hidden-sm">
+                            {% if not game.timeuntilstart.invert %}
+                                {{'x.days'|transchoice(game.timeuntilstart.days,{'%days%':game.timeuntilstart.days})}}
+                            {% else %}
+                                {{game.datestart|date('d-m-Y')}}
+                            {% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="hidden-xs hidden-sm">
+                            {% if game.dateended %}
+                                {{game.dateended|date('d-m-Y')}}
+                            {% else %}
+                                {{game.started ? game.gamesLeft|length : ''}}
+                            {% endif %}
+                            
+                        </span>
+                    </td>
+                    <td>
+                        {{game.rank(app.user) ? '#'~game.rank(app.user) : ''}}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

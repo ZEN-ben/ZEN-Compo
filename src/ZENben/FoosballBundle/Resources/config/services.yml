@@ -1,0 +1,24 @@
+parameters:
+    foosball.oauth.user_provider.class: ZENben\FoosballBundle\Security\UserProvider\OAuthUserProvider
+    foosball.oauth.user_provider.entity: ZENben\FoosballBundle\Entity\User\User
+
+services:
+    foosball.oauth.user_provider.service:
+        class: %foosball.oauth.user_provider.class%
+        arguments:
+            - '@doctrine'
+            - %foosball.oauth.user_provider.entity%
+            - google: google_id
+    foosball.twig.foosball:
+        class: ZENben\FoosballBundle\Twig\FoosballExtension
+        arguments:
+          - '@doctrine.orm.entity_manager'
+          - '@game'
+        tags:
+          - { name: twig.extension }
+
+    game:
+        class : ZENben\FoosballBundle\Service\GameService
+        arguments:
+          - '@doctrine.orm.entity_manager'
+          - %foosball.game%

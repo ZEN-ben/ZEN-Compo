@@ -1,0 +1,11 @@
+login.with.google: Login with your Google account
+login.to.get.started:
+    title: Please log in
+    text: >
+        To get started you will have to log in with your Google Account, just
+        use the green button to get started!
+    disclaimer: >
+        The first time you log in, you will be asked to grant permission to your
+        profile information. We only use this information to identify you for this
+        website. We only store your email address, your full name and a link to your
+        Google profile picture.

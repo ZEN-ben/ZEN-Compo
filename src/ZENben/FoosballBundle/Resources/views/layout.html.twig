@@ -1,0 +1,44 @@
+{% trans_default_domain 'layout' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SkyDreams Foosball</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% stylesheets
+            '@FoosballBundle/Resources/library/bootstrap/less/bootstrap.less'
+            '@FoosballBundle/Resources/library/jquery-bracket/jquery.bracket.min.css'
+            '@FoosballBundle/Resources/compile/less/main.less'
+        %}
+        <link href="{{ asset_url }}" rel="stylesheet" media="screen">
+        {% endstylesheets %}
+    </head>
+    <body>
+        <div class="container">
+            <div class="jumbotron">
+                <div class="container">
+                    <h1>SkyDreams <em>Competitions!</em></h1>
+                    {% if app.user %}
+                    <div class="hidden-xs">{{profile_container(app.user)}}</div>
+                    <div class="logout-link">
+                        <p><a href="{{ path('foosball_logout') }}">{{'button.logout'|trans}}</a></p>
+                    </div>
+                    <h2>{% block jumbotron_title '' %}</h2>
+                    {% endif %}
+                </div>
+            </div>
+            {% block content '' %}
+        </div>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="//code.jquery.com/jquery.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+    {% javascripts
+        '@FoosballBundle/Resources/library/bootstrap/js/tooltip.js'
+        '@FoosballBundle/Resources/library/bootstrap/js/*'
+        '@FoosballBundle/Resources/compile/javascript/plugins.js'
+        '@FoosballBundle/Resources/library/jquery-bracket/jquery.bracket.min.js'
+        '@FoosballBundle/Resources/compile/javascript/*'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    </body>
+</html>

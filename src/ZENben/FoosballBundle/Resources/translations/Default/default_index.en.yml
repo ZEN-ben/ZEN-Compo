@@ -1,0 +1,12 @@
+current.games: Tournaments and competitions
+
+name: Name
+description: Description
+players: Players
+starts: Starts
+ended: Ended
+rank: Rank
+
+current: Current
+
+x.days: one day left|in %days% days

@@ -1,0 +1,29 @@
+{% extends 'FoosballBundle::layout.html.twig' %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Matches</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Red</th>
+                    <th>Blue</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+        {% for m in matches %}
+            <tr>
+                <td>{{m.id}}</td>
+                <td>{{m.redplayer.username}}</td>
+                <td>{{m.blueplayer.username}}</td>
+                <td>{{m.scorered}} - {{m.scoreblue}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+        
+    </div>
+</div>
+
+{% endblock %}
