@@ -7,15 +7,98 @@ use ZENben\FoosballBundle\Entity\Game\Match;
 use ZENben\FoosballBundle\Game\GameState;
 use ZENben\FoosballBundle\Game\Type\BaseType;
 
-class Tournament extends BaseType
-{
-    
-    public function processMatch(Match $match) {
-        throw new Exception('Not yet implemented');
+class Tournament extends BaseType {
+
+    public function processScores($matchId, $scores) {
+        $repo = $this->em->getRepository('FoosballBundle:Game\Match');
+        $match = $repo->find($matchId);
+        $match->setScoreRed($scores[0]);
+        $match->setScoreBlue($scores[1]);
+
+        $winner = $scores[0] > $scores[1] ? $match->getRedPlayer() : $match->getBluePlayer(); 
+        
+        $matches = $repo->findAll();
+        $matchesCount = count($matches);
+        $bracketSize = ($matchesCount + 1) / 2; 
+        
+        $matchId = $match->getMatchId();
+        
+        if ($matchId != count($matches)) {
+            $nextMatchId = ceil($matchId / 2) + $bracketSize;
+            $nextMatch = $repo->findOneBy(['match_id' => $nextMatchId]);
+            $even = $matchId % 2 !== 0;
+            if ($even) {
+                $nextMatch->setRedPlayer($winner);
+            } else {
+                $nextMatch->setBluePlayer($winner);
+            }
+        }
+        
+        $this->progress();
+        $this->em->flush();
+    }
+
+    public function progress() {
+        $rounds = $this->getMatches();
+        $roundsCount = count($rounds);
+        
+        foreach ($rounds as $round) {
+            $matchesCount = count($round);
+            $matchesPlayed = 0;
+            $byes = 0;
+            $losers = [];
+            foreach($round as $match) {
+                if ($match->getBluePlayer() !== null && $match->getScoreBlue() !== null) {
+                    $matchesPlayed++;
+                    $loser = $match->getScoreRed() < $match->getScoreBlue() ? $match->getRedPlayer()->getId() : $match->getBluePlayer()->getId();
+                    $losers["$loser "] = abs($match->getScoreBlue() - $match->getScoreRed());
+                }
+                $byes = $match->getBye() ? $byes + 1 : $byes;
+            }
+            
+            if ($losers > $byes * 2) {
+                asort($losers);
+            } else {
+                arsort($losers);
+            }
+            var_dump($losers);
+//            var_dump($matchesCount === $matchesPlayed + $byes);
+//            var_dump($matchesCount);
+//            var_dump($matchesPlayed);
+//            var_dump($byes);
+            
+            if ($matchesCount === $matchesPlayed + $byes) {
+                foreach($round as $match) {
+                    if ($match->getBye() && $match->getScoreRed() === null) {
+                        if ( ! $match->getRedPlayer() && count($losers) > 0) {
+                            $match->setRedPlayer($this->em->getReference('FoosballBundle:User\User',key($losers)));
+                            array_shift($losers);
+                        } 
+                        if ( ! $match->getBluePlayer() && count($losers) > 0) {
+                            $match->setBluePlayer($this->em->getReference('FoosballBundle:User\User',key($losers)));
+                            array_shift($losers);
+                            $match->setBye(false);
+                        }
+                        if (count($losers) < 1) {
+                            $match->setScoreRed(1);
+                            $match->setScoreBlue(0);
+                            if ($match->getRedPlayer()) {
+                                // progress this player
+                                $nextMatchId = ceil($match->getMatchId() / 2) + $matchesCount;
+                                $nextMatch = $this->em->getRepository('FoosballBundle:Game\Match')->findOneBy(['match_id' => $nextMatchId]);
+                                $nextMatch->setRedPlayer($match->getRedPlayer());
+                                $nextMatch->setBye(true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        $this->em->flush();
     }
 
     public function getState() {
-        if ( ! $this->isStarted()) {
+        if (!$this->isStarted()) {
             return GameState::WAITING_TO_START;
         } elseif ($this->getGamesLeft() > 0) {
             return GameState::IN_PROGRRESS;
@@ -41,25 +124,25 @@ class Tournament extends BaseType
     public function getSignups() {
         return $this->entity->getSignups();
     }
-    
+
     public function addParticipant(User $user) {
         $this->addSignup($user);
     }
 
     public function isParticipating(User $user) {
-        $partcipating = $this->em->getRepository('FoosballBundle:Game\TournamentSignup')->findOneBy(['user'=>$user]);
+        $partcipating = $this->em->getRepository('FoosballBundle:Game\TournamentSignup')->findOneBy(['user' => $user]);
         return $partcipating !== null;
     }
-    
+
     public function removeParticipant(User $user) {
         $this->em->getRepository('FoosballBundle:Game\TournamentSignup')->findByUser($user)->remove();
         $this->em->flush();
     }
 
     public function getParticipants() {
-        $signups = $this->em->getRepository('FoosballBundle:Game\TournamentSignup')->findAll(['date'=>'DESC']);
+        $signups = $this->em->getRepository('FoosballBundle:Game\TournamentSignup')->findAll(['date' => 'DESC']);
         $users = [];
-        foreach($signups as $signup) {
+        foreach ($signups as $signup) {
             $users[] = $signup->getUser();
         }
         return $users;
@@ -70,38 +153,38 @@ class Tournament extends BaseType
         $now = new \DateTime();
         return $now->diff($dateStart);
     }
-    
+
     public function isStarted() {
         return false;
     }
-    
+
     public function getGamesLeft() {
         $totalGames = 10;
         $gamesPlayed = 10;
         return $totalGames - $gamesPlayed;
     }
-    
+
     public function getRank(User $user) {
-        if ( ! $this->isParticipating($user)) {
+        if (!$this->isParticipating($user)) {
             return null;
         }
         return 23;
     }
-    
+
     public function getMatches($round = null) {
         $matches = [];
-        $entities = $this->em->getRepository('FoosballBundle:Game\Match')->findAll([],['matchId'=>'ASC']);
-        
+        $entities = $this->em->getRepository('FoosballBundle:Game\Match')->findAll([], ['matchId' => 'ASC']);
+
         $amount = count($entities);
-        $bracketSize = ($amount+1)/2;
+        $bracketSize = ($amount + 1) / 2;
         $i = 0;
         $currentRound = 1;
-        
-        foreach($entities as $match) {
+
+        foreach ($entities as $match) {
             if ($i >= $bracketSize) {
                 $currentRound++;
                 $i = 0;
-                $bracketSize = $bracketSize/2;
+                $bracketSize = $bracketSize / 2;
             }
             if ($round !== null) {
                 if ($currentRound === $round) {
@@ -110,7 +193,7 @@ class Tournament extends BaseType
             } else {
                 $matches[$currentRound][] = $match;
             }
-            
+
             $i++;
         }
         return $matches;

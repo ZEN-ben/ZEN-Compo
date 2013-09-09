@@ -2,6 +2,8 @@
 {% extends 'FoosballBundle::layout.html.twig' %}
 {% block jumbotron_title %}{{game.name}}{% endblock %}
 {% block content %}
+<a href="http://zencompo/foosball/game/1/?gen=true">gen</a>
+<a href="http://zencompo/foosball/game/1/?del=true">del</a>
 <div class="row">
 {% if app.user is participating(game) %}
     <div class="col-md-5">
@@ -10,14 +12,30 @@
             var bracketData = {
                 teams: [
 {% for m in game.matches(1) %}
-                    ['{{m.redplayer.username|default('BYE')}}', '{{m.blueplayer.username|default('BYE')}}'],
+                    [
+                        {name: '{{m.redplayer.username|default('BYE')}}' }, 
+                        {name: '{{m.blueplayer.username|default('BYE')}}' }
+                    ],
 {% endfor %}
                 ],
                 results: [
 {% for round in game.matches %}
                     [
 {% for match in round %}
-                        [{{match.scorered}},{{match.scoreblue}}],
+                        [{{match.scorered}},{{match.scoreblue}},{
+                            id: {{match.id}},
+                            matchId: {{match.matchid}},
+                            red: {
+                                name: '{{match.redplayer.username|default('')}}',
+                                picture: '{{match.redplayer.profilepicture|default('')}}',
+                                score: {{match.scorered|default('null')}}
+                            },
+                            blue: {
+                                name: '{{match.blueplayer.username|default('')}}',
+                                picture: '{{match.blueplayer.profilepicture|default('')}}',
+                                score: {{match.scoreblue|default('null')}}
+                            }
+                        }],
 {% endfor %}
                     ],
 {% endfor %}
@@ -62,5 +80,26 @@
     </div>
 </div>
 
+<div class="modal modal-gamereport fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{{'match'|trans}} <span class="title"></span>: <span class="red"></span> VS. <span class="blue"></span></h4>
+      </div>
+      <div class="modal-body gamereport">
+        {% include 'FoosballBundle:Game:gamereport.html.twig' with {noTitle: true} %}
+      </div>
+      <div class="modal-footer">
+          <p class="message">
+              <span style="display:none;" data-won="-1">{{'data.saved.you.lost'|trans}}</span>
+              <span style="display:none;" data-won="0">{{'data.saved'|trans}}</span>
+              <span style="display:none;" data-won="1">{{'data.saved.you.won'|trans}}</span>
+              <button type="button" class="btn save btn-success" data-url="{{ path('foosball_game_match_save', {gameId: id, matchId: '!id!'}) }}">Save</button>
+          </p>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 {% endblock %}

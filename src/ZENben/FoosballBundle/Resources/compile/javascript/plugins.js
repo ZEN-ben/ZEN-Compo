@@ -53,3 +53,14 @@ jQuery.fn.loading = function(mixed){
     });
     return this;
 };
+
+function notify(title, message) {
+    if (window.webkitNotifications.checkPermission() !== 0) {
+        $('body').one('click',function(){
+            window.webkitNotifications.requestPermission();
+        });
+    } else {
+        notification = window.webkitNotifications.createNotification('icon.png', title, message);
+        notification.show();
+    }
+}

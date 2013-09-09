@@ -12,7 +12,7 @@ interface GameInterface
     public function getTimeUntilStart();
     public function isStarted();
     
-    public function processMatch(\ZENben\FoosballBundle\Entity\Game\Match $match);
+    public function processScores($matchId, $scores);
     
     public function getState();
     

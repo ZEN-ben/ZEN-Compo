@@ -19,7 +19,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
-class AuthController extends ContainerAware
+use \Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+class AuthController extends Controller
 {
 
     /**
@@ -32,6 +34,11 @@ class AuthController extends ContainerAware
      */
     public function loginAction(Request $request)
     {
+        if ($this->getUser() !== null) {
+            // already logged in
+            return $this->redirect($this->generateUrl('foosball_homepage'));
+        }
+        
         $connect = $this->container->getParameter('hwi_oauth.connect');
         $hasUser = $this->container->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED');
 

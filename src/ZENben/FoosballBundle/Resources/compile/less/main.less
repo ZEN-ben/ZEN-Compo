@@ -1,3 +1,7 @@
+@main-color: #004B91;
+
+
+
 body {
     min-width: 440px;
 
@@ -12,7 +16,7 @@ body {
 
     .jumbotron {
         color: white;
-        background-color: #004B91;
+        background-color: @main-color;
         position: relative;
 
         .profile-container {
@@ -72,37 +76,89 @@ body {
     .jQBracket {
         background: white;
         
-        .team {
-            border-radius: 2px;
-            color: black;
-            box-shadow: 1px 1px 2px rgba(0,0,0,.6);
-            font-size: 12px;
+        .match {
+            cursor: pointer;
             
-            b {
-                width: 80px;
-            }
-            
-            &.highlight {
-                background-color: #000;
-            }
-            &:nth-of-type(1) {
-                background: #FFA3A3;
-            }
-            &:nth-of-type(2) {
-                background: #C0C0FF;
-            }
-            &.na {
-                color: #666;
-            }
-            
-            &.win {
-                font-weight: bold;
-                color: #000;
+            .team {
+                cursor: pointer;
+                border-radius: 2px;
+                color: black;
+                box-shadow: 1px 1px 2px rgba(0,0,0,.6);
+                font-size: 12px;
+
+                b {
+                    width: 80px;
+                }
+
+                &.highlight {
+                    background-color: #000;
+                }
+                &:nth-of-type(1) {
+                    background: #FFA3A3;
+                }
+                &:nth-of-type(2) {
+                    background: #C0C0FF;
+                }
+                &.na {
+                    color: #666;
+                }
+
+                &.win {
+                    font-weight: bold;
+                    color: #000;
+                }
             }
         }
         
         span {
             line-height: 16px;
+        }
+    }
+    
+    .modal-gamereport {
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+        }
+        
+        .info .profile-picture{
+            position: relative;
+            transition: opacity .15s linear;
+            -webkit-transform: translateZ(0);
+            opacity: 0.3;
+            
+            &:hover {
+                opacity: 0.6;
+            }
+        }
+        
+        .score {
+            pointer-events: none;
+            position: absolute;
+            top: 41%;
+            width: 90%;
+            
+            big {
+                font-size: 400%;
+                &.win {
+                    text-shadow: 0px 0px 15px #BF8;
+                }
+                &.lose {
+                    text-shadow: 0px 0px 15px #C36;
+                }
+            }
+        }
+    }
+    
+    .modal {
+        .modal-header {
+            background: @main-color;
+            color: #ffffff;
+            
+            .close {
+                color: #ffffff;
+                opacity: 0.6;
+            }
         }
     }
 }

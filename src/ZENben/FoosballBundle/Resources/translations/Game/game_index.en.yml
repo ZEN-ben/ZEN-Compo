@@ -8,3 +8,7 @@ comment.placeholder: ..leave a small comment about how excited you are to play..
 said: joined and said
 button:
     join: Join the tournament
+    
+data.saved: Scores saved!
+data.saved.you.won: Scores saved! Good job on winning!
+data.saved.you.lost: Scores saved! Better luck next time!

@@ -17,9 +17,44 @@ class GameController extends Controller
             $generator->generate($game->getParticipants());
         }
         
+        if ($this->getRequest()->get('del')) {
+            $em = $this->getDoctrine()->getManager();
+            $all = $em->getRepository('ZENben\FoosballBundle\Entity\Game\Match')->findAll();
+            foreach ($all as $match) {
+                $em->remove($match);
+            }
+            $em->flush();
+        }
+        
         return $this->render('FoosballBundle:Game:index.html.twig',[
             'game' => $game,
             'id' => $id
+        ]);
+    }
+    
+    public function matchSaveAction($gameId, $matchId) {
+        $scoreRed = $this->getRequest()->get('red');
+        $scoreBlue = $this->getRequest()->get('blue');
+        
+        $match = $this->getDoctrine()->getManager()->getRepository('FoosballBundle:Game\Match')->find($matchId);
+        $this->get('game')->getGame($gameId)->processScores(
+            $matchId, 
+            [$scoreRed, $scoreBlue]
+        );
+        
+        $won = 0;
+        $user = $this->getUser();
+        if ($user->getId() === $match->getBluePlayer()->getId()) {
+            $won = $scoreBlue > $scoreRed ? 1 : -1;
+        } elseif ($user->getId() === $match->getRedPlayer()->getId()) {
+            $won = $scoreRed > $scoreBlue ? 1 : -1;
+        }
+        
+        return new JsonResponse([
+            'success' => true,
+            'scoreRed' => $scoreRed,
+            'scoreBlue' => $scoreBlue,
+            'won' => $won
         ]);
     }
 

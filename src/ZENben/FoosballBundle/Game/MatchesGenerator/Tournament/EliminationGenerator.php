@@ -16,7 +16,6 @@ class EliminationGenerator implements MatchesGeneratorInterface {
     public function generate($participants) {
         $participantsArray = [];
         $amount = pow(2, ceil(log(count($participants)) / log(2)));
-        $byes = $amount - count($participants);
         for ($i = 0; $i < $amount / 2; $i++) {
             $participantsArray[] = array_shift($participants);
             $participantsArray[] = array_pop($participants);
@@ -33,8 +32,6 @@ class EliminationGenerator implements MatchesGeneratorInterface {
             $match->setRedPlayer($participantsArray[$i++]);
             $match->setBluePlayer($participantsArray[$i]);
             if ($match->getBluePlayer() === null) {
-                $match->setScoreRed(5);
-                $match->setScoreBlue(0);
                 $match->setBye(true);
             }
             $matches[] = $match;

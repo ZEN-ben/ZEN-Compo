@@ -20,6 +20,10 @@ foosball_game:
     pattern:  /game/{id}/
     defaults: { _controller: FoosballBundle:Game:index }
 
+foosball_game_match_save:
+    pattern:  /game/{gameId}/match/{matchId}/save
+    defaults: { _controller: FoosballBundle:Game:matchSave, _format: json}
+
 foosball_signup:
     pattern:  /sign-up
     defaults: { _controller: FoosballBundle:Game:signUp, _format: json }

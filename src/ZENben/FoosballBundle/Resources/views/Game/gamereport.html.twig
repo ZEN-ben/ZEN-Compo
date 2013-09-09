@@ -1,0 +1,28 @@
+{% if not noTitle %}
+<h3>
+    <span class="match-id">{{match.matchid|default('')}}</span>: 
+    <span class="red-player">{{match.redplayer.name|default('')}}</span>
+    VS. 
+    <span class="blue-player">{{match.blueplayer.name|default('')}}</span>
+</h3>
+{% endif %}
+
+<div class="container">
+    <div class="row">
+        <div class="info info-red col-sm-6 text-center">
+            <h4 class="red">{{match.replayer.username|default('')}}</h4>
+            <button class="btn btn-danger">-1</button>
+            <img class="red-profile-picture profile-picture" src="{{match.redplayer.profilepicture|default('')}}" />
+            <button class="btn btn-success">+1</button>
+            <div class="score score-red"><big>1</big></div>
+        </div>
+        <div class="info info-blue col-sm-6 text-center">
+            <h4 class="blue text-center">{{match.replayer.username|default('')}}</h4>
+            <button class="btn btn-danger">-1</button>
+            <img class="blue-profile-picture profile-picture" src="{{match.blueplayer.profilepicture|default('')}}" />
+            <button class="btn btn-success">+1</button>
+            <div class="score score-blue"><big>5</big></div>
+        </div>
+        {#<div class="dash">—</div>#}
+    </div>
+</div>

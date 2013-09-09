@@ -16,4 +16,9 @@ parameters:
 
     foosball.game:
         type:
-            
+           tournament:
+              entity: '\ZENben\FoosballBundle\Entity\Game\Tournament'
+              instance: '\ZENben\FoosballBundle\Game\Type\Tournament\Tournament'
+        generators:
+           double_elimination:
+              class: '\ZENben\FoosballBundle\Game\MatchesGenerator\DoubleEliminationGenerator'
