@@ -2,12 +2,10 @@
 {% extends 'FoosballBundle::layout.html.twig' %}
 {% block jumbotron_title %}{{game.name}}{% endblock %}
 {% block content %}
-<a href="http://zencompo/foosball/game/1/?gen=true">gen</a>
-<a href="http://zencompo/foosball/game/1/?del=true">del</a>
 <div class="row">
 {% if app.user is participating(game) %}
-    <div class="col-md-5">
-        <h2>{{'information'|trans}}</h2>
+    <div class="col-md-6">
+        <h2>{{'information'|trans}} <small>{{'information.sub'|trans}}</small></h2>
         <script type="text/javascript">
             var bracketData = {
                 teams: [
@@ -43,15 +41,19 @@
             }
         </script>
         
-        <div id="test"></div>
+        {% if game.matches|length > 0 %}
+        <div id="brackets"></div>
+        {% else %}
+        <div>Please wait for the admin to start the tournament</div>
+        {% endif %}
         <div class="clearfix"></div>
     </div>
 {% elseif not game.started %}
-    <div class="confirm-participation col-md-5">
+    <div class="confirm-participation col-md-6">
         <div class="want-to-join">
             <h2>{{'want.to.join'|trans}} <small>{{'just.x.days.left'|transchoice(game.timeuntilstart.days,{'%days%':game.timeuntilstart.days})}}</small></h2>
             <div class="comment-container">
-                <textarea maxlength="45" class="comment" placeholder="{{'comment.placeholder'|trans}}"></textarea>
+                <input maxlength="45" class="comment" placeholder="{{'comment.placeholder'|trans}}"></textarea>
             </div>
             <div class="button-container clearfix">
                 <button class="btn btn-success btn-join" data-url="{{path('foosball_signup',{'game':id})}}">{{'button.join'|trans}}</button>
@@ -60,13 +62,13 @@
         <div class="joined" style="display: none;">
             <h2>{{'thanks.for.joining'|trans}}</h2>
             <div class="comment-container">
-                <p>What now?</p>
+                <p>Please refresh the page manually for now.</p>
             </div>
         </div>
     </div>
 {% endif %}
-    <div class="players-participating col-md-7">
-        <h2>{{'players.joined'|trans}} <small>{{'future.opponents'|trans}}</small></h2>
+    <div class="players-participating col-md-6">
+        <h2>{{'players.joined'|trans}} <small>{{'opponents'|trans}}</small></h2>
         <div class="dummy" style="display: none; opacity: 0;">
             {{profile_container(app.user)}} {{'said'|trans}}
             “<em></em>”
@@ -95,7 +97,7 @@
               <span style="display:none;" data-won="-1">{{'data.saved.you.lost'|trans}}</span>
               <span style="display:none;" data-won="0">{{'data.saved'|trans}}</span>
               <span style="display:none;" data-won="1">{{'data.saved.you.won'|trans}}</span>
-              <button type="button" class="btn save btn-success" data-url="{{ path('foosball_game_match_save', {gameId: id, matchId: '!id!'}) }}">Save</button>
+              <button type="button" class="btn save btn-success" data-url="{{ path('foosball_game_match_save', {gameId: id, matchId: '!id!'}) }}">{{'button.save'|trans}}</button>
           </p>
       </div>
     </div><!-- /.modal-content -->

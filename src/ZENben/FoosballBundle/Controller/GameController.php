@@ -5,8 +5,6 @@ namespace ZENben\FoosballBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-use ZENben\FoosballBundle\Entity\User\UserInfo;
-
 class GameController extends Controller
 {
     public function indexAction($id) {

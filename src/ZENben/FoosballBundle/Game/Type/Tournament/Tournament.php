@@ -3,7 +3,6 @@
 namespace ZENben\FoosballBundle\Game\Type\Tournament;
 
 use ZENben\FoosballBundle\Entity\User\User;
-use ZENben\FoosballBundle\Entity\Game\Match;
 use ZENben\FoosballBundle\Game\GameState;
 use ZENben\FoosballBundle\Game\Type\BaseType;
 
@@ -56,28 +55,39 @@ class Tournament extends BaseType {
                 $byes = $match->getBye() ? $byes + 1 : $byes;
             }
             
-            if ($losers > $byes * 2) {
+            if (count($losers) > $byes * 2) {
                 asort($losers);
             } else {
                 arsort($losers);
             }
-            var_dump($losers);
-//            var_dump($matchesCount === $matchesPlayed + $byes);
-//            var_dump($matchesCount);
-//            var_dump($matchesPlayed);
-//            var_dump($byes);
             
             if ($matchesCount === $matchesPlayed + $byes) {
                 foreach($round as $match) {
                     if ($match->getBye() && $match->getScoreRed() === null) {
                         if ( ! $match->getRedPlayer() && count($losers) > 0) {
-                            $match->setRedPlayer($this->em->getReference('FoosballBundle:User\User',key($losers)));
+                            $loser = $this->em->getReference('FoosballBundle:User\User',key($losers));
+                            $match->setRedPlayer($loser);
                             array_shift($losers);
+                            
+                            // update previous matches
+                            $previousMatchId = $match->getMatchId() - count($round) - 1;
+                            $previousMatch = $this->em->getRepository('FoosballBundle:Game\Match')->findOneBy(['match_id' => $previousMatchId]);
+                            if ($previousMatch && $previousMatch->getBye()) {
+                                $previousMatch->setRedPlayer($loser);
+                            }
                         } 
                         if ( ! $match->getBluePlayer() && count($losers) > 0) {
-                            $match->setBluePlayer($this->em->getReference('FoosballBundle:User\User',key($losers)));
+                            $loser = $this->em->getReference('FoosballBundle:User\User',key($losers));
+                            $match->setBluePlayer($loser);
                             array_shift($losers);
                             $match->setBye(false);
+                            
+                            // update previous matches
+                            $previousMatchId = ($match->getMatchId() - count($round));
+                            $previousMatch = $this->em->getRepository('FoosballBundle:Game\Match')->findOneBy(['match_id' => $previousMatchId]);
+                            if ($previousMatch && $previousMatch->getBye()) {
+                                $previousMatch->setRedPlayer($loser);
+                            }
                         }
                         if (count($losers) < 1) {
                             $match->setScoreRed(1);

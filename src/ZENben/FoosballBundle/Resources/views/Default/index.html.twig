@@ -25,25 +25,25 @@
                     <td>{{game.participants|length}}</td>
                     <td>
                         <span class="hidden-xs hidden-sm">
-                            {% if not game.timeuntilstart.invert %}
+                            {#% if not game.timeuntilstart.invert %}
                                 {{'x.days'|transchoice(game.timeuntilstart.days,{'%days%':game.timeuntilstart.days})}}
                             {% else %}
                                 {{game.datestart|date('d-m-Y')}}
-                            {% endif %}
+                            {% endif %#}
                         </span>
                     </td>
                     <td>
                         <span class="hidden-xs hidden-sm">
-                            {% if game.dateended %}
+                            {#% if game.dateended %}
                                 {{game.dateended|date('d-m-Y')}}
                             {% else %}
                                 {{game.started ? game.gamesLeft|length : ''}}
-                            {% endif %}
-                            
+                            {% endif %#}
+                            soon!™
                         </span>
                     </td>
                     <td>
-                        {{game.rank(app.user) ? '#'~game.rank(app.user) : ''}}
+                        {#{game.rank(app.user) ? '#'~game.rank(app.user) : ''}#} soon!™
                     </td>
                 </tr>
             {% endfor %}

@@ -32,7 +32,7 @@
         container.append(data.name);
     }
 
-    $('#test').bracket({
+    $('#brackets').bracket({
         init: bracketData,
         skipConsolationRound: true,
         decorator: {edit: edit_fn,render: render_fn},
