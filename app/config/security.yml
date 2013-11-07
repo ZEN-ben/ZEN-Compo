@@ -18,7 +18,7 @@ security:
             switch_user: { role: IS_AUTHENTICATED_ANONYMOUSLY, parameter: __u }
             oauth:
                 resource_owners:
-                    google:   /foosball/llogin/check-google
+                    google:   /foosball/login/check-google
                 login_path:   /foosball/login
                 failure_path: /foosball/login
                 check_path:   /foosball/login_check

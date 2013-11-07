@@ -38,7 +38,7 @@ class TournamentSignup
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -54,14 +54,14 @@ class TournamentSignup
     public function setDate($date)
     {
         $this->date = $date;
-    
+
         return $this;
     }
 
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -77,14 +77,14 @@ class TournamentSignup
     public function setComment($comment)
     {
         $this->comment = $comment;
-    
+
         return $this;
     }
 
     /**
      * Get comment
      *
-     * @return string 
+     * @return string
      */
     public function getComment()
     {
@@ -100,14 +100,14 @@ class TournamentSignup
     public function setTournament(\ZENben\FoosballBundle\Entity\Game\Tournament $tournament = null)
     {
         $this->tournament = $tournament;
-    
+
         return $this;
     }
 
     /**
      * Get tournament
      *
-     * @return \ZENben\FoosballBundle\Entity\Game\Tournament 
+     * @return \ZENben\FoosballBundle\Entity\Game\Tournament
      */
     public function getTournament()
     {
@@ -123,14 +123,14 @@ class TournamentSignup
     public function setUser(\ZENben\FoosballBundle\Entity\User\User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return \ZENben\FoosballBundle\Entity\User\User 
+     * @return \ZENben\FoosballBundle\Entity\User\User
      */
     public function getUser()
     {

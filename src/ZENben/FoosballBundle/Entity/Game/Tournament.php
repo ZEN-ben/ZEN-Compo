@@ -52,11 +52,11 @@ class Tournament
         $this->signups = new \Doctrine\Common\Collections\ArrayCollection();
         $this->matches = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -72,14 +72,14 @@ class Tournament
     public function setDateStart($dateStart)
     {
         $this->dateStart = $dateStart;
-    
+
         return $this;
     }
 
     /**
      * Get dateStart
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateStart()
     {
@@ -95,14 +95,14 @@ class Tournament
     public function setDateEnded($dateEnded)
     {
         $this->dateEnded = $dateEnded;
-    
+
         return $this;
     }
 
     /**
      * Get dateEnded
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateEnded()
     {
@@ -118,14 +118,14 @@ class Tournament
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -141,14 +141,14 @@ class Tournament
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -164,7 +164,7 @@ class Tournament
     public function addSignup(\ZENben\FoosballBundle\Entity\Game\TournamentSignup $signups)
     {
         $this->signups[] = $signups;
-    
+
         return $this;
     }
 
@@ -181,7 +181,7 @@ class Tournament
     /**
      * Get signups
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getSignups()
     {
@@ -197,7 +197,7 @@ class Tournament
     public function addMatche(\ZENben\FoosballBundle\Entity\Game\Match $matches)
     {
         $this->matches[] = $matches;
-    
+
         return $this;
     }
 
@@ -214,7 +214,7 @@ class Tournament
     /**
      * Get matches
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getMatches()
     {

@@ -7,14 +7,15 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class GameController extends Controller
 {
-    public function indexAction($id) {
+    public function indexAction($id)
+    {
         $game = $this->get('game')->getGame($id);
-        
+
         if ($this->getRequest()->get('gen')) {
             $generator = new \ZENben\FoosballBundle\Game\MatchesGenerator\Tournament\EliminationGenerator($this->getDoctrine()->getManager());
             $generator->generate($game->getParticipants());
         }
-        
+
         if ($this->getRequest()->get('del')) {
             $em = $this->getDoctrine()->getManager();
             $all = $em->getRepository('ZENben\FoosballBundle\Entity\Game\Match')->findAll();
@@ -23,23 +24,24 @@ class GameController extends Controller
             }
             $em->flush();
         }
-        
-        return $this->render('FoosballBundle:Game:index.html.twig',[
+
+        return $this->render('FoosballBundle:Game:index.html.twig', [
             'game' => $game,
             'id' => $id
         ]);
     }
-    
-    public function matchSaveAction($gameId, $matchId) {
+
+    public function matchSaveAction($gameId, $matchId)
+    {
         $scoreRed = $this->getRequest()->get('red');
         $scoreBlue = $this->getRequest()->get('blue');
-        
+
         $match = $this->getDoctrine()->getManager()->getRepository('FoosballBundle:Game\Match')->find($matchId);
         $this->get('game')->getGame($gameId)->processScores(
-            $matchId, 
+            $matchId,
             [$scoreRed, $scoreBlue]
         );
-        
+
         $won = 0;
         $user = $this->getUser();
         if ($user->getId() === $match->getBluePlayer()->getId()) {
@@ -47,7 +49,7 @@ class GameController extends Controller
         } elseif ($user->getId() === $match->getRedPlayer()->getId()) {
             $won = $scoreRed > $scoreBlue ? 1 : -1;
         }
-        
+
         return new JsonResponse([
             'success' => true,
             'scoreRed' => $scoreRed,
@@ -56,16 +58,17 @@ class GameController extends Controller
         ]);
     }
 
-    public function signUpAction() {
+    public function signUpAction()
+    {
         $comment = $this->getRequest()->get('comment');
         $game = $this->getRequest()->get('game');
-        
+
         if (strlen($comment) > 45 || strlen($comment) < 5) {
             return new JsonResponse(['success' => false]);
         }
 
         $em = $this->getDoctrine()->getManager();
-        $user = $em->find('FoosballBundle:User\User',$this->getUser()->getId());
+        $user = $em->find('FoosballBundle:User\User', $this->getUser()->getId());
         $this->get('game')->getGame($game)->signUp($user, $comment);
 
         return new JsonResponse([

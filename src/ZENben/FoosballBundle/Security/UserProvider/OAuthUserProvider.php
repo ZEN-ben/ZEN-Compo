@@ -18,7 +18,8 @@ class OAuthuserProvider extends BaseEntityUserProvider implements UserProviderIn
         parent::__construct($registry, $class, $properties, $managerName);
     }
 
-    public function loadUserByUsername($google_id) {
+    public function loadUserByUsername($google_id)
+    {
         return $this->repository->findOneBy(array('google_id' => $google_id));
     }
 
@@ -53,14 +54,16 @@ class OAuthuserProvider extends BaseEntityUserProvider implements UserProviderIn
         return $user;
     }
 
-    public function refreshUser(\Symfony\Component\Security\Core\User\UserInterface $user) {
+    public function refreshUser(\Symfony\Component\Security\Core\User\UserInterface $user)
+    {
         if ($user->isInvalidated()) {
             $user = $this->loadUserByUsername($user->getGoogleId());
         }
         return $user;
     }
 
-    public function supportsClass($class) {
+    public function supportsClass($class)
+    {
         return true;
     }
 

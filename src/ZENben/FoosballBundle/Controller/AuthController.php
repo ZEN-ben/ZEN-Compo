@@ -38,7 +38,7 @@ class AuthController extends Controller
             // already logged in
             return $this->redirect($this->generateUrl('foosball_homepage'));
         }
-        
+
         $connect = $this->container->getParameter('hwi_oauth.connect');
         $hasUser = $this->container->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED');
 
@@ -51,7 +51,7 @@ class AuthController extends Controller
         ) {
             $key = time();
             $session = $request->getSession();
-            $session->set('_hwi_oauth.registration_error.'.$key, $error);
+            $session->set('_hwi_oauth.registration_error.' . $key, $error);
 
             return new RedirectResponse($this->generate('hwi_oauth_connect_registration', array('key' => $key)));
         }
@@ -62,8 +62,8 @@ class AuthController extends Controller
         }
 
         return $this->container->get('templating')->renderResponse('FoosballBundle:Auth:login.html.' . $this->getTemplatingEngine(), array(
-            'error'   => $error,
-        ));
+                'error' => $error,
+            ));
     }
 
     /**
@@ -71,7 +71,7 @@ class AuthController extends Controller
      * is enabled.
      *
      * @param Request $request A request.
-     * @param string  $key     Key used for retrieving the right information for the registration form.
+     * @param string $key Key used for retrieving the right information for the registration form.
      *
      * @return Response
      *
@@ -92,8 +92,8 @@ class AuthController extends Controller
         }
 
         $session = $request->getSession();
-        $error = $session->get('_hwi_oauth.registration_error.'.$key);
-        $session->remove('_hwi_oauth.registration_error.'.$key);
+        $error = $session->get('_hwi_oauth.registration_error.' . $key);
+        $session->remove('_hwi_oauth.registration_error.' . $key);
 
         if (!($error instanceof AccountNotLinkedException) || (time() - $key > 300)) {
             // todo: fix this
@@ -102,8 +102,7 @@ class AuthController extends Controller
 
         $userInformation = $this
             ->getResourceOwnerByName($error->getResourceOwnerName())
-            ->getUserInformation($error->getRawToken())
-        ;
+            ->getUserInformation($error->getRawToken());
 
         // enable compatibility with FOSUserBundle 1.3.x and 2.x
         if (interface_exists('FOS\UserBundle\Form\Factory\FactoryInterface')) {
@@ -120,26 +119,26 @@ class AuthController extends Controller
             $this->authenticateUser($form->getData(), $error->getResourceOwnerName(), $error->getRawToken());
 
             return $this->container->get('templating')->renderResponse('HWIOAuthBundle:Connect:registration_success.html.' . $this->getTemplatingEngine(), array(
-                'userInformation' => $userInformation,
-            ));
+                    'userInformation' => $userInformation,
+                ));
         }
 
         // reset the error in the session
         $key = time();
-        $session->set('_hwi_oauth.registration_error.'.$key, $error);
+        $session->set('_hwi_oauth.registration_error.' . $key, $error);
 
         return $this->container->get('templating')->renderResponse('HWIOAuthBundle:Connect:registration.html.' . $this->getTemplatingEngine(), array(
-            'key' => $key,
-            'form' => $form->createView(),
-            'userInformation' => $userInformation,
-        ));
+                'key' => $key,
+                'form' => $form->createView(),
+                'userInformation' => $userInformation,
+            ));
     }
 
     /**
      * Connects a user to a given account if the user is logged in and connect is enabled.
      *
      * @param Request $request The active request.
-     * @param string  $service Name of the resource owner to connect to.
+     * @param string $service Name of the resource owner to connect to.
      *
      * @throws \Exception
      *
@@ -173,9 +172,9 @@ class AuthController extends Controller
             );
 
             // save in session
-            $session->set('_hwi_oauth.connect_confirmation.'.$key, $accessToken);
+            $session->set('_hwi_oauth.connect_confirmation.' . $key, $accessToken);
         } else {
-            $accessToken = $session->get('_hwi_oauth.connect_confirmation.'.$key);
+            $accessToken = $session->get('_hwi_oauth.connect_confirmation.' . $key);
         }
 
         $userInformation = $resourceOwner->getUserInformation($accessToken);
@@ -206,22 +205,22 @@ class AuthController extends Controller
                 $this->container->get('hwi_oauth.account.connector')->connect($user, $userInformation);
 
                 return $this->container->get('templating')->renderResponse('HWIOAuthBundle:Connect:connect_success.html.' . $this->getTemplatingEngine(), array(
-                    'userInformation' => $userInformation,
-                ));
+                        'userInformation' => $userInformation,
+                    ));
             }
         }
 
         return $this->container->get('templating')->renderResponse('HWIOAuthBundle:Connect:connect_confirm.html.' . $this->getTemplatingEngine(), array(
-            'key'             => $key,
-            'service'         => $service,
-            'form'            => $form->createView(),
-            'userInformation' => $userInformation,
-        ));
+                'key' => $key,
+                'service' => $service,
+                'form' => $form->createView(),
+                'userInformation' => $userInformation,
+            ));
     }
 
     /**
      * @param Request $request
-     * @param string  $service
+     * @param string $service
      *
      * @return RedirectResponse
      */
@@ -271,7 +270,7 @@ class AuthController extends Controller
      */
     protected function getResourceOwnerByName($name)
     {
-        $ownerMap = $this->container->get('hwi_oauth.resource_ownermap.'.$this->container->getParameter('hwi_oauth.firewall_name'));
+        $ownerMap = $this->container->get('hwi_oauth.resource_ownermap.' . $this->container->getParameter('hwi_oauth.firewall_name'));
 
         if (null === $resourceOwner = $ownerMap->getResourceOwnerByName($name)) {
             throw new \RuntimeException(sprintf("No resource owner with name '%s'.", $name));
@@ -283,8 +282,8 @@ class AuthController extends Controller
     /**
      * Generates a route.
      *
-     * @param string  $route    Route name
-     * @param array   $params   Route parameters
+     * @param string $route Route name
+     * @param array $params Route parameters
      * @param boolean $absolute Absolute url or note.
      *
      * @return string
@@ -298,8 +297,8 @@ class AuthController extends Controller
      * Authenticate a user with Symfony Security
      *
      * @param UserInterface $user
-     * @param string        $resourceOwnerName
-     * @param string        $accessToken
+     * @param string $resourceOwnerName
+     * @param string $accessToken
      */
     protected function authenticateUser(UserInterface $user, $resourceOwnerName, $accessToken)
     {

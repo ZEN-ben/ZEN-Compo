@@ -43,7 +43,7 @@ class Match
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -59,14 +59,14 @@ class Match
     public function setDatePlayed($datePlayed)
     {
         $this->datePlayed = $datePlayed;
-    
+
         return $this;
     }
 
     /**
      * Get datePlayed
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDatePlayed()
     {
@@ -82,14 +82,14 @@ class Match
     public function setScoreRed($scoreRed)
     {
         $this->scoreRed = $scoreRed;
-    
+
         return $this;
     }
 
     /**
      * Get scoreRed
      *
-     * @return integer 
+     * @return integer
      */
     public function getScoreRed()
     {
@@ -105,14 +105,14 @@ class Match
     public function setScoreBlue($scoreBlue)
     {
         $this->scoreBlue = $scoreBlue;
-    
+
         return $this;
     }
 
     /**
      * Get scoreBlue
      *
-     * @return integer 
+     * @return integer
      */
     public function getScoreBlue()
     {
@@ -128,14 +128,14 @@ class Match
     public function setRedPlayer(\ZENben\FoosballBundle\Entity\User\User $redPlayer = null)
     {
         $this->red_player = $redPlayer;
-    
+
         return $this;
     }
 
     /**
      * Get red_player
      *
-     * @return \ZENben\FoosballBundle\Entity\User\User 
+     * @return \ZENben\FoosballBundle\Entity\User\User
      */
     public function getRedPlayer()
     {
@@ -151,19 +151,20 @@ class Match
     public function setBluePlayer(\ZENben\FoosballBundle\Entity\User\User $bluePlayer = null)
     {
         $this->blue_player = $bluePlayer;
-    
+
         return $this;
     }
 
     /**
      * Get blue_player
      *
-     * @return \ZENben\FoosballBundle\Entity\User\User 
+     * @return \ZENben\FoosballBundle\Entity\User\User
      */
     public function getBluePlayer()
     {
         return $this->blue_player;
     }
+
     /**
      * @var string
      */
@@ -179,19 +180,20 @@ class Match
     public function setMatchId($matchId)
     {
         $this->match_id = $matchId;
-    
+
         return $this;
     }
 
     /**
      * Get match_id
      *
-     * @return string 
+     * @return string
      */
     public function getMatchId()
     {
         return $this->match_id;
     }
+
     /**
      * @var boolean
      */
@@ -207,14 +209,14 @@ class Match
     public function setBye($bye)
     {
         $this->bye = $bye;
-    
+
         return $this;
     }
 
     /**
      * Get bye
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getBye()
     {
