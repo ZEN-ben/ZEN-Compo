@@ -92,7 +92,7 @@ class Tournament extends BaseType
                                 $previousMatch->setRedPlayer($loser);
                             }
                         }
-                        if (count($losers) < 1 && $match->getBluePlayer() === null) {
+                        if ($match->getBluePlayer() === null && count($losers) === 0) {
                             $match->setScoreRed(1);
                             $match->setScoreBlue(0);
                             if ($match->getRedPlayer()) {
