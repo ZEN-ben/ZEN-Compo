@@ -8,7 +8,8 @@ class GameService
     protected $config;
     protected $gameInstance;
 
-    public function __construct($em, $config) {
+    public function __construct($em, $config)
+    {
         $this->em = $em;
         $this->config = $config;
     }

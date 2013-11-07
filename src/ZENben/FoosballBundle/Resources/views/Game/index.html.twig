@@ -1,107 +1,124 @@
 {% trans_default_domain 'game_index' %}
 {% extends 'FoosballBundle::layout.html.twig' %}
-{% block jumbotron_title %}{{game.name}}{% endblock %}
+{% block jumbotron_title %}{{ game.name }}{% endblock %}
 {% block content %}
-<div class="row">
-{% if app.user is participating(game) %}
-    <div class="col-md-6">
-        <h2>{{'information'|trans}} <small>{{'information.sub'|trans}}</small></h2>
-        <script type="text/javascript">
-            var bracketData = {
-                teams: [
-{% for m in game.matches(1) %}
-                    [
-                        {name: '{{m.redplayer.username|default('BYE')}}' }, 
-                        {name: '{{m.blueplayer.username|default('BYE')}}' }
-                    ],
-{% endfor %}
-                ],
-                results: [
-{% for round in game.matches %}
-                    [
-{% for match in round %}
-                        [{{match.scorered}},{{match.scoreblue}},{
-                            id: {{match.id}},
-                            matchId: {{match.matchid}},
-                            red: {
-                                name: '{{match.redplayer.username|default('')}}',
-                                picture: '{{match.redplayer.profilepicture|default('')}}',
-                                score: {{match.scorered|default('null')}}
-                            },
-                            blue: {
-                                name: '{{match.blueplayer.username|default('')}}',
-                                picture: '{{match.blueplayer.profilepicture|default('')}}',
-                                score: {{match.scoreblue|default('null')}}
-                            }
-                        }],
-{% endfor %}
-                    ],
-{% endfor %}
-                ]
-            }
-        </script>
-        
-        {% if game.matches|length > 0 %}
-        <div id="brackets"></div>
-        {% else %}
-        <div>Please wait for the admin to start the tournament</div>
-        {% endif %}
-        <div class="clearfix"></div>
-    </div>
-{% elseif not game.started %}
-    <div class="confirm-participation col-md-6">
-        <div class="want-to-join">
-            <h2>{{'want.to.join'|trans}} <small>{{'just.x.days.left'|transchoice(game.timeuntilstart.days,{'%days%':game.timeuntilstart.days})}}</small></h2>
-            <div class="comment-container">
-                <input maxlength="45" class="comment" placeholder="{{'comment.placeholder'|trans}}"></textarea>
-            </div>
-            <div class="button-container clearfix">
-                <button class="btn btn-success btn-join" data-url="{{path('foosball_signup',{'game':id})}}">{{'button.join'|trans}}</button>
-            </div>
-        </div>
-        <div class="joined" style="display: none;">
-            <h2>{{'thanks.for.joining'|trans}}</h2>
-            <div class="comment-container">
-                <p>Please refresh the page manually for now.</p>
-            </div>
-        </div>
-    </div>
-{% endif %}
-    <div class="players-participating col-md-6">
-        <h2>{{'players.joined'|trans}} <small>{{'opponents'|trans}}</small></h2>
-        <div class="dummy" style="display: none; opacity: 0;">
-            {{profile_container(app.user)}} {{'said'|trans}}
-            “<em></em>”
-        </div>
-        {% for signup in game.signups|default(null) %}
-        <div>
-            {{profile_container(signup.user)}} {{'said'|trans}}
-            “<em>{{signup.comment}}</em>”
-        </div>
-        {% endfor %}
-    </div>
-</div>
+    <div class="row">
+        {% if app.user is participating(game) %}
+            <div class="col-md-6">
+                <h2>{{ 'information'|trans }}
+                    <small>{{ 'information.sub'|trans }}</small>
+                </h2>
+                <script type="text/javascript">
+                    var bracketData = {
+                        teams: [
+                            {% for m in game.matches(1) %}
+                            [
+                                {name: '{{m.redplayer.username|default('BYE')}}' },
+                                {name: '{{m.blueplayer.username|default('BYE')}}' }
+                            ],
+                            {% endfor %}
+                        ],
+                        results: [
+                            {% for round in game.matches %}
+                            [
+                                {% for match in round %}
+                                [
+                                    {{match.scorered}},
+                                    {{match.scoreblue}},
+                                    {
+                                        id: {{match.id}},
+                                        matchId: {{match.matchid}},
+                                        red: {
+                                            name: '{{match.redplayer.username|default('')}}',
+                                            picture: '{{match.redplayer.profilepicture|default('')}}',
+                                            score: {{match.scorered|default('null')}}
+                                        },
+                                        blue: {
+                                            name: '{{match.blueplayer.username|default('')}}',
+                                            picture: '{{match.blueplayer.profilepicture|default('')}}',
+                                            score: {{match.scoreblue|default('null')}}
+                                        }
+                                    }
+                                ],
+                                {% endfor %}
+                            ],
+                            {% endfor %}
+                        ]
+                    }
+                </script>
 
-<div class="modal modal-gamereport fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">{{'match'|trans}} <span class="title"></span>: <span class="red"></span> VS. <span class="blue"></span></h4>
-      </div>
-      <div class="modal-body gamereport">
-        {% include 'FoosballBundle:Game:gamereport.html.twig' with {noTitle: true} %}
-      </div>
-      <div class="modal-footer">
-          <p class="message">
-              <span style="display:none;" data-won="-1">{{'data.saved.you.lost'|trans}}</span>
-              <span style="display:none;" data-won="0">{{'data.saved'|trans}}</span>
-              <span style="display:none;" data-won="1">{{'data.saved.you.won'|trans}}</span>
-              <button type="button" class="btn save btn-success" data-url="{{ path('foosball_game_match_save', {gameId: id, matchId: '!id!'}) }}">{{'button.save'|trans}}</button>
-          </p>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+                {% if game.matches|length > 0 %}
+                    <div id="brackets"></div>
+                {% else %}
+                    <div>Please wait for the admin to start the tournament</div>
+                {% endif %}
+                <div class="clearfix"></div>
+            </div>
+        {% elseif not game.started %}
+            <div class="confirm-participation col-md-6">
+                <div class="want-to-join">
+                    <h2>{{ 'want.to.join'|trans }}
+                        <small>{{ 'just.x.days.left'|transchoice(game.timeuntilstart.days,{'%days%':game.timeuntilstart.days}) }}</small>
+                    </h2>
+                    <div class="comment-container">
+                        <input maxlength="45" class="comment"
+                               placeholder="{{ 'comment.placeholder'|trans }}"></textarea>
+                    </div>
+                    <div class="button-container clearfix">
+                        <button class="btn btn-success btn-join"
+                                data-url="{{ path('foosball_signup',{'game':id}) }}">{{ 'button.join'|trans }}</button>
+                    </div>
+                </div>
+                <div class="joined" style="display: none;">
+                    <h2>{{ 'thanks.for.joining'|trans }}</h2>
+
+                    <div class="comment-container">
+                        <p>Please refresh the page manually for now.</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="players-participating col-md-6">
+            <h2>{{ 'players.joined'|trans }}
+                <small>{{ 'opponents'|trans }}</small>
+            </h2>
+            <div class="dummy" style="display: none; opacity: 0;">
+                {{ profile_container(app.user) }} {{ 'said'|trans }}
+                “<em></em>”
+            </div>
+            {% for signup in game.signups|default(null) %}
+                <div>
+                    {{ profile_container(signup.user) }} {{ 'said'|trans }}
+                    “<em>{{ signup.comment }}</em>”
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="modal modal-gamereport fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">{{ 'match'|trans }} <span class="title"></span>: <span class="red"></span>
+                        VS. <span class="blue"></span></h4>
+                </div>
+                <div class="modal-body gamereport">
+                    {% include 'FoosballBundle:Game:gamereport.html.twig' with {noTitle: true} %}
+                </div>
+                <div class="modal-footer">
+                    <p class="message">
+                        <span style="display:none;" data-won="-1">{{ 'data.saved.you.lost'|trans }}</span>
+                        <span style="display:none;" data-won="0">{{ 'data.saved'|trans }}</span>
+                        <span style="display:none;" data-won="1">{{ 'data.saved.you.won'|trans }}</span>
+                        <button type="button" class="btn save btn-success"
+                                data-url="{{ path('foosball_game_match_save', {gameId: id, matchId: '!id!'}) }}">{{ 'button.save'|trans }}</button>
+                    </p>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
 {% endblock %}

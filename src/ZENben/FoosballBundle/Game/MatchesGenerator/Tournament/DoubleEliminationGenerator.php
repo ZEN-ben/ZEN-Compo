@@ -4,16 +4,19 @@ namespace ZENben\FoosballBundle\Game\MatchesGenerator\Tournament;
 
 use ZENben\FoosballBundle\Entity\Game\Match;
 
-class DoubleEliminationGenerator implements MatchesGeneratorInterface {
+class DoubleEliminationGenerator implements MatchesGeneratorInterface
+{
 
     protected $em;
 
-    public function __construct($em) {
+    public function __construct($em)
+    {
         $this->em = $em;
     }
 
-    public function generate($participants) {
-        
+    public function generate($participants)
+    {
+
     }
 
 }

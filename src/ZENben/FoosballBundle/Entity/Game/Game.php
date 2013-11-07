@@ -38,7 +38,7 @@ class Game
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -54,14 +54,14 @@ class Game
     public function setActive($active)
     {
         $this->active = $active;
-    
+
         return $this;
     }
 
     /**
      * Get active
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActive()
     {
@@ -77,14 +77,14 @@ class Game
     public function setGameForm($gameForm)
     {
         $this->game_form = $gameForm;
-    
+
         return $this;
     }
 
     /**
      * Get game_form
      *
-     * @return string 
+     * @return string
      */
     public function getGameForm()
     {
@@ -100,14 +100,14 @@ class Game
     public function setGameId($gameId)
     {
         $this->game_id = $gameId;
-    
+
         return $this;
     }
 
     /**
      * Get game_id
      *
-     * @return \int 
+     * @return \int
      */
     public function getGameId()
     {
@@ -123,19 +123,20 @@ class Game
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
         return $this->name;
     }
+
     /**
      * @var string
      */
@@ -151,19 +152,20 @@ class Game
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
         return $this->type;
     }
+
     /**
      * @var string
      */
@@ -179,14 +181,14 @@ class Game
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
