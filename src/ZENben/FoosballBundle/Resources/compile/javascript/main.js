@@ -74,7 +74,7 @@ jQuery(function ($) {
     }
 
     $('.modal-gamereport').click(function () {
-        $button = $(this).find('.btn.save');
+        var $button = $(this).find('.btn.save');
         $button.html($button.attr('data-text-save'));
         $button.attr('data-done', 'false');
     });
@@ -84,6 +84,7 @@ jQuery(function ($) {
 
         if ($me.attr('data-done') === 'true') {
             $me.closest('.modal').modal('hide');
+            return;
         }
 
         $button.loading();
