@@ -37,11 +37,13 @@ class OAuthuserProvider extends BaseEntityUserProvider implements UserProviderIn
         $user = $this->repository->findOneBy(array($this->properties[$resourceOwnerName] => $username));
 
         if (null === $user) {
+            $profilePicture = $response->getProfilePicture() ? $response->getProfilePicture() : 'https://lh3.googleusercontent.com/-G0f6aoCwegQ/AAAAAAAAAAI/AAAAAAAAAAA/xPuAYZmM39E/s120-c/photo.jpg';
+
             $user = new \ZENben\FoosballBundle\Entity\User\User();
             $user->setEmail($response->getEmail());
             $user->setGoogleId($response->getUsername());
             $user->setUsername($response->getRealName());
-            $user->setProfilePicture($response->getProfilePicture());
+            $user->setProfilePicture($profilePicture);
             $user->setRoles(['ROLE_USER', 'ROLE_OAUTH_USER']);
 
             $this->em->persist($user);
