@@ -97,7 +97,7 @@ class Game
      * @param \int $gameId
      * @return Game
      */
-    public function setGameId(\int $gameId)
+    public function setGameId($gameId)
     {
         $this->game_id = $gameId;
     

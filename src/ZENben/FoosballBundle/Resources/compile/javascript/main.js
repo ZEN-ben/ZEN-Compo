@@ -133,8 +133,11 @@
         $('.modal-gamereport .red-profile-picture').attr('src',data.red.picture);
         $('.modal-gamereport .blue-profile-picture').attr('src',data.blue.picture);
 
-        $('.modal-gamereport .info-red .score big').html(data.red.score);
-        $('.modal-gamereport .info-blue .score big').html(data.blue.score);
+        var scoreRed = data.red.score ? data.red.score : 0;
+        var scoreBlue = data.blue.score ? data.blue.score : 0;
+
+        $('.modal-gamereport .info-red .score big').html(scoreRed);
+        $('.modal-gamereport .info-blue .score big').html(scoreBlue);
         
         $('.modal-gamereport .btn.save').attr('data-id', data.id);
         

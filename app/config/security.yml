@@ -12,24 +12,24 @@ security:
         main:
             pattern: ^/foosball/
             logout:
-                path:   /foosball/logout/
-                target: /foosball/login/
+                path:   /foosball/logout
+                target: /foosball/login
             anonymous: true
             switch_user: { role: IS_AUTHENTICATED_ANONYMOUSLY, parameter: __u }
             oauth:
                 resource_owners:
-                    google:   /foosball/login/check-google
+                    google:   /foosball/llogin/check-google
                 login_path:   /foosball/login
                 failure_path: /foosball/login
                 check_path:   /foosball/login_check
-                default_target_path: /foosball/
+                default_target_path: /foosball
 
                 #anonymous:         ~
                 oauth_user_provider:
                      service: foosball.oauth.user_provider.service
 
     access_control:
-        - { path: ^/foosball/admin/, role: ROLE_SUPER_USER }
+        - { path: ^/foosball/admin, role: ROLE_SUPER_USER }
         - { path: ^/foosball/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/foosball/connect, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/foosball/, role: ROLE_USER }

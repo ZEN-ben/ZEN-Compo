@@ -6,18 +6,18 @@ google_login:
     pattern: /login/check-google
 
 foosball_login:
-    pattern: /login/
+    pattern: /login
     defaults: { _controller: FoosballBundle:Auth:login }
 
 foosball_logout:
-    pattern: /logout/
+    pattern: /logout
 
 foosball_homepage:
     pattern:  /
     defaults: { _controller: FoosballBundle:Default:index }
 
 foosball_game:
-    pattern:  /game/{id}/
+    pattern:  /game/{id}
     defaults: { _controller: FoosballBundle:Game:index }
 
 foosball_game_match_save:
@@ -29,6 +29,9 @@ foosball_signup:
     defaults: { _controller: FoosballBundle:Game:signUp, _format: json }
 
 foosball_admin:
-    pattern:  /admin/
+    pattern:  /admin
     defaults: { _controller: FoosballBundle:Admin:index }
 
+foosball_feedback:
+    pattern: /feedback
+    defaults: { _controller: FoosballBundle:Default:feedback }

@@ -22,3 +22,9 @@ parameters:
         generators:
            double_elimination:
               class: '\ZENben\FoosballBundle\Game\MatchesGenerator\DoubleEliminationGenerator'
+
+    targetprocess:
+        api_base_url: http://****.tpondemand.com/api/v1
+        username: api
+        password: 
+        default_project_id: 
