@@ -84,6 +84,7 @@ jQuery(function ($) {
 
         if ($me.attr('data-done') === 'true') {
             $me.closest('.modal').modal('hide');
+            location.reload();
             return;
         }
 
@@ -109,7 +110,6 @@ jQuery(function ($) {
                     var $displayed = $('.modal-gamereport [data-won="' + data.won + '"]');
                     $('.modal-gamereport [data-won]').not($displayed).hide();
                     $displayed.fadeIn();
-
                 }
             })
             .always(function () {
