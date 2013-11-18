@@ -34,6 +34,18 @@ class Game
      */
     private $name;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $updates;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->updates = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -193,5 +205,38 @@ class Game
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Add updates
+     *
+     * @param \ZENben\FoosballBundle\Entity\Game\GameUpdate $updates
+     * @return Game
+     */
+    public function addUpdate(\ZENben\FoosballBundle\Entity\Game\GameUpdate $updates)
+    {
+        $this->updates[] = $updates;
+    
+        return $this;
+    }
+
+    /**
+     * Remove updates
+     *
+     * @param \ZENben\FoosballBundle\Entity\Game\GameUpdate $updates
+     */
+    public function removeUpdate(\ZENben\FoosballBundle\Entity\Game\GameUpdate $updates)
+    {
+        $this->updates->removeElement($updates);
+    }
+
+    /**
+     * Get updates
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUpdates()
+    {
+        return $this->updates;
     }
 }

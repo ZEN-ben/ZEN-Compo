@@ -4,25 +4,31 @@ namespace ZENben\FoosballBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use ZENben\FoosballBundle\Game\MatchesGenerator\Tournament\EliminationGenerator;
 
 class GameController extends Controller
 {
+    const REASON_NOT_CURRENT_ROUND = 'not_current_round';
+    const REASON_NO_WINNER = 'no_winner';
+
     public function indexAction($id)
     {
         $game = $this->get('game')->getGame($id);
 
         if ($this->getRequest()->get('gen')) {
-            $generator = new \ZENben\FoosballBundle\Game\MatchesGenerator\Tournament\EliminationGenerator($this->getDoctrine()->getManager());
-            $generator->generate($game->getParticipants());
+            $this->generateNewTournament($game);
+            return $this->redirect($this->generateUrl('foosball_game', ['id' => 3]));
         }
 
         if ($this->getRequest()->get('del')) {
-            $em = $this->getDoctrine()->getManager();
-            $all = $em->getRepository('ZENben\FoosballBundle\Entity\Game\Match')->findAll();
-            foreach ($all as $match) {
-                $em->remove($match);
-            }
-            $em->flush();
+            $this->deleteTournament();
+            return $this->redirect($this->generateUrl('foosball_game', ['id' => 3]));
+        }
+
+        if ($this->getRequest()->get('reset')) {
+            $this->deleteTournament();
+            $this->generateNewTournament($game);
+            return $this->redirect($this->generateUrl('foosball_game', ['id' => 3]));
         }
 
         return $this->render('FoosballBundle:Game:index.html.twig', [
@@ -33,11 +39,29 @@ class GameController extends Controller
 
     public function matchSaveAction($gameId, $matchId)
     {
-        $scoreRed = $this->getRequest()->get('red');
-        $scoreBlue = $this->getRequest()->get('blue');
+        $scoreRed = intval($this->getRequest()->get('red'));
+        $scoreBlue = intval($this->getRequest()->get('blue'));
+
+        if (($scoreRed !== 10 && $scoreBlue !== 10) || $scoreBlue === $scoreRed) {
+            return new JsonResponse([
+                'success' => false,
+                'message' => self::REASON_NO_WINNER
+            ]);
+        }
 
         $match = $this->getDoctrine()->getManager()->getRepository('FoosballBundle:Game\Match')->find($matchId);
-        $this->get('game')->getGame($gameId)->processScores(
+
+        $game = $this->get('game')->getGame($gameId);
+        $currentRound = $game->getCurrentRound();
+        $gameRound = $game->getRoundForMatch($match);
+        if ($currentRound !== $gameRound) {
+            return new JsonResponse([
+                'success' => false,
+                'message' => self::REASON_NOT_CURRENT_ROUND
+            ]);
+        }
+
+        $game->processScores(
             $matchId,
             [$scoreRed, $scoreBlue]
         );
@@ -54,7 +78,7 @@ class GameController extends Controller
             'success' => true,
             'scoreRed' => $scoreRed,
             'scoreBlue' => $scoreBlue,
-            'won' => $won
+            'message' => $won ? 'won' : 'lost'
         ]);
     }
 
@@ -75,6 +99,33 @@ class GameController extends Controller
             'success' => true,
             'comment' => $comment
         ]);
+    }
+
+    /**
+     * @param $game
+     * @return EliminationGenerator
+     */
+    private function generateNewTournament($game)
+    {
+        $generator = new EliminationGenerator($this->getDoctrine()->getManager());
+        $generator->generate($game->getParticipants());
+    }
+
+    /**
+     * @return array
+     */
+    private function deleteTournament()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $all = $em->getRepository('ZENben\FoosballBundle\Entity\Game\Match')->findAll();
+        foreach ($all as $match) {
+            $em->remove($match);
+        }
+        $allUpdates = $em->getRepository('ZENben\FoosballBundle\Entity\Game\GameUpdate')->findAll();
+        foreach ($allUpdates as $update) {
+            $em->remove($update);
+        }
+        $em->flush();
     }
 
 }

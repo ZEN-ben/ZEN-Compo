@@ -45,6 +45,11 @@ class Tournament
     private $matches;
 
     /**
+     * @var \ZENben\FoosballBundle\Entity\Game\Game
+     */
+    private $game;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -219,5 +224,28 @@ class Tournament
     public function getMatches()
     {
         return $this->matches;
+    }
+
+    /**
+     * Set game
+     *
+     * @param \ZENben\FoosballBundle\Entity\Game\Game $game
+     * @return Tournament
+     */
+    public function setGame(\ZENben\FoosballBundle\Entity\Game\Game $game = null)
+    {
+        $this->game = $game;
+    
+        return $this;
+    }
+
+    /**
+     * Get game
+     *
+     * @return \ZENben\FoosballBundle\Entity\Game\Game 
+     */
+    public function getGame()
+    {
+        return $this->game;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace ZENben\FoosballBundle\Game\Type;
 
+use ZENben\FoosballBundle\Entity\Game\GameUpdate;
 use ZENben\FoosballBundle\Game\GameInterface;
 
 abstract class BaseType implements GameInterface
@@ -33,6 +34,18 @@ abstract class BaseType implements GameInterface
     public function getDateEnded()
     {
         return $this->entity->getDateEnded();
+    }
+
+    public function addUpdate($title, $description, $type = 'default', $parameters = null)
+    {
+        $gameUpdate = new GameUpdate($this->entity->getGame(), $title, $description, $type, $parameters);
+        $this->em->persist($gameUpdate);
+        $this->em->flush();
+    }
+
+    public function getUpdates()
+    {
+        return $this->entity->getGame()->getUpdates();
     }
 
 }

@@ -13,5 +13,9 @@ ZENben\FoosballBundle\Entity\Game\Game:
             type: string
         game_id:
             type: integer
-        
+    oneToMany:
+        updates:
+            targetEntity: ZENben\FoosballBundle\Entity\Game\GameUpdate
+            mappedBy: game
+            orderBy: { dateCreated: desc, id: desc }
     lifecycleCallbacks: {  }

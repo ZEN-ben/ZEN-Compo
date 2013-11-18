@@ -1,0 +1,30 @@
+ZENben\FoosballBundle\Entity\Game\GameUpdate:
+    type: entity
+    table: game_update
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        type:
+            type: string
+            length: 255
+        title:
+            type: string
+            length: 255
+        description:
+            type: text
+        dateCreated:
+            type: datetime
+            column: date_created
+        dateModified:
+            type: datetime
+            column: date_modified
+            nullable: true
+        parameters:
+            type: array
+    manyToOne:
+        game:
+            targetEntity: ZENben\FoosballBundle\Entity\Game\Game
+    lifecycleCallbacks: {  }

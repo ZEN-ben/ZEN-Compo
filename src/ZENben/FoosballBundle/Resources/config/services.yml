@@ -14,6 +14,7 @@ services:
         arguments:
           - '@doctrine.orm.entity_manager'
           - '@game'
+          - '@foosball.oauth.user_provider.service'
         tags:
           - { name: twig.extension }
 
@@ -22,3 +23,7 @@ services:
         arguments:
           - '@doctrine.orm.entity_manager'
           - %foosball.game%
+    twig.extension.intl:
+            class: Twig_Extensions_Extension_Intl
+            tags:
+                - { name: twig.extension }

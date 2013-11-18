@@ -1,0 +1,11 @@
+new.player: Player %player% has joined
+new.player.and.said: and said
+game.started:
+    title: Jetzt geht löss!
+    description: The competition has begun, you can now start submitting scores! Good luck!
+
+p1.won.agianst.p2: %player_1_name% (%player_1_score%) won against %player_2_name% (%player_2_score%)!
+
+round.played:
+  title: Round %round_number% has been completed!
+  description: You can now start playing the next round.

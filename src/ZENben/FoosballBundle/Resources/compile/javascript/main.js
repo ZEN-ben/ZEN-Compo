@@ -1,3 +1,21 @@
+var _ = function(key, group) {
+   if (typeof group === 'undefined') {
+       group = 'default';
+   }
+   var translations = {
+        'default': {
+
+        },
+        'gamereport' : {
+            'not_current_round': 'This game is not in the current round, please ask the administrator to adjust the score.',
+            'won': 'Congratulations on winning!',
+            'lost': 'Better luck next time...',
+            'no_winner': 'You can\'t save this match without a winner.'
+        }
+   };
+    return translations[group][key];
+};
+
 ;
 jQuery(function ($) {
     $('.btn-join').click(function () {
@@ -107,9 +125,13 @@ jQuery(function ($) {
                     } else {
                         $me.html('OK');
                     }
-                    var $displayed = $('.modal-gamereport [data-won="' + data.won + '"]');
-                    $('.modal-gamereport [data-won]').not($displayed).hide();
+                    var $displayed = $('.modal-gamereport .message span').html(_(data.message,'gamereport'));
                     $displayed.fadeIn();
+                } else {
+                    var $displayed = $('.modal-gamereport .message span').html(_(data.message,'gamereport'));
+                    $displayed.fadeIn();
+                    $me.attr('data-done', 'true');
+                    $me.html('OK...');
                 }
             })
             .always(function () {
@@ -137,8 +159,8 @@ jQuery(function ($) {
         $('.modal-gamereport .red-profile-picture').attr('src', data.red.picture);
         $('.modal-gamereport .blue-profile-picture').attr('src', data.blue.picture);
 
-        var scoreRed = data.red.score ? data.red.score : 0;
-        var scoreBlue = data.blue.score ? data.blue.score : 0;
+        var scoreRed = data.red.score ? data.red.score : 5;
+        var scoreBlue = data.blue.score ? data.blue.score : 5;
 
         $('.modal-gamereport .info-red .score big').html(scoreRed);
         $('.modal-gamereport .info-blue .score big').html(scoreBlue);

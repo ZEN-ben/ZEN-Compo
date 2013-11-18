@@ -20,11 +20,6 @@ class TournamentSignup
     private $date;
 
     /**
-     * @var string
-     */
-    private $comment;
-
-    /**
      * @var \ZENben\FoosballBundle\Entity\Game\Tournament
      */
     private $tournament;
@@ -66,29 +61,6 @@ class TournamentSignup
     public function getDate()
     {
         return $this->date;
-    }
-
-    /**
-     * Set comment
-     *
-     * @param string $comment
-     * @return TournamentSignup
-     */
-    public function setComment($comment)
-    {
-        $this->comment = $comment;
-
-        return $this;
-    }
-
-    /**
-     * Get comment
-     *
-     * @return string
-     */
-    public function getComment()
-    {
-        return $this->comment;
     }
 
     /**

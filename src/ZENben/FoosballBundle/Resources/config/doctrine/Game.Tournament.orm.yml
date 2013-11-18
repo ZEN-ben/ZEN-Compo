@@ -22,9 +22,11 @@ ZENben\FoosballBundle\Entity\Game\Tournament:
         signups:
             targetEntity: ZENben\FoosballBundle\Entity\Game\TournamentSignup
             mappedBy: tournament
-            orderBy: {date: desc}
+            orderBy: { date: desc }
         matches:
             targetEntity: ZENben\FoosballBundle\Entity\Game\Match
             mappedBy: tournament
-            
+    oneToOne:
+        game:
+            targetEntity: ZENben\FoosballBundle\Entity\Game\Game
     lifecycleCallbacks: {  }

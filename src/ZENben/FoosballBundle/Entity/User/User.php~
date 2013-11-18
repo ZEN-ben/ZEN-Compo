@@ -46,7 +46,8 @@ class User implements UserInterface
      */
     protected $invalidated;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->invalidated = false;
     }
 
@@ -64,7 +65,7 @@ class User implements UserInterface
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -80,14 +81,14 @@ class User implements UserInterface
     public function setGoogleId($googleId)
     {
         $this->google_id = $googleId;
-    
+
         return $this;
     }
 
     /**
      * Get google_id
      *
-     * @return string 
+     * @return string
      */
     public function getGoogleId()
     {
@@ -103,14 +104,14 @@ class User implements UserInterface
     public function setEmail($email)
     {
         $this->email = $email;
-    
+
         return $this;
     }
 
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -126,14 +127,14 @@ class User implements UserInterface
     public function setUsername($username)
     {
         $this->username = $username;
-    
+
         return $this;
     }
 
     /**
      * Get username
      *
-     * @return string 
+     * @return string
      */
     public function getUsername()
     {
@@ -149,14 +150,14 @@ class User implements UserInterface
     public function setProfilePicture($profilePicture)
     {
         $this->profile_picture = $profilePicture;
-    
+
         return $this;
     }
 
     /**
      * Get profile_picture
      *
-     * @return string 
+     * @return string
      */
     public function getProfilePicture()
     {
@@ -172,14 +173,14 @@ class User implements UserInterface
     public function setRoles($roles)
     {
         $this->roles = $roles;
-    
+
         return $this;
     }
 
     /**
      * Get roles
      *
-     * @return array 
+     * @return array
      */
     public function getRoles()
     {
@@ -187,17 +188,21 @@ class User implements UserInterface
     }
 
     /* Non generated*/
-    public function eraseCredentials() {
+    public function eraseCredentials()
+    {
         return true;
     }
 
-    public function getPassword() {
+    public function getPassword()
+    {
         return null;
     }
 
-    public function getSalt() {
+    public function getSalt()
+    {
         return null;
     }
+
     /**
      * @var \DateTime
      */
@@ -213,14 +218,14 @@ class User implements UserInterface
     public function setSignedUpDate($signedUpDate)
     {
         $this->signed_up_date = $signedUpDate;
-    
+
         return $this;
     }
 
     /**
      * Get signed_up_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getSignedUpDate()
     {

@@ -38,7 +38,7 @@ class OAuthuserProvider extends BaseEntityUserProvider implements UserProviderIn
         $user = $this->repository->findOneBy(array($this->properties[$resourceOwnerName] => $username));
 
         if (null === $user) {
-            $profilePicture = $response->getProfilePicture() ? $response->getProfilePicture() : 'https://lh3.googleusercontent.com/-G0f6aoCwegQ/AAAAAAAAAAI/AAAAAAAAAAA/xPuAYZmM39E/s120-c/photo.jpg';
+            $profilePicture = $response->getProfilePicture() ? $response->getProfilePicture() : 'https://open.spotify.com/static/images/user.png';
 
             $user = new \ZENben\FoosballBundle\Entity\User\User();
             $user->setEmail($response->getEmail());

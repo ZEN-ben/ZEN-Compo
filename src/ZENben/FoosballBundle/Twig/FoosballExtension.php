@@ -9,11 +9,14 @@ class FoosballExtension extends \Twig_Extension
 {
 
     protected $em;
+    protected $gameService;
+    protected $userService;
 
-    public function __construct($em, $gameService)
+    public function __construct($em, $gameService, $userService)
     {
         $this->em = $em;
         $this->gameService = $gameService;
+        $this->userService = $userService;
     }
 
     public function getGlobals()
@@ -32,13 +35,19 @@ class FoosballExtension extends \Twig_Extension
                     'is_safe' => ['html']
                 ]
             ),
-            new Twig_SimpleFunction('game', [$this, 'getGame'])
+            new Twig_SimpleFunction('game', [$this, 'getGame']),
+            new Twig_SimpleFunction('user', [$this, 'getUser']),
         ];
     }
 
     public function getGame($id)
     {
         return $this->gameService->getGame($id);
+    }
+
+    public function getUser($id)
+    {
+        return $this->userService->loadUserByUsername($id);
     }
 
     public function getTests()

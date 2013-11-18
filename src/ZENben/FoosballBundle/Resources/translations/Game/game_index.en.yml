@@ -5,6 +5,8 @@ players.joined: Participating
 future.opponents: .. your opponents
 information: Information
 information.sub: .. click a match to update scores
+updates: Updates
+updates.sub: .. let's see what's going on
 comment.placeholder: .. leave a small comment about how excited you are to play..
 said: joined and said
 button:
@@ -12,5 +14,3 @@ button:
     
 button.save: Save
 data.saved: Scores saved!
-data.saved.you.won: Scores saved! Good job on winning!
-data.saved.you.lost: Scores saved! Better luck next time!

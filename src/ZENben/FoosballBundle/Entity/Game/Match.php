@@ -222,4 +222,9 @@ class Match
     {
         return $this->bye;
     }
+
+    public function isPlayed()
+    {
+        return $this->scoreRed !== null;
+    }
 }
