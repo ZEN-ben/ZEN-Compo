@@ -4,6 +4,7 @@ namespace ZENben\FoosballBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use ZENben\Bundle\YammerBundle\Service\YammerService;
 use ZENben\FoosballBundle\Game\MatchesGenerator\Tournament\EliminationGenerator;
 
 class GameController extends Controller
@@ -66,19 +67,19 @@ class GameController extends Controller
             [$scoreRed, $scoreBlue]
         );
 
-        $won = 0;
+        $won = 'ok';
         $user = $this->getUser();
         if ($user->getId() === $match->getBluePlayer()->getId()) {
-            $won = $scoreBlue > $scoreRed ? 1 : -1;
+            $won = $scoreBlue > $scoreRed ? 'won' : 'lost';
         } elseif ($user->getId() === $match->getRedPlayer()->getId()) {
-            $won = $scoreRed > $scoreBlue ? 1 : -1;
+            $won = $scoreRed > $scoreBlue ? 'won' : 'lost';
         }
 
         return new JsonResponse([
             'success' => true,
             'scoreRed' => $scoreRed,
             'scoreBlue' => $scoreBlue,
-            'message' => $won ? 'won' : 'lost'
+            'message' => $won
         ]);
     }
 

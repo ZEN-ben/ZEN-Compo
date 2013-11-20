@@ -10,6 +10,7 @@ var _ = function(key, group) {
             'not_current_round': 'This game is not in the current round, please ask the administrator to adjust the score.',
             'won': 'Congratulations on winning!',
             'lost': 'Better luck next time...',
+            'ok': 'Saved!',
             'no_winner': 'You can\'t save this match without a winner.'
         }
    };
