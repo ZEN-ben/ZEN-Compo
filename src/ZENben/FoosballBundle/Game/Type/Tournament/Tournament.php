@@ -42,7 +42,7 @@ class Tournament extends BaseType
         $this->addMatchPlayedUpdate($winner, $loser, $winnerScore, $loserScore);
 
         $this->progress();
-
+        
         if ($oldRound !== $this->getCurrentRound()) {
             $this->addNewRoundUpdate($oldRound);
         }

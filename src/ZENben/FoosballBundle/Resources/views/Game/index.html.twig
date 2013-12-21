@@ -2,6 +2,7 @@
 {% extends 'FoosballBundle::layout.html.twig' %}
 {% block jumbotron_title %}{{ game.name }}{% endblock %}
 {% block content %}
+<div><a href="{{ path('foosball_homepage') }}">{{'back.to.overview'|trans}}</a></div>
     <div class="row">
         {% if app.user is participating(game) %}
             <div id="updates" class="col-md-6">

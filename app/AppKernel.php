@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new ZENben\FoosballBundle\FoosballBundle(),
             new ZENben\DefaultBundle\DefaultBundle(),
             new ZENben\Bundle\TargetProcessBundle\TargetProcessBundle(),
+            new ZENben\Bundle\YammerBundle\YammerBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
         );

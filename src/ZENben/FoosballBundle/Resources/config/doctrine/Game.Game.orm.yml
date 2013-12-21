@@ -13,6 +13,9 @@ ZENben\FoosballBundle\Entity\Game\Game:
             type: string
         game_id:
             type: integer
+        yammer_group:
+            type: integer
+            nullable: true
     oneToMany:
         updates:
             targetEntity: ZENben\FoosballBundle\Entity\Game\GameUpdate
