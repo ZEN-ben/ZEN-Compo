@@ -5,7 +5,7 @@
     "description": "The \"Symfony Standard Edition\" distribution",
     "autoload": {
         "psr-0": { "": "src/" }
-    },
+        },
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.3.*",
@@ -22,7 +22,8 @@
         "leafo/lessphp": "dev-master",
         "hwi/oauth-bundle": "0.3.*@dev",
         "sensio/buzz-bundle": "dev-master",
-        "zenben/targetprocess-bundle": "dev-master"
+        "zenben/targetprocess-bundle": "dev-master",
+        "zenben/yammer-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
@@ -52,6 +53,6 @@
         },
         "branch-alias": {
             "dev-master": "2.3-dev"
-        }
+    }
     }
 }
