@@ -3,10 +3,11 @@
 namespace ZENben\FoosballBundle\Security\UserProvider;
 
 use HWI\Bundle\OAuthBundle\Security\Core\User\EntityUserProvider as BaseEntityUserProvider;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use ZENben\FoosballBundle\Entity\User\User;
 
 class OAuthuserProvider extends BaseEntityUserProvider implements UserProviderInterface
 {
@@ -40,7 +41,7 @@ class OAuthuserProvider extends BaseEntityUserProvider implements UserProviderIn
         if (null === $user) {
             $profilePicture = $response->getProfilePicture() ? $response->getProfilePicture() : 'https://open.spotify.com/static/images/user.png';
 
-            $user = new \ZENben\FoosballBundle\Entity\User\User();
+            $user = new User();
             $user->setEmail($response->getEmail());
             $user->setGoogleId($response->getUsername());
             $user->setUsername($response->getRealName());
@@ -54,7 +55,7 @@ class OAuthuserProvider extends BaseEntityUserProvider implements UserProviderIn
         return $user;
     }
 
-    public function refreshUser(\Symfony\Component\Security\Core\User\UserInterface $user)
+    public function refreshUser(UserInterface $user)
     {
         if ($user->isInvalidated()) {
             $user = $this->loadUserByUsername($user->getGoogleId());

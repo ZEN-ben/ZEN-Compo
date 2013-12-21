@@ -2,6 +2,7 @@
 
 namespace ZENben\FoosballBundle\Entity\Game;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,11 +41,16 @@ class Game
     private $updates;
 
     /**
+     * @var integer
+     */
+    private $yammer_group;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->updates = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->updates = new ArrayCollection();
     }
 
     /**
@@ -238,5 +244,28 @@ class Game
     public function getUpdates()
     {
         return $this->updates;
+    }
+
+    /**
+     * Set yammer_group
+     *
+     * @param integer $yammerGroup
+     * @return Game
+     */
+    public function setYammerGroup($yammerGroup)
+    {
+        $this->yammer_group = $yammerGroup;
+    
+        return $this;
+    }
+
+    /**
+     * Get yammer_group
+     *
+     * @return integer 
+     */
+    public function getYammerGroup()
+    {
+        return $this->yammer_group;
     }
 }

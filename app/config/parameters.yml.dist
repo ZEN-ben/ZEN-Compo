@@ -28,3 +28,7 @@ parameters:
         username: api
         password: 
         default_project_id: 
+    yammer:
+      api_base_url: 'https://www.yammer.com/api/v1'
+      token: # see docs how to generate
+      default_group_id: ~

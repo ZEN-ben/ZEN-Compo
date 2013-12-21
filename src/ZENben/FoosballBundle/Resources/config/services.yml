@@ -23,7 +23,14 @@ services:
         arguments:
           - '@doctrine.orm.entity_manager'
           - %foosball.game%
+          - '@event_dispatcher'
     twig.extension.intl:
-            class: Twig_Extensions_Extension_Intl
-            tags:
-                - { name: twig.extension }
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+                
+    foosball.listener.yammer:
+        class: ZENben\FoosballBundle\Listener\YammerListener
+        arguments: ['@yammer', '@translator']
+        tags:
+            - { name: kernel.event_listener, event: foosball.game.updated, method: onGameUpdate }
