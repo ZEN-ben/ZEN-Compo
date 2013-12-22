@@ -7,13 +7,6 @@ ZENben\FoosballBundle\Entity\Game\Tournament:
             id: true
             generator:
                 strategy: AUTO
-        dateStart:
-            type: datetime
-            column: date_start
-        dateEnded:
-            type: datetime
-            column: date_ended
-            nullable: true
         name:
             type: string
         description:

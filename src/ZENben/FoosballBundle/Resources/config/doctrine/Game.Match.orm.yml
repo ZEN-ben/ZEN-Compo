@@ -28,4 +28,6 @@ ZENben\FoosballBundle\Entity\Game\Match:
             targetEntity: ZENben\FoosballBundle\Entity\User\User
         blue_player:
             targetEntity: ZENben\FoosballBundle\Entity\User\User
+        game:
+            targetEntity: ZENben\FoosballBundle\Entity\Game\Game
     lifecycleCallbacks: {  }

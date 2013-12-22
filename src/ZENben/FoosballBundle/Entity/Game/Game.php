@@ -46,11 +46,17 @@ class Game
     private $yammer_group;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $matches;
+    
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->updates = new ArrayCollection();
+        $this->matches = new ArrayCollection();
     }
 
     /**
@@ -267,5 +273,117 @@ class Game
     public function getYammerGroup()
     {
         return $this->yammer_group;
+    }
+    
+    /**
+     * Add matches
+     *
+     * @param \ZENben\FoosballBundle\Entity\Game\Match $matches
+     * @return Game
+     */
+    public function addMatch(\ZENben\FoosballBundle\Entity\Game\Match $matches)
+    {
+        $this->matches[] = $matches;
+    
+        return $this;
+    }
+
+    /**
+     * Remove matches
+     *
+     * @param \ZENben\FoosballBundle\Entity\Game\Match $matches
+     */
+    public function removeMatch(\ZENben\FoosballBundle\Entity\Game\Match $matches)
+    {
+        $this->matches->removeElement($matches);
+    }
+
+    /**
+     * Get matches
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMatches()
+    {
+        return $this->matches;
+    }
+
+    /**
+     * Add matches
+     *
+     * @param \ZENben\FoosballBundle\Entity\Game\Match $matches
+     * @return Game
+     */
+    public function addMatche(\ZENben\FoosballBundle\Entity\Game\Match $matches)
+    {
+        $this->matches[] = $matches;
+    
+        return $this;
+    }
+
+    /**
+     * Remove matches
+     *
+     * @param \ZENben\FoosballBundle\Entity\Game\Match $matches
+     */
+    public function removeMatche(\ZENben\FoosballBundle\Entity\Game\Match $matches)
+    {
+        $this->matches->removeElement($matches);
+    }
+    /**
+     * @var \DateTime
+     */
+    private $dateStart;
+
+    /**
+     * @var \DateTime
+     */
+    private $dateEnded;
+
+
+    /**
+     * Set dateStart
+     *
+     * @param \DateTime $dateStart
+     * @return Game
+     */
+    public function setDateStart($dateStart)
+    {
+        $this->dateStart = $dateStart;
+    
+        return $this;
+    }
+
+    /**
+     * Get dateStart
+     *
+     * @return \DateTime 
+     */
+    public function getDateStart()
+    {
+        return $this->dateStart;
+    }
+
+    /**
+     * Set dateEnded
+     *
+     * @param \DateTime $dateEnded
+     * @return Game
+     */
+    public function setDateEnded($dateEnded)
+    {
+        $this->dateEnded = $dateEnded;
+    
+        return $this;
+    }
+
+    /**
+     * Get dateEnded
+     *
+     * @return \DateTime 
+     */
+    public function getDateEnded()
+    {
+        return $this->dateEnded;
     }
 }

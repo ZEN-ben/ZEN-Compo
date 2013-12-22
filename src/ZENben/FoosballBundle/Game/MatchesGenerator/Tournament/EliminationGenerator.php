@@ -15,7 +15,7 @@ class EliminationGenerator implements MatchesGeneratorInterface
         $this->em = $em;
     }
 
-    public function generate($participants)
+    public function generate($participants, $game)
     {
         $participantsArray = [];
         $amount = pow(2, ceil(log(count($participants)) / log(2)));
@@ -28,12 +28,15 @@ class EliminationGenerator implements MatchesGeneratorInterface
         $matchId = 1;
         $matches = [];
 
+        $game = $game->getGame();
+        
         // Round 1 -- assign players
         for ($i = 0; $i < $amount; $i++) {
             $match = new Match();
             $match->setMatchId($matchId++);
             $match->setRedPlayer($participantsArray[$i++]);
             $match->setBluePlayer($participantsArray[$i]);
+            $match->setGame($game);
             if ($match->getBluePlayer() === null) {
                 $match->setBye(true);
             }
@@ -45,6 +48,7 @@ class EliminationGenerator implements MatchesGeneratorInterface
         while (($bracketSize = $bracketSize / 2) > 0.5) {
             for ($i = 0; $i < $bracketSize; $i++) {
                 $match = new Match();
+                $match->setGame($game);
                 $match->setMatchId($matchId++);
                 $this->em->persist($match);
                 $matches[] = $match;

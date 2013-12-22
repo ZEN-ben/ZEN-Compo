@@ -50,6 +50,17 @@
                 <h4>{{ update.title|trans(update.parameters) }}</h4>
                 <p>{{ update.description|trans(update.parameters) }}</p>
             {% endset %}
+        {% elseif update.type == 'tournament.winner' %}
+            {% set icon %}
+                <span class="glyphicon glyphicon-star"></span>
+            {% endset %}
+            {% set content %}
+                <h3>{{ 'tournament.ended.title'|trans }}</h3>
+                <div class="tournament-ended">
+                    <p>{{ 'tournament.ended.description'|trans(update.parameters) }}</p>
+                    <img class="img-responsive" src="{{ user(update.parameters['%winner_id%']).profilePicture }}" />
+                </div>
+            {% endset %}
         {# Regular updates #}
         {% else %}
             {% set icon %}{% endset %}

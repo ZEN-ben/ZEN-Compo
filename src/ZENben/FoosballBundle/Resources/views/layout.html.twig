@@ -12,7 +12,7 @@
     {% endstylesheets %}
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 </head>
-<body>
+<body data-page="{{app.request.attributes.get('_route')}}">
 <div class="container">
     <div class="jumbotron">
         <div class="container">
@@ -36,6 +36,7 @@
 '@FoosballBundle/Resources/library/bootstrap/js/*'
 '@FoosballBundle/Resources/compile/javascript/plugins.js'
 '@FoosballBundle/Resources/library/jquery-bracket/jquery.bracket.min.js'
+'@FoosballBundle/Resources/compile/javascript/pages/*'
 '@FoosballBundle/Resources/compile/javascript/*' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}

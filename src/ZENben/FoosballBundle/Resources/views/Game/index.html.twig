@@ -4,56 +4,20 @@
 {% block content %}
 <div><a href="{{ path('foosball_homepage') }}">{{'back.to.overview'|trans}}</a></div>
     <div class="row">
-        {% if app.user is participating(game) %}
-            <div id="updates" class="col-md-6">
-                <h2>{{ 'updates'|trans }}
-                    <small>{{ 'updates.sub'|trans }}</small>
-                </h2>
-                {% include 'FoosballBundle:Game:updates.html.twig' with { 'updates': game.updates} %}
-            </div>
+        <div id="updates" class="col-md-6">
+            <h2>{{ 'updates'|trans }}
+                <small>{{ 'updates.sub'|trans }}</small>
+            </h2>
+            {% include 'FoosballBundle:Game:updates.html.twig' with { 'updates': game.updates} %}
+        </div>
+        {% if game.started %}
+            {% if not app.user is participating(game) %}
+            <div class="col-md-12">{{ 'already.started'|trans }}</div>
+            {% endif %}
             <div class="col-md-6">
                 <h2>{{ 'information'|trans }}
                     <small>{{ 'information.sub'|trans }}</small>
                 </h2>
-                <script type="text/javascript">
-                    var bracketData = {
-                        teams: [
-                            {% for m in game.matches(1) %}
-                            [
-                                {name: '{{m.redplayer.username|default('BYE')}}' },
-                                {name: '{{m.blueplayer.username|default('BYE')}}' }
-                            ],
-                            {% endfor %}
-                        ],
-                        results: [
-                            {% for round in game.matches %}
-                            [
-                                {% for match in round %}
-                                [
-                                    {{match.scorered}},
-                                    {{match.scoreblue}},
-                                    {
-                                        id: {{match.id}},
-                                        matchId: {{match.matchid}},
-                                        red: {
-                                            name: '{{match.redplayer.username|default('')}}',
-                                            picture: '{{match.redplayer.profilepicture|default('')}}',
-                                            score: {{match.scorered|default('null')}}
-                                        },
-                                        blue: {
-                                            name: '{{match.blueplayer.username|default('')}}',
-                                            picture: '{{match.blueplayer.profilepicture|default('')}}',
-                                            score: {{match.scoreblue|default('null')}}
-                                        }
-                                    }
-                                ],
-                                {% endfor %}
-                            ],
-                            {% endfor %}
-                        ]
-                    }
-                </script>
-
                 {% if game.matches|length > 0 %}
                     <div id="brackets"></div>
                 {% else %}
@@ -61,11 +25,15 @@
                 {% endif %}
                 <div class="clearfix"></div>
             </div>
-        {% elseif not game.started %}
+        {% elseif not app.user is participating(game) %}
             <div class="confirm-participation col-md-6">
                 <div class="want-to-join">
                     <h2>{{ 'want.to.join'|trans }}
+                        {% if not game.timeuntilstart.invert %}
                         <small>{{ 'just.x.days.left'|transchoice(game.timeuntilstart.days,{'%days%':game.timeuntilstart.days}) }}</small>
+                        {% else %}
+                        <small>{{ 'starts.any.moment'|trans }}</small>
+                        {% endif %}
                     </h2>
                     <div class="comment-container">
                         <input maxlength="45" class="comment"
@@ -78,11 +46,23 @@
                 </div>
                 <div class="joined" style="display: none;">
                     <h2>{{ 'thanks.for.joining'|trans }}</h2>
-
                     <div class="comment-container">
-                        <p>Please refresh the page manually for now.</p>
+                        {% if not game.timeuntilstart.invert %}
+                        <p>{{ 'will.begin.in'|transchoice(game.timeuntilstart.days,{'%days%':game.timeuntilstart.days}) }}</p>
+                        {% else %}
+                        <p>{{ 'starts.any.moment'|trans }}</p>
+                        {% endif %}
                     </div>
                 </div>
+            </div>
+        {% else %}
+            <div class="confirm-participation col-md-6">
+                <h2>{{ 'thanks.for.joining'|trans }}</h2>
+                {% if not game.timeuntilstart.invert %}
+                <p>{{ 'will.begin.in'|transchoice(game.timeuntilstart.days,{'%days%':game.timeuntilstart.days}) }}</p>
+                {% else %}
+                <p>{{ 'starts.any.moment'|trans }}</p>
+                {% endif %}
             </div>
         {% endif %}
     </div>
@@ -109,5 +89,43 @@
         </div>
         <!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
+    <script type="text/javascript">
+        var gameStarted = {{game.started ? 'true' : 'false'}};
+        var bracketData = {
+            teams: [
+                {% for m in game.matches(1) %}
+                [
+                    {name: '{{m.redplayer.username|default('BYE')}}' },
+                    {name: '{{m.blueplayer.username|default('BYE')}}' }
+                ],
+                {% endfor %}
+            ],
+            results: [
+                {% for round in game.matches %}
+                [
+                    {% for match in round %}
+                    [
+                        {{match.scorered}},
+                        {{match.scoreblue}},
+                        {
+                            id: {{match.id}},
+                            matchId: {{match.matchid}},
+                            red: {
+                                name: '{{match.redplayer.username|default('')}}',
+                                picture: '{{match.redplayer.profilepicture|default('')}}',
+                                score: {{match.scorered|default('null')}}
+                            },
+                            blue: {
+                                name: '{{match.blueplayer.username|default('')}}',
+                                picture: '{{match.blueplayer.profilepicture|default('')}}',
+                                score: {{match.scoreblue|default('null')}}
+                            }
+                        }
+                    ],
+                    {% endfor %}
+                ],
+                {% endfor %}
+            ]
+        }
+    </script>
 {% endblock %}

@@ -15,16 +15,6 @@ class Tournament
     private $id;
 
     /**
-     * @var \DateTime
-     */
-    private $dateStart;
-
-    /**
-     * @var \DateTime
-     */
-    private $dateEnded;
-
-    /**
      * @var string
      */
     private $name;
@@ -66,52 +56,6 @@ class Tournament
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set dateStart
-     *
-     * @param \DateTime $dateStart
-     * @return Tournament
-     */
-    public function setDateStart($dateStart)
-    {
-        $this->dateStart = $dateStart;
-
-        return $this;
-    }
-
-    /**
-     * Get dateStart
-     *
-     * @return \DateTime
-     */
-    public function getDateStart()
-    {
-        return $this->dateStart;
-    }
-
-    /**
-     * Set dateEnded
-     *
-     * @param \DateTime $dateEnded
-     * @return Tournament
-     */
-    public function setDateEnded($dateEnded)
-    {
-        $this->dateEnded = $dateEnded;
-
-        return $this;
-    }
-
-    /**
-     * Get dateEnded
-     *
-     * @return \DateTime
-     */
-    public function getDateEnded()
-    {
-        return $this->dateEnded;
     }
 
     /**
@@ -199,7 +143,7 @@ class Tournament
      * @param \ZENben\FoosballBundle\Entity\Game\Match $matches
      * @return Tournament
      */
-    public function addMatche(\ZENben\FoosballBundle\Entity\Game\Match $matches)
+    public function addMatch(\ZENben\FoosballBundle\Entity\Game\Match $matches)
     {
         $this->matches[] = $matches;
 
@@ -211,7 +155,7 @@ class Tournament
      *
      * @param \ZENben\FoosballBundle\Entity\Game\Match $matches
      */
-    public function removeMatche(\ZENben\FoosballBundle\Entity\Game\Match $matches)
+    public function removeMatch(\ZENben\FoosballBundle\Entity\Game\Match $matches)
     {
         $this->matches->removeElement($matches);
     }
@@ -248,4 +192,28 @@ class Tournament
     {
         return $this->game;
     }
+
+    /**
+     * Add matches
+     *
+     * @param \ZENben\FoosballBundle\Entity\Game\Match $matches
+     * @return Tournament
+     */
+    public function addMatche(\ZENben\FoosballBundle\Entity\Game\Match $matches)
+    {
+        $this->matches[] = $matches;
+    
+        return $this;
+    }
+
+    /**
+     * Remove matches
+     *
+     * @param \ZENben\FoosballBundle\Entity\Game\Match $matches
+     */
+    public function removeMatche(\ZENben\FoosballBundle\Entity\Game\Match $matches)
+    {
+        $this->matches->removeElement($matches);
+    }
+    
 }

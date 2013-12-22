@@ -1,6 +1,8 @@
 want.to.join: Want to join?
-just.x.days.left: Just one day left to join!|Just %days% days left to join..
+just.x.days.left: '{0} Last day to join!|{1} Just one day left to join!|[2,Inf] Just %days% days left to join..'
+starts.any.moment: The tournament is planned to start today!
 thanks.for.joining: Thanks for joining!
+will.begin.in: '{0} The tournament will begin any moment, please check back later today!|{1} The tournament is scheduled to start tomorrow!|[2,Inf] The tournament will begin in %days% days, please come back again then!'
 players.joined: Participating
 future.opponents: .. your opponents
 information: Information
@@ -16,3 +18,5 @@ button.save: Save
 data.saved: Scores saved!
 
 back.to.overview: « Back to overview
+already.started: This game has already started, it is no longer possible to sign up!
+please.wait: Please wait for the tournament to start.

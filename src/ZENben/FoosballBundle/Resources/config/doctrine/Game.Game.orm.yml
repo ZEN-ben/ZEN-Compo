@@ -1,6 +1,7 @@
 ZENben\FoosballBundle\Entity\Game\Game:
     type: entity
     table: game
+    repositoryClass: ZENben\FoosballBundle\Repository\Game\GameRepository
     fields:
         id:
             type: integer
@@ -16,9 +17,20 @@ ZENben\FoosballBundle\Entity\Game\Game:
         yammer_group:
             type: integer
             nullable: true
+        dateStart:
+            type: datetime
+            column: date_start
+        dateEnded:
+            type: datetime
+            column: date_ended
+            nullable: true
     oneToMany:
         updates:
             targetEntity: ZENben\FoosballBundle\Entity\Game\GameUpdate
             mappedBy: game
             orderBy: { dateCreated: desc, id: desc }
+        matches:
+            targetEntity: ZENben\FoosballBundle\Entity\Game\Match
+            mappedBy: game
+            orderBy: { match_id: asc }
     lifecycleCallbacks: {  }

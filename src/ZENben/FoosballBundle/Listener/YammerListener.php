@@ -32,12 +32,27 @@ class YammerListener
             case 'match.updated':
                 $message = $this->translator->trans('p1.won.agianst.p2', $gameUpdate->getParameters(), 'game_updates');
                 break;
+            case 'new.player':
+                $titleKey = $gameUpdate->getTitle();
+                $title = $this->translator->trans($titleKey, $gameUpdate->getParameters(), 'game_updates');
+                $description = sprintf(
+                    '.. %s: "%s"',
+                    $this->translator->trans('new.player.and.said', $gameUpdate->getParameters(), 'game_updates'),
+                    $gameUpdate->getDescription()
+                );
+                $message = sprintf('%s %s', $title, $description);
+                break;
+            case 'tournament.winner':
+                $title = $this->translator->trans('tournament.ended.title', $gameUpdate->getParameters(), 'game_updates');
+                $description = $this->translator->trans('tournament.ended.description', $gameUpdate->getParameters(), 'game_updates');
+                $message = $message = sprintf('%s %s', $title, $description);
+                break;
             default:
                 $titleKey = $gameUpdate->getTitle();
                 $descriptionKey = $gameUpdate->getDescription();
                 $title = $this->translator->trans($titleKey, $gameUpdate->getParameters(), 'game_updates');
                 $description = $this->translator->trans($descriptionKey, $gameUpdate->getParameters(), 'game_updates');
-                $message = sprintf('%s, %s', $title, $description);
+                $message = sprintf('%s %s', $title, $description);
                 break;
         }
         
