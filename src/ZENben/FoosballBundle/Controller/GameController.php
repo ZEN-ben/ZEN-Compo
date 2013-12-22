@@ -18,18 +18,18 @@ class GameController extends Controller
 
         if ($this->getRequest()->get('gen')) {
             $this->generateNewTournament($game);
-            return $this->redirect($this->generateUrl('foosball_game', ['id' => 3]));
+            return $this->redirect($this->generateUrl('foosball_game', ['id' => $id]));
         }
 
         if ($this->getRequest()->get('del')) {
-            $this->deleteTournament();
-            return $this->redirect($this->generateUrl('foosball_game', ['id' => 3]));
+            $this->deleteTournament($id);
+            return $this->redirect($this->generateUrl('foosball_game', ['id' => $id]));
         }
 
         if ($this->getRequest()->get('reset')) {
-            $this->deleteTournament();
+            $this->deleteTournament($id);
             $this->generateNewTournament($game);
-            return $this->redirect($this->generateUrl('foosball_game', ['id' => 3]));
+            return $this->redirect($this->generateUrl('foosball_game', ['id' => $id]));
         }
 
         return $this->render('FoosballBundle:Game:index.html.twig', [
@@ -109,20 +109,21 @@ class GameController extends Controller
     private function generateNewTournament($game)
     {
         $generator = new EliminationGenerator($this->getDoctrine()->getManager());
-        $generator->generate($game->getParticipants());
+        $generator->generate($game->getParticipants(), $game);
+        $this->get('game')->addUpdate($game, 'tournament.started.title', 'tournament.started.description', 'game.started');
     }
 
     /**
      * @return array
      */
-    private function deleteTournament()
+    private function deleteTournament($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $all = $em->getRepository('ZENben\FoosballBundle\Entity\Game\Match')->findAll();
+        $all = $em->getRepository('ZENben\FoosballBundle\Entity\Game\Match')->findByGame($id);
         foreach ($all as $match) {
             $em->remove($match);
         }
-        $allUpdates = $em->getRepository('ZENben\FoosballBundle\Entity\Game\GameUpdate')->findAll();
+        $allUpdates = $em->getRepository('ZENben\FoosballBundle\Entity\Game\GameUpdate')->findByGame($id);
         foreach ($allUpdates as $update) {
             $em->remove($update);
         }

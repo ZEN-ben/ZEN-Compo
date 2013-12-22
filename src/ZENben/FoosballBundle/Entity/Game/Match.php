@@ -39,6 +39,10 @@ class Match
      */
     private $blue_player;
 
+    /**
+     * @var \ZENben\FoosballBundle\Entity\Game\Game
+     */
+    private $match;
 
     /**
      * Get id
@@ -226,5 +230,56 @@ class Match
     public function isPlayed()
     {
         return $this->scoreRed !== null;
+    }
+    
+    /**
+     * Set match
+     *
+     * @param \ZENben\FoosballBundle\Entity\Game\Game $match
+     * @return Match
+     */
+    public function setMatch(\ZENben\FoosballBundle\Entity\Game\Game $match = null)
+    {
+        $this->match = $match;
+    
+        return $this;
+    }
+
+    /**
+     * Get match
+     *
+     * @return \ZENben\FoosballBundle\Entity\Game\Game 
+     */
+    public function getMatch()
+    {
+        return $this->match;
+    }
+    /**
+     * @var \ZENben\FoosballBundle\Entity\Game\Game
+     */
+    private $game;
+
+
+    /**
+     * Set game
+     *
+     * @param \ZENben\FoosballBundle\Entity\Game\Game $game
+     * @return Match
+     */
+    public function setGame(\ZENben\FoosballBundle\Entity\Game\Game $game = null)
+    {
+        $this->game = $game;
+    
+        return $this;
+    }
+
+    /**
+     * Get game
+     *
+     * @return \ZENben\FoosballBundle\Entity\Game\Game 
+     */
+    public function getGame()
+    {
+        return $this->game;
     }
 }

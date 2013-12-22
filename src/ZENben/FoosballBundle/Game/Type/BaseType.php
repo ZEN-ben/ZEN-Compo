@@ -7,24 +7,25 @@ use ZENben\FoosballBundle\Entity\Game\Tournament;
 use ZENben\FoosballBundle\Game\GameInterface;
 use ZENben\FoosballBundle\Event\GameUpdateEvent;
 
+use ZENben\FoosballBundle\Service\GameService;
+
 abstract class BaseType implements GameInterface
 {
-    
-    const EVENT_GAME_UPDATED = 'foosball.game.updated';
     
     protected $entity;
     protected $em;
     
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     * @var GameService
      */
-    protected $dispatcher;
+    protected $gameService;
     
-    public function __construct($em, Tournament $entity, $dispatcher)
+    public function __construct($em, Tournament $entity, GameService $gameService)
     {
         $this->em = $em;
         $this->entity = $entity;
-        $this->dispatcher = $dispatcher;
+        $this->gameService = $gameService;
+        
     }
 
     public function getName()
@@ -39,20 +40,23 @@ abstract class BaseType implements GameInterface
 
     public function getDateStart()
     {
-        return $this->entity->getDateStart();
+        return $this->entity->getGame()->getDateStart();
     }
 
     public function getDateEnded()
     {
-        return $this->entity->getDateEnded();
+        return $this->entity->getGame()->getDateEnded();
     }
 
+    public function setDateEnded($date)
+    {
+        $this->entity->getGame()->setDateEnded($date);
+        $this->em->flush();
+    }
+    
     public function addUpdate($title, $description, $type = 'default', $parameters = null)
     {
-        $gameUpdate = new GameUpdate($this->entity->getGame(), $title, $description, $type, $parameters);
-        $this->em->persist($gameUpdate);
-        $this->em->flush();
-        $this->dispatcher->dispatch(self::EVENT_GAME_UPDATED, new GameUpdateEvent($gameUpdate));
+        $this->gameService->addUpdate($this, $title, $description, $type, $parameters);
     }
 
     public function getUpdates()
@@ -65,4 +69,9 @@ abstract class BaseType implements GameInterface
         return $this->entity->getGame()->getYammerGroup();
     }
 
+    public function getGame()
+    {
+        return $this->entity->getGame();
+    }
+    
 }

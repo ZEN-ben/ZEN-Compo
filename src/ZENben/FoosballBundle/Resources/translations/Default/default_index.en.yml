@@ -3,10 +3,11 @@ current.games: Tournaments and competitions
 name: Name
 description: Description
 players: Players
-starts: Starts
+starts: Start date
 ended: Ended
 rank: Rank
 
 current: Current
+finished: Finished
 
 x.days: one day left|in %days% days

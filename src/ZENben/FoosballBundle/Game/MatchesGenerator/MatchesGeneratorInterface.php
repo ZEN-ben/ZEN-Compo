@@ -6,5 +6,5 @@ interface MatchesGeneratorInterface
 {
     public function __construct($em);
 
-    public function generate($participants);
+    public function generate($participants, $game);
 }

@@ -23,7 +23,7 @@ class OAuthuserProvider extends BaseEntityUserProvider implements UserProviderIn
     {
         return $this->repository->findOneBy(array('google_id' => $google_id));
     }
-
+    
     /**
      * {@inheritdoc}
      */
