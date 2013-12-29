@@ -2,6 +2,9 @@
 <div class="game-updates">
     {% set lastDate = null %}
     {% for update in updates %}
+        {% if update.parameters['%winner_id%'] is defined %}
+            {% set user = user(update.parameters['%winner_id%']) %}
+        {% endif %}
         {% set formattedDate = update.dateCreated|localizeddate('long', 'none') %}
         {% if lastDate != formattedDate %}
             <div class="date-header">{{ formattedDate }}:</div>
@@ -10,10 +13,10 @@
         {# New Player message#}
         {% if update.type == 'new.player' %}
             {% set icon %}
-                <img src="{{ update.parameters['player_picture'] }}" />
+                <img src="{{ user.profilePicture }}" />
             {% endset %}
             {% set content %}
-                <h4>{{ update.title|trans(update.parameters) }}</h4>
+                <h4>{{ update.title|trans({ player: user.username}) }}</h4>
                 <p>.. {{ 'new.player.and.said'|trans }}: <em>"{{ update.description }}"</em></p>
             {% endset %}
         {# Game started #}
@@ -28,15 +31,24 @@
         {# Match updated #}
         {% elseif update.type == 'match.updated' %}
             {% set icon %}{% endset %}
+            {% set p1 = user(update.parameters['player_1_id']) %}
+            {% set p2 = user(update.parameters['player_2_id']) %}
             {% set content %}
-            <h4>{{ 'p1.won.agianst.p2'|trans(update.parameters) }}</h4>
+            <h4>
+            {{ 'p1.won.agianst.p2'|trans({
+                '%player_1_name%': p1.username,
+                '%player_1_score%': update.parameters['%player_1_score%'],
+                '%player_2_name%': p2.username,
+                '%player_2_score%': update.parameters['%player_2_score%'],
+            }) }}
+            </h4>
             <div class="scoreboard">
                 <div class="player1">
-                    <img src="{{ user(update.parameters['player_1_id']).profilePicture }}" />
+                    <img src="{{ p1.profilePicture }}" />
                     <div class="score">{{ update.parameters['%player_1_score%'] }}</div>
                 </div>
                 <div class="player2">
-                    <img src="{{ user(update.parameters['player_2_id']).profilePicture }}" />
+                    <img src="{{ p2.profilePicture }}" />
                     <div class="score">{{ update.parameters['%player_2_score%'] }}</div>
                 </div>
                 <div class="clearfix"></div>
@@ -58,7 +70,7 @@
                 <h3>{{ 'tournament.ended.title'|trans }}</h3>
                 <div class="tournament-ended">
                     <p>{{ 'tournament.ended.description'|trans(update.parameters) }}</p>
-                    <img class="img-responsive" src="{{ user(update.parameters['%winner_id%']).profilePicture }}" />
+                    <img class="img-responsive" src="{{ user.profilePicture }}" />
                 </div>
             {% endset %}
         {# Regular updates #}
