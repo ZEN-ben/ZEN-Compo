@@ -9,6 +9,8 @@ ZENben\FoosballBundle\Entity\Game\TournamentSignup:
                 strategy: AUTO
         date:
             type: datetime
+        seed:
+            type: integer
     manyToOne:
         
     

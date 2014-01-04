@@ -108,4 +108,32 @@ class TournamentSignup
     {
         return $this->user;
     }
+    /**
+     * @var integer
+     */
+    private $seed;
+
+
+    /**
+     * Set seed
+     *
+     * @param integer $seed
+     * @return TournamentSignup
+     */
+    public function setSeed($seed)
+    {
+        $this->seed = $seed;
+    
+        return $this;
+    }
+
+    /**
+     * Get seed
+     *
+     * @return integer 
+     */
+    public function getSeed()
+    {
+        return $this->seed;
+    }
 }

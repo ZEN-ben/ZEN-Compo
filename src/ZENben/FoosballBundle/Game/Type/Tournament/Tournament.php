@@ -133,7 +133,7 @@ class Tournament extends BaseType
         $signups = $this->em->getRepository('FoosballBundle:Game\TournamentSignup')->findBy([
             'tournament' => $this->entity->getId()
         ],[
-            'date' => 'DESC',
+            'seed' => 'DESC',
             'id' => 'DESC'
         ]);
         $users = [];

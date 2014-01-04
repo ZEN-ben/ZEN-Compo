@@ -17,13 +17,22 @@ class EliminationGenerator implements MatchesGeneratorInterface
 
     public function generate($participants, $game)
     {
-        $participantsArray = [];
         $amount = pow(2, ceil(log(count($participants)) / log(2)));
+        
+        
+        $participantsArray = [];
         for ($i = 0; $i < $amount / 2; $i++) {
+            // Strongest versus weakest mode: 
+            /*
             $participantsArray[] = array_shift($participants);
             $participantsArray[] = array_pop($participants);
+            */
+            
+            // Closest match first mode:
+            $participantsArray[] = array_shift($participants);
+            $participantsArray[] = array_shift($participants);
         }
-
+        
         $bracketSize = $amount / 2;
         $matchId = 1;
         $matches = [];
