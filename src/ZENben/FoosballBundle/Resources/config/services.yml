@@ -29,8 +29,8 @@ services:
         tags:
             - { name: twig.extension }
                 
-    foosball.listener.yammer:
-        class: ZENben\FoosballBundle\Listener\YammerListener
-        arguments: ['@yammer', '@translator']
-        tags:
-            - { name: kernel.event_listener, event: foosball.game.updated, method: onGameUpdate }
+    #foosball.listener.yammer:
+    #    class: ZENben\FoosballBundle\Listener\YammerListener
+    #    arguments: ['@yammer', '@translator', '@logger']
+    #    tags:
+    #        - { name: kernel.event_listener, event: foosball.game.updated, method: onGameUpdate }
