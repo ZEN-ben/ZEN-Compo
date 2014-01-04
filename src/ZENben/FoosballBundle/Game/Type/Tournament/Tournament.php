@@ -96,8 +96,7 @@ class Tournament extends BaseType
             $signup->setDate(new \DateTime());
             $this->em->persist($signup);
             $params = [
-                '%player%' => $mixed->getUserName(),
-                'player_picture' => $mixed->getProfilePicture()
+                'player_id' => $mixed->getId()
             ];
             $this->addUpdate('new.player', $comment, 'new.player', $params);
         }
@@ -332,8 +331,6 @@ class Tournament extends BaseType
     private function addMatchPlayedUpdate($winner, $loser, $winnerScore, $loserScore)
     {
         $parameters = [
-            '%player_1_name%' => $winner->getUserName(),
-            '%player_2_name%' => $loser->getUserName(),
             '%player_1_score%' => $winnerScore,
             '%player_2_score%' => $loserScore,
             'player_1_id' => $winner->getGoogleId(),
