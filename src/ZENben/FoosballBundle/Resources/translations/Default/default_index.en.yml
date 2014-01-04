@@ -10,4 +10,4 @@ rank: Rank
 current: Current
 finished: Finished
 
-x.days: one day left|in %days% days
+x.days: '{0} Today!|{1} Tomorrow!|[2,Inf] In %days% days'

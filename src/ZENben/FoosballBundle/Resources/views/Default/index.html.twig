@@ -25,7 +25,7 @@
                         <td>
                         <span class="hidden-xs hidden-sm">
                             {% if not game.timeuntilstart.invert %}
-                                {{'x.days'|transchoice(game.timeuntilstart.days,{'%days%':game.timeuntilstart.days})}}
+                                {{'x.days'|transchoice(game.timeuntilstart.days+1,{'%days%':game.timeuntilstart.days+1})}}
                             {% else %}
                                 {{game.datestart|date('d-m-Y')}}
                             {% endif %}
