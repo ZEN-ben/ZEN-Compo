@@ -4,6 +4,8 @@
     {% for update in updates %}
         {% if update.parameters['%winner_id%'] is defined %}
             {% set user = user(update.parameters['%winner_id%']) %}
+        {% elseif update.parameters['player_id'] is defined %}
+            {% set user = user(update.parameters['player_id']) %}
         {% endif %}
         {% set formattedDate = update.dateCreated|localizeddate('long', 'none') %}
         {% if lastDate != formattedDate %}
@@ -16,7 +18,7 @@
                 <img src="{{ user.profilePicture }}" />
             {% endset %}
             {% set content %}
-                <h4>{{ update.title|trans({ player: user.username}) }}</h4>
+                <h4>{{ update.title|trans({ '%player%': user.username}) }}</h4>
                 <p>.. {{ 'new.player.and.said'|trans }}: <em>"{{ update.description }}"</em></p>
             {% endset %}
         {# Game started #}
