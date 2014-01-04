@@ -7,6 +7,8 @@ use ZENben\FoosballBundle\Event\GameUpdateEvent;
 
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 
+use Psr\Log\LoggerInterface;
+
 class YammerListener
 {
     /**
@@ -19,16 +21,26 @@ class YammerListener
      */
     protected $translator;
     
-    public function __construct(YammerService $service, Translator $translator) {
+    /**
+     *
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
+    
+    public function __construct(YammerService $service, Translator $translator, LoggerInterface $logger) {
         $this->service = $service;
         $this->translator = $translator;
+        $this->logger = $logger;
     }
     
     public function onGameUpdate(GameUpdateEvent $event) {
         $gameUpdate = $event->getGameUpdate();
         $group = $gameUpdate->getGame()->getYammerGroup();
         
-        switch ($gameUpdate->getType()) {
+        
+        //TODO: this will need an update before it will work: some parameters 
+        //      should be processed into actual string (they might be user ids now)
+        /*switch ($gameUpdate->getType()) {
             case 'match.updated':
                 $message = $this->translator->trans('p1.won.agianst.p2', $gameUpdate->getParameters(), 'game_updates');
                 break;
@@ -56,7 +68,17 @@ class YammerListener
                 break;
         }
         
-        $this->service->postMessage($message, $group);
+        try {
+            $this->service->postMessage($message, $group);
+        } catch (\Exception $exception) {
+            $message = sprintf(
+                '%s: %s (uncaught exception) at %s line %s',
+                get_class($exception),
+                $exception->getMessage(),
+                $exception->getFile(),
+                $exception->getLine()
+            );
+            $this->logger->error($message);
+        }*/
     }
-    
 }
