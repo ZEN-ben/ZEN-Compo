@@ -94,6 +94,7 @@ class Tournament extends BaseType
             $signup->setTournament($this->entity);
             $signup->setUser($mixed);
             $signup->setDate(new \DateTime());
+            $signup->setSeed(0);
             $this->em->persist($signup);
             $params = [
                 'player_id' => $mixed->getGoogleId()
