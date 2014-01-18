@@ -27,7 +27,7 @@ class YammerListener
      */
     protected $logger;
     
-    public function __construct(YammerService $service, Translator $translator, LoggerInterface $logger) {
+    public function __construct(YammerService $service, Translator $translator, $logger) {
         $this->service = $service;
         $this->translator = $translator;
         $this->logger = $logger;
