@@ -108,6 +108,9 @@ class GameController extends Controller
      */
     private function generateNewTournament($game)
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException();
+        }
         $generator = new EliminationGenerator($this->getDoctrine()->getManager());
         $generator->generate($game->getParticipants(), $game);
         $this->get('game')->addUpdate($game, 'tournament.started.title', 'tournament.started.description', 'game.started');
@@ -118,6 +121,9 @@ class GameController extends Controller
      */
     private function deleteTournament($id)
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException();
+        }
         $em = $this->getDoctrine()->getManager();
         $all = $em->getRepository('ZENben\FoosballBundle\Entity\Game\Match')->findByGame($id);
         foreach ($all as $match) {
