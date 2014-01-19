@@ -4,7 +4,7 @@
 {% block content %}
 <div><a href="{{ path('foosball_homepage') }}">{{'back.to.overview'|trans}}</a></div>
     <div class="row">
-        <div id="updates" class="col-md-6">
+        <div id="updates" class="col-md-5">
             <h2>{{ 'updates'|trans }}
                 <small>{{ 'updates.sub'|trans }}</small>
             </h2>
@@ -26,7 +26,7 @@
                 <div class="clearfix"></div>
             </div>
         {% elseif not app.user is participating(game) %}
-            <div class="confirm-participation col-md-6">
+            <div class="confirm-participation col-md-7">
                 <div class="want-to-join">
                     <h2>{{ 'want.to.join'|trans }}
                         {% if not game.timeuntilstart.invert %}

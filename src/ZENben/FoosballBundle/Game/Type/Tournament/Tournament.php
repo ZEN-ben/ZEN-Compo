@@ -44,7 +44,7 @@ class Tournament extends BaseType
         $this->progress();
         
         if ($oldRound !== $this->getCurrentRound()) {
-            if ($this->getGamesLeft() > 0) {
+            if ($this->getGamesLeft() > 1) {
                 $this->addNewRoundUpdate($oldRound);
             } else {
                 $this->finishTournament($winner);
@@ -245,10 +245,14 @@ class Tournament extends BaseType
         foreach ($round as $match) {
             if ($match->getBluePlayer() !== null && $match->getScoreBlue() !== null) {
                 $matchesPlayed++;
-                $loser = $match->getScoreRed() < $match->getScoreBlue() ? $match->getRedPlayer()->getId() : $match->getBluePlayer()->getId();
-                $losers["$loser "] = abs($match->getScoreBlue() - $match->getScoreRed());
+                $loser = $match->getScoreRed() < $match->getScoreBlue() ? $match->getRedPlayer() : $match->getBluePlayer();
+                $loserId = $loser->getId();
+                $losers["$loserId "] = $this->em->getRepository('FoosballBundle:Game\TournamentSignup')
+                        ->findOneByUser($loser)->getSeed();
             }
-            $byes = $match->getBye() ? $byes + 1 : $byes;
+            if ($match->getBye()) {
+                $byes++;
+            }
         }
 
         if (count($losers) > $byes * 2) {
@@ -256,7 +260,7 @@ class Tournament extends BaseType
         } else {
             arsort($losers);
         }
-
+        
         if ($matchesCount === $matchesPlayed + $byes) {
             $this->allGamesPlayedProcessed($round, $losers, $matchesCount);
         }
@@ -269,6 +273,7 @@ class Tournament extends BaseType
      */
     private function allGamesPlayedProcessed($round, $losers, $matchesCount)
     {
+        $i = 0;
         foreach ($round as $match) {
             if ($match->getBye() && $match->getScoreRed() === null) {
                 if (!$match->getRedPlayer() && count($losers) > 0) {
@@ -277,9 +282,10 @@ class Tournament extends BaseType
                     array_shift($losers);
 
                     // update previous matches
-                    $previousMatchId = $match->getMatchId() - count($round) - 1;
+                    $previousMatchId = $match->getMatchId() - count($round)*2 + $i;
                     $previousMatch = $this->em->getRepository('FoosballBundle:Game\Match')
                             ->findOneBy(['match_id' => $previousMatchId, 'game' => $match->getGame()]);
+                    $name = $loser->getUsername();
                     if ($previousMatch && $previousMatch->getBye()) {
                         $previousMatch->setRedPlayer($loser);
                     }
@@ -291,9 +297,10 @@ class Tournament extends BaseType
                     $match->setBye(false);
 
                     // update previous matches
-                    $previousMatchId = ($match->getMatchId() - count($round));
+                    $previousMatchId = $previousMatchId + 1;
                     $previousMatch = $this->em->getRepository('FoosballBundle:Game\Match')
-                            ->findOneBy(['match_id' => $previousMatchId]);
+                            ->findOneBy(['match_id' => $previousMatchId, 'game' => $match->getGame()]);
+                    $name = $loser->getUsername();
                     if ($previousMatch && $previousMatch->getBye()) {
                         $previousMatch->setRedPlayer($loser);
                     }
@@ -317,8 +324,15 @@ class Tournament extends BaseType
                         
                         $nextMatch->setBye(true);
                     }
+                } 
+                if ($match->getBluePlayer() === null && $match->getRedPlayer() === null && count($losers) === 0) {
+                    $nextMatchId = ceil($match->getMatchId() / 2) + $matchesCount;
+                    $nextMatch = $this->em->getRepository('FoosballBundle:Game\Match')
+                                ->findOneBy(['match_id' => $nextMatchId,'game' => $match->getGame()]);
+                    $nextMatch->setBye(true);
                 }
             }
+            $i++;
         }
     }
 

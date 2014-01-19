@@ -8,7 +8,7 @@ ZENben\FoosballBundle\Entity\Game\Match:
             generator:
                 strategy: AUTO
         match_id:
-            type: string
+            type: integer
         datePlayed:
             type: datetime
             column: date_played
