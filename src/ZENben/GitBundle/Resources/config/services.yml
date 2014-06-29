@@ -1,0 +1,7 @@
+parameters:
+#    ze_nben_git.example.class: ZENben\GitBundle\Example
+
+services:
+#    ze_nben_git.example:
+#        class: %ze_nben_git.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

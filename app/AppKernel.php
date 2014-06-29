@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new ZENben\Bundle\YammerBundle\YammerBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
+            new ZENben\GitBundle\ZENbenGitBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

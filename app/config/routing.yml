@@ -6,3 +6,6 @@ foosball:
     resource: "@FoosballBundle/Resources/config/routing.yml"
     prefix:   /foosball
 
+zengit:
+    resource: "@ZENbenGitBundle/Resources/config/routing.yml"
+    prefix:   /zen-git

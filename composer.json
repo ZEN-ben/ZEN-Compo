@@ -23,7 +23,8 @@
         "hwi/oauth-bundle": "0.3.*@dev",
         "sensio/buzz-bundle": "dev-master",
         "zenben/targetprocess-bundle": "dev-master",
-        "zenben/yammer-bundle": "dev-master"
+        "zenben/yammer-bundle": "dev-master",
+        "knplabs/github-api": "1.2.*"
     },
     "scripts": {
         "post-install-cmd": [
