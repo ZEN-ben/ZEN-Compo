@@ -1,0 +1,44 @@
+span[class^="status-"] {
+    color: white;
+    background: #111111;
+}
+
+.status-webhook-1, .status-github-pending {
+    background: blue !important;
+    outline: 3px solid blue !important;
+}
+
+.status-webhook-0, .status-github-error {
+    background: red !important;
+    outline: 3px solid red !important;
+}
+
+.status-webhook-2, .status-github-success {
+    background: green !important;
+    outline: 3px solid green !important;
+}
+
+.log {
+    padding: 15px;
+    background: #444;
+    color: white;
+    font-family:  monospace;
+    font-size: 12px;
+}
+
+.log span {
+    display: block;
+}
+
+.log .ansi_color_bg_green {
+    background: #007300;
+}
+
+.log .ansi_color_bg_blue {
+    background: #000093;
+}
+
+.log .ansi_color_bg_red {
+    background: #ce0000;
+}
+

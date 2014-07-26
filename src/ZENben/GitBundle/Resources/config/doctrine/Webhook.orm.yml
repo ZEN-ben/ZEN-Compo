@@ -1,0 +1,26 @@
+ZENben\GitBundle\Entity\Webhook:
+    type: entity
+    table: null
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        event:
+            type: string
+        status:
+            type: integer
+        dateCreated:
+            type: datetime
+            column: date_created
+        dateFinished:
+            type: datetime
+            column: date_finished
+            nullable: true
+        payload:
+            type: text
+    oneToMany:
+        buildResults:
+            targetEntity: BuildResult
+            mappedBy: webhook

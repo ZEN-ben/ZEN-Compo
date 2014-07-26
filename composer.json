@@ -8,7 +8,7 @@
         },
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "2.3.*",
+        "symfony/symfony": "2.5.*",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "doctrine/doctrine-bundle": "1.2.*",
         "twig/extensions": "1.0.*",
@@ -24,7 +24,8 @@
         "sensio/buzz-bundle": "dev-master",
         "zenben/targetprocess-bundle": "dev-master",
         "zenben/yammer-bundle": "dev-master",
-        "knplabs/github-api": "1.2.*"
+        "knplabs/github-api": "1.2.*",
+        "sensiolabs/ansi-to-html": "1.0.*@dev"
     },
     "scripts": {
         "post-install-cmd": [

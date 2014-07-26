@@ -1,0 +1,19 @@
+ZENben\GitBundle\Entity\BuildResult:
+    type: entity
+    table: null
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        status:
+            type: string
+        log:
+            type: text
+        date:
+            type: datetime
+    manyToOne:
+        webhook:
+            targetEntity: Webhook
+            inversedBy: buildResults

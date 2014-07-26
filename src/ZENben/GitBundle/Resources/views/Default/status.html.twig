@@ -1,0 +1,26 @@
+{% extends 'ZENbenGitBundle::layout.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Build result for {{ webhook.headCommit.sha }}</h1>
+
+            <div>
+                <p>Webhook received: {{ webhook.dateCreated|date }}</p>
+                <p>Progress: {{ webhook.status | webhook_status }}</p>
+                {% for build in webhook.buildResults|reverse %}
+                    <h2>Build result:</h2>
+                    <p>Build started: {{ build.date|date }}</p>
+                    <p>Status: {{ build.status | github_status }}</p>
+                    <p>Log: </p>
+                    {#<pre>#}
+                    <div class="log">
+                        {{ build.log | raw | nl2br }}
+                    </div>
+
+                    {#</pre>#}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

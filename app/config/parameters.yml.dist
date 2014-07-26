@@ -32,3 +32,6 @@ parameters:
       api_base_url: 'https://www.yammer.com/api/v1'
       token: # see docs how to generate
       default_group_id: ~
+
+    github_token: #
+    github_secret: #
