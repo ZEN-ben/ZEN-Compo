@@ -46,13 +46,6 @@ class DefaultController extends Controller
             'Code check is in queue..'
         );
 
-        $cmd = sprintf('php app/console zengit:webhook:github %s', $webhook->getId());
-        $kernelRoot = $workingDir = $this->container->getParameter('kernel.root_dir');
-        $workingDir = realpath(sprintf('%s/../', $kernelRoot));
-
-        $process = new Process($cmd, $workingDir);
-        $process->run();
-
         return new JsonResponse(
             [
                 'status' => 'OK'

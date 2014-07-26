@@ -48,6 +48,99 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
 
     protected $buildsDir = null;
 
+    protected function checkoutBranch()
+    {
+        $this->git('fetch', ['origin']);
+        $this->git('clean', ['--force']);
+        $this->git('checkout', ['origin/master', '--force']);
+        $this->git('branch', ['-D', 'build-' . $this->commit->getSha()]);
+        $this->git('checkout', ['-B', 'build-' . $this->commit->getSha(), 'origin/master']);
+        $this->git('merge', [$this->commit->getSha()]);
+    }
+
+    public function configure()
+    {
+        $this
+            ->setName('zengit:webhook:github')
+            ->setDescription('Processes GitHub webhooks')
+            ->addArgument(
+                'webhook_id',
+                InputArgument::REQUIRED,
+                'The ID for the webhook in the DB'
+            )
+        ;
+    }
+
+    public function execute(InputInterface $input, OutputInterface $output)
+    {
+        $this->ansiConverter = new AnsiToHtmlConverter(null, false);
+        $id = $input->getArgument('webhook_id');
+        $this->objectManager = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $this->outputStream = $output;
+
+        $this->webhook = $this->objectManager->find('ZENbenGitBundle:Webhook', $id);
+        $this->buildsDir = $this->getContainer()->getParameter('builds_dir');
+
+        $this->buildResult = new BuildResult();
+        $this->buildResult->setDate(new \DateTime());
+        $this->buildResult->setWebhook($this->webhook);
+        $this->buildResult->setStatus(GitHubService::STATUS_PENDING);
+        $this->buildResult->setLog('');
+        $this->objectManager->persist($this->buildResult);
+        $this->webhook->addBuildResult($this->buildResult);
+        $this->objectManager->flush();
+
+        $this->commit = $this->webhook->getHeadCommit();
+
+        $this->github = $this->getContainer()->get('zengit.github');
+        $this->outputColor('blue');
+        $this->output('Code check starting...', true, GitHubService::STATUS_PENDING);
+        $this->outputColor('end');
+
+        $this->output(sprintf('Getting diff for commit %s', $this->commit->getSha()));
+        $diffs = $this->github->getDiffs($this->commit);
+
+        $this->output('Checking diff for forbidden expressions..');
+
+        $errors = $this->checkDiffs($diffs);
+        if (count($errors) > 0) {
+            $this->handleErrors($errors);
+        } else {
+            $this->outputColor('green');
+            $this->output('Code check OK! Checking out code to build..', true, GitHubService::STATUS_PENDING);
+        }
+        $this->outputColor('end');
+
+        $this->outputColor('blue');
+        $this->output('Fetching origin and checking out master branch + merge commit..');
+        $this->outputColor('end');
+        $this->cloneIfNotExists();
+        $this->checkoutBranch();
+
+        $this->outputColor('blue');
+        $this->output('Running PHPUnit..', true);
+        $this->outputColor('end');
+        $phpunitOutput = $this->phpunit();
+        $this->handlePhpUnitErrors($phpunitOutput);
+
+        if ($this->status === GitHubService::STATUS_PENDING) {
+            $this->outputColor('green');
+            $this->output('Your code passed all checks! Click details for the log.', true, GitHubService::STATUS_SUCCESS);
+        } else {
+            $this->outputColor('red');
+            $this->output('Issues have been detected. Please fix them and push again to this pull request.');
+        }
+        $this->outputColor('end');
+        $this->webhook->setStatus(Webhook::STATUS_DONE);
+        $this->objectManager->flush();
+
+        $this->buildResult->setLog($this->ansiConverter->convert(implode("\n", $this->log)));
+        $this->buildResult->setStatus($this->status);
+        $this->objectManager->flush();
+
+        return 0;
+    }
+
     protected function cloneIfNotExists()
     {
         $repoDir = $this->buildsDir . '/' . $this->commit->getRepo();
@@ -81,108 +174,6 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         });
 
         return;
-    }
-
-    protected function checkoutBranch()
-    {
-        $this->git('fetch', ['origin']);
-        $this->git('clean', ['--force']);
-        $this->git('checkout', ['origin/master', '--force']);
-        $this->git('branch', ['-D', 'build-' . $this->commit->getSha()]);
-        $this->git('checkout', ['-B', 'build-' . $this->commit->getSha(), 'origin/master']);
-        $this->git('merge', [$this->commit->getSha()]);
-    }
-
-    public function configure()
-    {
-        $this
-            ->setName('zengit:webhook:github')
-            ->setDescription('Processes GitHub webhooks')
-            ->addArgument(
-                'webhook_id',
-                InputArgument::REQUIRED,
-                'The ID for the webhook in the DB'
-            )
-        ;
-    }
-
-    public function execute(InputInterface $input, OutputInterface $output)
-    {
-        $this->ansiConverter = new AnsiToHtmlConverter(null, false);
-        $id = $input->getArgument('webhook_id');
-        $this->objectManager = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $this->outputStream = $output;
-        $this->outputColor('blue');
-        $this->output('Waiting for other webhooks to complete.. ');
-        $this->outputColor('end');
-        // FIXME: Possible race condition with other waiting processes
-        $this->waitForAllToComplete($output);
-        $this->webhook = $this->objectManager->find('ZENbenGitBundle:Webhook', $id);
-        $this->webhook->setStatus(Webhook::STATUS_IN_PROGRESS);
-        $this->objectManager->flush();
-
-        // Try not to add much above this! It needs to be done as quick as possible!
-        // -------
-        $this->buildsDir = $this->getContainer()->getParameter('builds_dir');
-
-//        $this->buildResult = new BuildResult();
-//        $this->buildResult->setDate(new \DateTime());
-//        $this->buildResult->setWebhook($this->webhook);
-//        $this->buildResult->setStatus(GitHubService::STATUS_PENDING);
-//        $this->buildResult->setLog('');
-//        $this->objectManager->persist($this->buildResult);
-//        $this->webhook->addBuildResult($this->buildResult);
-//        $this->objectManager->flush();
-//
-        $this->commit = $this->webhook->getHeadCommit();
-//
-//        $this->github = $this->getContainer()->get('zengit.github');
-//        $this->outputColor('blue');
-//        $this->output('Code check starting...', true, GitHubService::STATUS_PENDING);
-//        $this->outputColor('end');
-//
-//        $this->output(sprintf('Getting diff for commit %s', $this->commit->getSha()));
-//        $diffs = $this->github->getDiffs($this->commit);
-//
-//        $this->output('Checking diff for forbidden expressions..');
-//
-//        $errors = $this->checkDiffs($diffs);
-//        if (count($errors) > 0) {
-//            $this->handleErrors($errors);
-//        } else {
-//            $this->outputColor('green');
-//            $this->output('Code check OK! Checking out code to build..', true, GitHubService::STATUS_PENDING);
-//        }
-//        $this->outputColor('end');
-
-        $this->outputColor('blue');
-        $this->output('Fetching origin and checking out master branch + merge commit..');
-        $this->outputColor('end');
-        $this->cloneIfNotExists();
-        $this->checkoutBranch();
-
-//        $this->outputColor('blue');
-//        $this->output('Running PHPUnit..', true);
-//        $this->outputColor('end');
-//        $phpunitOutput = $this->phpunit();
-//        $this->handlePhpUnitErrors($phpunitOutput);
-
-        if ($this->status === GitHubService::STATUS_PENDING) {
-            $this->outputColor('green');
-            $this->output('Your code passed all checks! Click details for the log.', true, GitHubService::STATUS_SUCCESS);
-        } else {
-            $this->outputColor('red');
-            $this->output('Issues have been detected. Please fix them and push again to this pull request.');
-        }
-        $this->outputColor('end');
-        $this->webhook->setStatus(Webhook::STATUS_DONE);
-        $this->objectManager->flush();
-
-        $this->buildResult->setLog($this->ansiConverter->convert(implode("\n", $this->log)));
-        $this->buildResult->setStatus($this->status);
-        $this->objectManager->flush();
-
-        return 0;
     }
 
     /**
@@ -227,17 +218,20 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
 
     protected function phpunit()
     {
-        $rootDir = $this->getContainer()->getParameter('kernel.root_dir');
-        $buildsDir = sprintf('C:/tmp/symfony', $rootDir);
+        $container = $this->getContainer();
+        $config = $container->getParameter('phpunit');
+        $buildDir = $this->buildsDir . '/' . $this->commit->getRepo();
 
         $argments = [
-            '-c phpunit.xml.dist',
-            '--log-json phpunit-json-output.json',
-            '--filter *DefaultControllerTest*'
+            '-c ' . $config['config'],
+            '--log-json phpunit-json-output.json'
         ];
+        if ($config['filter']) {
+            $argments[] = '--filter ' . $config['filter'];
+        }
         $argmentsString = implode(' ', $argments);
 
-        $process = new Process(sprintf('phpunit %s', $argmentsString), $buildsDir);
+        $process = new Process(sprintf('phpunit %s', $argmentsString), $buildDir);
         $process->setTimeout(null);
         $process->start();
         $process->wait(function ($type, $buffer) {
@@ -252,9 +246,8 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
      */
     protected function getPhpUnitFailedTests()
     {
-        $rootDir = $this->getContainer()->getParameter('kernel.root_dir');
-        $buildsDir = sprintf('C:/tmp/symfony', $rootDir);
-        $content = file_get_contents($buildsDir . '/phpunit-json-output.json');
+        $buildDir = $this->buildsDir . '/' . $this->commit->getRepo();
+        $content = file_get_contents($buildDir . '/phpunit-json-output.json');
         $content = '[' . str_replace('}{', "},\n{", $content) . ']';
         $tests = json_decode($content, true);
         $failedTests = [];
@@ -266,21 +259,6 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
             }
         }
         return $failedTests;
-    }
-
-    protected function waitForAllToComplete()
-    {
-        while (true) {
-            $inProgressWebhook = $this->objectManager->getRepository('ZENbenGitBundle:Webhook')
-                ->findOneBy(['status' => Webhook::STATUS_IN_PROGRESS]);
-            if ($inProgressWebhook === null) {
-                $this->output('Ready!');
-                break;
-            } else {
-                $this->output('.', null, GitHubService::STATUS_PENDING, false);
-                sleep(1);
-            }
-        }
     }
 
     /**

@@ -35,3 +35,11 @@ parameters:
 
     github_token: #
     github_secret: #
+
+    builds_dir: #
+
+    phpunit:
+      config: #app/phpunit.xml.dist
+      filter: #
+
+    composer: #
