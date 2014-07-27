@@ -5,26 +5,31 @@ namespace ZENben\GitBundle\Service\GitHub;
 class CodeComment
 {
 
-    /** @var Commit */
+    /**
+    * @var Commit */
     protected $commit;
 
-    /** @var integer */
+    /**
+    * @var integer */
     protected $pullRequest;
 
-    /** @var string */
+    /**
+    * @var string */
     protected $message;
 
-    /** @var string */
+    /**
+    * @var string */
     protected $file;
 
-    /** @var integer */
+    /**
+    * @var integer */
     protected $position;
 
     /**
-     * @param Commit $commit
+     * @param Commit  $commit
      * @param integer $pullRequest
-     * @param string $message
-     * @param string $file
+     * @param string  $message
+     * @param string  $file
      * @param integer $position
      */
     public function __construct(Commit $commit, $pullRequest, $message, $file, $position)

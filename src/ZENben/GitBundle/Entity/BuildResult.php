@@ -47,7 +47,7 @@ class BuildResult
     /**
      * Set status
      *
-     * @param integer $status
+     * @param  integer $status
      * @return BuildResult
      */
     public function setStatus($status)
@@ -70,7 +70,7 @@ class BuildResult
     /**
      * Set log
      *
-     * @param string $log
+     * @param  string $log
      * @return BuildResult
      */
     public function setLog($log)
@@ -93,7 +93,7 @@ class BuildResult
     /**
      * Set webhook
      *
-     * @param \ZENben\GitBundle\Entity\Webhook $webhook
+     * @param  \ZENben\GitBundle\Entity\Webhook $webhook
      * @return BuildResult
      */
     public function setWebhook(\ZENben\GitBundle\Entity\Webhook $webhook = null)
@@ -116,7 +116,7 @@ class BuildResult
     /**
      * Set date
      *
-     * @param \DateTime $date
+     * @param  \DateTime $date
      * @return BuildResult
      */
     public function setDate($date)

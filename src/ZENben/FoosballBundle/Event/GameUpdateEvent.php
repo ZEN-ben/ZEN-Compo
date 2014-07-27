@@ -19,7 +19,7 @@ class GameUpdateEvent extends Event
         return $this->gameUpdate;
     }
     
-/*    protected $type;
+    /*    protected $type;
     protected $winner;
     protected $loser;
     

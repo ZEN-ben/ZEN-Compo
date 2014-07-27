@@ -10,15 +10,17 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $games = $this->getDoctrine()->getManager()
-                ->getRepository('FoosballBundle:Game\Game')->findBy(['dateEnded' => null], ['dateStart' => 'ASC']);
+            ->getRepository('FoosballBundle:Game\Game')->findBy(['dateEnded' => null], ['dateStart' => 'ASC']);
         
         $gamesPlayed =  $this->getDoctrine()->getManager()
-                ->getRepository('FoosballBundle:Game\Game')->findAllPlayed();
+            ->getRepository('FoosballBundle:Game\Game')->findAllPlayed();
         
-        return $this->render('FoosballBundle:Default:index.html.twig', [
+        return $this->render(
+            'FoosballBundle:Default:index.html.twig', [
             'games' => $games,
             'gamesPlayed' => $gamesPlayed,
-        ]);
+            ]
+        );
     }
 
     public function feedbackAction()

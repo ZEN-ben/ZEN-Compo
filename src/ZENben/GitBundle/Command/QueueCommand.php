@@ -49,6 +49,7 @@ class QueueCommand extends ContainerAwareCommand
                     $workingDir = realpath(sprintf('%s/../', $kernelRoot));
 
                     $process = new Process($cmd, $workingDir);
+                    $process->setTimeout(false);
                     $process->run();
                 }
             } else {

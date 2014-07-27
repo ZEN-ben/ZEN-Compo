@@ -19,30 +19,39 @@ use ZENben\GitBundle\Service\GitHub\GitHubService;
 class ProcessGitHubWebhookCommand extends ContainerAwareCommand
 {
 
-    /** @var  ObjectManager */
+    /**
+    * @var  ObjectManager */
     protected $objectManager;
-    /** @var  GitHubService */
+    /**
+    * @var  GitHubService */
     protected $github;
-    /** @var  OutputInterface */
+    /**
+    * @var  OutputInterface */
     protected $outputStream;
 
-    /** @var  string */
+    /**
+    * @var  string */
     protected $status;
 
-    /** @var  Webhook */
+    /**
+    * @var  Webhook */
     protected $webhook;
-    /** @var  Commit */
+    /**
+    * @var  Commit */
     protected $commit;
-    /** @var  BuildResult */
+    /**
+    * @var  BuildResult */
     protected $buildResult;
 
-    /** @var  string[] */
+    /**
+    * @var  string[] */
     protected $log = [];
 
-    const FLUSH_BUFFER_MAX = 5;
-    protected $flushBuffer = 0;
+    const FLUSH_BUFFER_MAX = 1000;
+    protected $lastFlush = 0;
 
-    /** @var  AnsiToHtmlConverter */
+    /**
+    * @var  AnsiToHtmlConverter */
     protected $ansiConverter;
 
     protected $nextColor = null;
@@ -164,9 +173,11 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         );
         $process->setTimeout(null);
         $process->start();
-        $process->wait(function ($type, $buffer) {
+        $process->wait(
+            function ($type, $buffer) {
             $this->output($buffer, null, GitHubService::STATUS_PENDING, false);
-        });
+            }
+        );
 
         $composer = $this->getContainer()->getParameter('composer');
         $process = new Process(
@@ -175,9 +186,11 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         );
         $process->setTimeout(null);
         $process->start();
-        $process->wait(function ($type, $buffer) {
+        $process->wait(
+            function ($type, $buffer) {
             $this->output($buffer, null, GitHubService::STATUS_PENDING, false);
-        });
+            }
+        );
 
         return;
     }
@@ -215,15 +228,23 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
             ->setWorkingDirectory($phpCsFixerDir)
             ->setPrefix('php')
             ->add('phpcs')
-            ->add('--report=summary')
+        //            ->add('--report=summary')
+            ->add('--report-width=120')
+            ->add('--encoding=utf-8')
+        //            ->add('-p')
+            ->add('--standard=PSR2')
+            ->add('--ignore=lib,library')
             ->add($repoDirectory)
         ;
 
         $process = $processBuilder->getProcess();
         $process->start();
-        $process->wait(function ($type, $buffer) {
+        $process->setTimeout(false);
+        $process->wait(
+            function ($type, $buffer) {
             $this->output($buffer);
-        });
+            }
+        );
     }
 
     protected function git($command, $argments = null)
@@ -234,9 +255,12 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
 
         $process = new Process(sprintf('git %s %s', $command, $argumentsString), $buildsDir);
         $process->start();
-        $process->wait(function ($type, $buffer) {
+        $process->setTimeout(false);
+        $process->wait(
+            function ($type, $buffer) {
             $this->output($buffer, null, GitHubService::STATUS_PENDING, false);
-        });
+            }
+        );
     }
 
     protected function phpunit()
@@ -257,9 +281,11 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         $process = new Process(sprintf('phpunit %s', $argmentsString), $buildDir);
         $process->setTimeout(null);
         $process->start();
-        $process->wait(function ($type, $buffer) {
+        $process->wait(
+            function ($type, $buffer) {
             $this->output($buffer, null, GitHubService::STATUS_PENDING, false);
-        });
+            }
+        );
 
         return $process->getOutput();
     }
@@ -375,9 +401,9 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
 
     /**
      * @param $local
-     * @param null|string|true $remote if true it will copy the value of $local
-     * @param string $status
-     * @param bool $newLine
+     * @param null|string|true $remote  if true it will copy the value of $local
+     * @param string           $status
+     * @param bool             $newLine
      */
     protected function output($local, $remote = null, $status = GitHubService::STATUS_PENDING, $newLine = true)
     {
@@ -399,10 +425,9 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
             $this->buildResult->setLog($this->ansiConverter->convert(implode("\n", $this->log)));
             $this->buildResult->setStatus($this->status);
 
-            $this->flushBuffer++;
-            if ($this->flushBuffer > self::FLUSH_BUFFER_MAX) {
+            if (($this->lastFlush - microtime(true)) * 1000000 > self::FLUSH_BUFFER_MAX) {
                 $this->objectManager->flush();
-                $this->flushBuffer = 0;
+                $this->lastFlush = microtime();
             }
         }
 
@@ -421,6 +446,9 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
             throw new \InvalidArgumentException('To change the status, you must provide a remote message.');
         }
         if ($remote) {
+            if (strlen($remote) > 140) {
+                $remote = substr($remote, 0, 140);
+            }
             $this->github->statusChange($this->webhook->getId(), $this->commit, $this->status, $remote);
         }
         return;

@@ -21,16 +21,6 @@ class DefaultController extends Controller
             return new JsonResponse(['error' => 'Incorrect secret'], 403);
         }
         $event = $this->getRequest()->headers->get('X-GitHub-Event');
-
-        $webhook = new Webhook();
-        $webhook->setEvent($event);
-        $webhook->setDateCreated(new \DateTime());
-        $webhook->setStatus(Webhook::STATUS_NEW);
-        $webhook->setPayload($requestContent);
-        $objectManager = $this->getDoctrine()->getManager();
-        $objectManager->persist($webhook);
-        $objectManager->flush();
-
         $supportedWebhooks =
             [
                 'pull_request'
@@ -38,14 +28,12 @@ class DefaultController extends Controller
         if (! in_array($event, $supportedWebhooks)) {
             return new JsonResponse(['error' => sprintf("Event '%s' is not implemented.", $event)], 400);
         }
-
-        $this->get('zengit.github')->statusChange(
-            $webhook->getId(),
-            $webhook->getHeadCommit(),
-            GitHubService::STATUS_PENDING,
-            'Code check is in queue..'
-        );
-
+        $content = json_decode($requestContent, true);
+        switch ($content['action']) {
+            case 'synchronize':
+                $this->placeWebhookInQueue($event, $requestContent);
+                break;
+        }
         return new JsonResponse(
             [
                 'status' => 'OK'
@@ -78,5 +66,28 @@ class DefaultController extends Controller
             return false;
         }
         return true;
+    }
+
+    /**
+     * @param $event
+     * @param $requestContent
+     */
+    protected function placeWebhookInQueue($event, $requestContent)
+    {
+        $webhook = new Webhook();
+        $webhook->setEvent($event);
+        $webhook->setDateCreated(new \DateTime());
+        $webhook->setStatus(Webhook::STATUS_NEW);
+        $webhook->setPayload($requestContent);
+        $objectManager = $this->getDoctrine()->getManager();
+        $objectManager->persist($webhook);
+        $objectManager->flush();
+
+        $this->get('zengit.github')->statusChange(
+            $webhook->getId(),
+            $webhook->getHeadCommit(),
+            GitHubService::STATUS_PENDING,
+            'Code check is in queue..'
+        );
     }
 }

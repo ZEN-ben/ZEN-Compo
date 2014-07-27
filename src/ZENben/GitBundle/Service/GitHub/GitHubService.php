@@ -71,7 +71,7 @@ class GitHubService
     }
 
     /**
-     * @param int $webhookId
+     * @param int    $webhookId
      * @param Commit $commit
      * @param string $state
      * @param string $description

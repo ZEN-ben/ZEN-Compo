@@ -52,7 +52,8 @@ class Webhook
      */
     private $buildResults;
 
-    /** @var  \stdClass */
+    /**
+    * @var  \stdClass */
     private $data;
 
     /**
@@ -99,7 +100,7 @@ class Webhook
     /**
      * Set dateCreated
      *
-     * @param \DateTime $dateCreated
+     * @param  \DateTime $dateCreated
      * @return Webhook
      */
     public function setDateCreated($dateCreated)
@@ -122,7 +123,7 @@ class Webhook
     /**
      * Set payload
      *
-     * @param string $payload
+     * @param  string $payload
      * @return Webhook
      */
     public function setPayload($payload)
@@ -145,7 +146,7 @@ class Webhook
     /**
      * Set status
      *
-     * @param integer $status
+     * @param  integer $status
      * @return Webhook
      */
     public function setStatus($status)
@@ -168,7 +169,7 @@ class Webhook
     /**
      * Set dateFinished
      *
-     * @param \DateTime $dateFinished
+     * @param  \DateTime $dateFinished
      * @return Webhook
      */
     public function setDateFinished($dateFinished)
@@ -191,7 +192,7 @@ class Webhook
     /**
      * Set type
      *
-     * @param string $type
+     * @param  string $type
      * @return Webhook
      */
     public function setType($type)
@@ -219,7 +220,7 @@ class Webhook
     /**
      * Set event
      *
-     * @param string $event
+     * @param  string $event
      * @return Webhook
      */
     public function setEvent($event)
@@ -242,7 +243,7 @@ class Webhook
     /**
      * Add buildResults
      *
-     * @param BuildResult $buildResults
+     * @param  BuildResult $buildResults
      * @return Webhook
      */
     public function addBuildResult(BuildResult $buildResults)

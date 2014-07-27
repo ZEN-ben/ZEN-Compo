@@ -32,10 +32,12 @@ class GameController extends Controller
             return $this->redirect($this->generateUrl('foosball_game', ['id' => $id]));
         }
 
-        return $this->render('FoosballBundle:Game:index.html.twig', [
+        return $this->render(
+            'FoosballBundle:Game:index.html.twig', [
             'game' => $game,
             'id' => $id
-        ]);
+            ]
+        );
     }
 
     public function matchSaveAction($gameId, $matchId)
@@ -44,10 +46,12 @@ class GameController extends Controller
         $scoreBlue = intval($this->getRequest()->get('blue'));
 
         if (($scoreRed !== 10 && $scoreBlue !== 10) || $scoreBlue === $scoreRed) {
-            return new JsonResponse([
+            return new JsonResponse(
+                [
                 'success' => false,
                 'message' => self::REASON_NO_WINNER
-            ]);
+                ]
+            );
         }
 
         $match = $this->getDoctrine()->getManager()->getRepository('FoosballBundle:Game\Match')->find($matchId);
@@ -56,10 +60,12 @@ class GameController extends Controller
         $currentRound = $game->getCurrentRound();
         $gameRound = $game->getRoundForMatch($match);
         if ($currentRound !== $gameRound) {
-            return new JsonResponse([
+            return new JsonResponse(
+                [
                 'success' => false,
                 'message' => self::REASON_NOT_CURRENT_ROUND
-            ]);
+                ]
+            );
         }
 
         $game->processScores(
@@ -75,12 +81,14 @@ class GameController extends Controller
             $won = $scoreRed > $scoreBlue ? 'won' : 'lost';
         }
 
-        return new JsonResponse([
+        return new JsonResponse(
+            [
             'success' => true,
             'scoreRed' => $scoreRed,
             'scoreBlue' => $scoreBlue,
             'message' => $won
-        ]);
+            ]
+        );
     }
 
     public function signUpAction()
@@ -96,10 +104,12 @@ class GameController extends Controller
         $user = $em->find('FoosballBundle:User\User', $this->getUser()->getId());
         $this->get('game')->getGame($game)->signUp($user, $comment);
 
-        return new JsonResponse([
+        return new JsonResponse(
+            [
             'success' => true,
             'comment' => $comment
-        ]);
+            ]
+        );
     }
 
     /**

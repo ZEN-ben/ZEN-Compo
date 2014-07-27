@@ -61,9 +61,11 @@ class AuthController extends Controller
             $error = $error->getMessage();
         }
 
-        return $this->container->get('templating')->renderResponse('FoosballBundle:Auth:login.html.' . $this->getTemplatingEngine(), array(
+        return $this->container->get('templating')->renderResponse(
+            'FoosballBundle:Auth:login.html.' . $this->getTemplatingEngine(), array(
                 'error' => $error,
-            ));
+            )
+        );
     }
 
     /**
@@ -71,7 +73,7 @@ class AuthController extends Controller
      * is enabled.
      *
      * @param Request $request A request.
-     * @param string $key Key used for retrieving the right information for the registration form.
+     * @param string  $key     Key used for retrieving the right information for the registration form.
      *
      * @return Response
      *
@@ -118,27 +120,31 @@ class AuthController extends Controller
             // Authenticate the user
             $this->authenticateUser($form->getData(), $error->getResourceOwnerName(), $error->getRawToken());
 
-            return $this->container->get('templating')->renderResponse('HWIOAuthBundle:Connect:registration_success.html.' . $this->getTemplatingEngine(), array(
+            return $this->container->get('templating')->renderResponse(
+                'HWIOAuthBundle:Connect:registration_success.html.' . $this->getTemplatingEngine(), array(
                     'userInformation' => $userInformation,
-                ));
+                )
+            );
         }
 
         // reset the error in the session
         $key = time();
         $session->set('_hwi_oauth.registration_error.' . $key, $error);
 
-        return $this->container->get('templating')->renderResponse('HWIOAuthBundle:Connect:registration.html.' . $this->getTemplatingEngine(), array(
+        return $this->container->get('templating')->renderResponse(
+            'HWIOAuthBundle:Connect:registration.html.' . $this->getTemplatingEngine(), array(
                 'key' => $key,
                 'form' => $form->createView(),
                 'userInformation' => $userInformation,
-            ));
+            )
+        );
     }
 
     /**
      * Connects a user to a given account if the user is logged in and connect is enabled.
      *
      * @param Request $request The active request.
-     * @param string $service Name of the resource owner to connect to.
+     * @param string  $service Name of the resource owner to connect to.
      *
      * @throws \Exception
      *
@@ -185,7 +191,8 @@ class AuthController extends Controller
         }
 
         // Handle the form
-        /** @var $form Form */
+        /**
+        * @var $form Form */
         $form = $this->container->get('form.factory')
             ->createBuilder('form')
             ->getForm();
@@ -204,23 +211,27 @@ class AuthController extends Controller
 
                 $this->container->get('hwi_oauth.account.connector')->connect($user, $userInformation);
 
-                return $this->container->get('templating')->renderResponse('HWIOAuthBundle:Connect:connect_success.html.' . $this->getTemplatingEngine(), array(
+                return $this->container->get('templating')->renderResponse(
+                    'HWIOAuthBundle:Connect:connect_success.html.' . $this->getTemplatingEngine(), array(
                         'userInformation' => $userInformation,
-                    ));
+                    )
+                );
             }
         }
 
-        return $this->container->get('templating')->renderResponse('HWIOAuthBundle:Connect:connect_confirm.html.' . $this->getTemplatingEngine(), array(
+        return $this->container->get('templating')->renderResponse(
+            'HWIOAuthBundle:Connect:connect_confirm.html.' . $this->getTemplatingEngine(), array(
                 'key' => $key,
                 'service' => $service,
                 'form' => $form->createView(),
                 'userInformation' => $userInformation,
-            ));
+            )
+        );
     }
 
     /**
      * @param Request $request
-     * @param string $service
+     * @param string  $service
      *
      * @return RedirectResponse
      */
@@ -282,8 +293,8 @@ class AuthController extends Controller
     /**
      * Generates a route.
      *
-     * @param string $route Route name
-     * @param array $params Route parameters
+     * @param string  $route    Route name
+     * @param array   $params   Route parameters
      * @param boolean $absolute Absolute url or note.
      *
      * @return string
@@ -297,8 +308,8 @@ class AuthController extends Controller
      * Authenticate a user with Symfony Security
      *
      * @param UserInterface $user
-     * @param string $resourceOwnerName
-     * @param string $accessToken
+     * @param string        $resourceOwnerName
+     * @param string        $accessToken
      */
     protected function authenticateUser(UserInterface $user, $resourceOwnerName, $accessToken)
     {

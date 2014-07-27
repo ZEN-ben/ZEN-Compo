@@ -116,10 +116,12 @@ class Tournament extends BaseType
 
     public function isParticipating(User $user)
     {
-        $partcipating = $this->em->getRepository('FoosballBundle:Game\TournamentSignup')->findOneBy([
+        $partcipating = $this->em->getRepository('FoosballBundle:Game\TournamentSignup')->findOneBy(
+            [
             'user' => $user,
             'tournament' => $this->entity->getId()
-        ]);
+            ]
+        );
         return $partcipating !== null;
     }
 
@@ -131,12 +133,14 @@ class Tournament extends BaseType
 
     public function getParticipants()
     {
-        $signups = $this->em->getRepository('FoosballBundle:Game\TournamentSignup')->findBy([
+        $signups = $this->em->getRepository('FoosballBundle:Game\TournamentSignup')->findBy(
+            [
             'tournament' => $this->entity->getId()
-        ], [
+            ], [
             'seed' => 'DESC',
             'id' => 'DESC'
-        ]);
+            ]
+        );
         $users = [];
         foreach ($signups as $signup) {
             $users[] = $signup->getUser();
@@ -205,9 +209,11 @@ class Tournament extends BaseType
     public function getMatches($round = null)
     {
         $matches = [];
-        $entities = $this->em->getRepository('FoosballBundle:Game\Match')->findBy([
+        $entities = $this->em->getRepository('FoosballBundle:Game\Match')->findBy(
+            [
             'game' => $this->entity->getGame()->getId()
-        ]);
+            ]
+        );
 
         $amount = count($entities);
         $bracketSize = ($amount + 1) / 2;
@@ -248,7 +254,7 @@ class Tournament extends BaseType
                 $loser = $match->getScoreRed() < $match->getScoreBlue() ? $match->getRedPlayer() : $match->getBluePlayer();
                 $loserId = $loser->getId();
                 $losers["$loserId "] = $this->em->getRepository('FoosballBundle:Game\TournamentSignup')
-                        ->findOneByUser($loser)->getSeed();
+                    ->findOneByUser($loser)->getSeed();
             }
             if ($match->getBye()) {
                 $byes++;
@@ -284,7 +290,7 @@ class Tournament extends BaseType
                     // update previous matches
                     $previousMatchId = $match->getMatchId() - count($round)*2 + $i;
                     $previousMatch = $this->em->getRepository('FoosballBundle:Game\Match')
-                            ->findOneBy(['match_id' => $previousMatchId, 'game' => $match->getGame()]);
+                        ->findOneBy(['match_id' => $previousMatchId, 'game' => $match->getGame()]);
                     $name = $loser->getUsername();
                     if ($previousMatch && $previousMatch->getBye()) {
                         $previousMatch->setRedPlayer($loser);
@@ -299,7 +305,7 @@ class Tournament extends BaseType
                     // update previous matches
                     $previousMatchId = $previousMatchId + 1;
                     $previousMatch = $this->em->getRepository('FoosballBundle:Game\Match')
-                            ->findOneBy(['match_id' => $previousMatchId, 'game' => $match->getGame()]);
+                        ->findOneBy(['match_id' => $previousMatchId, 'game' => $match->getGame()]);
                     $name = $loser->getUsername();
                     if ($previousMatch && $previousMatch->getBye()) {
                         $previousMatch->setRedPlayer($loser);
@@ -313,7 +319,7 @@ class Tournament extends BaseType
                         // progress this player
                         $nextMatchId = ceil($match->getMatchId() / 2) + $matchesCount;
                         $nextMatch = $this->em->getRepository('FoosballBundle:Game\Match')
-                                ->findOneBy(['match_id' => $nextMatchId,'game' => $match->getGame()]);
+                            ->findOneBy(['match_id' => $nextMatchId,'game' => $match->getGame()]);
                         
                         $even = $match->getMatchId() % 2 === 0;
                         if ($even) {
@@ -328,7 +334,7 @@ class Tournament extends BaseType
                 if ($match->getBluePlayer() === null && $match->getRedPlayer() === null && count($losers) === 0) {
                     $nextMatchId = ceil($match->getMatchId() / 2) + $matchesCount;
                     $nextMatch = $this->em->getRepository('FoosballBundle:Game\Match')
-                                ->findOneBy(['match_id' => $nextMatchId,'game' => $match->getGame()]);
+                        ->findOneBy(['match_id' => $nextMatchId,'game' => $match->getGame()]);
                     $nextMatch->setBye(true);
                 }
             }
@@ -375,10 +381,12 @@ class Tournament extends BaseType
     private function promoteWinnerToNextRound($match, $bracketSize, $repo, $winner)
     {
         $nextMatchId = ceil($match->getMatchId() / 2) + $bracketSize;
-        $nextMatch = $repo->findOneBy([
+        $nextMatch = $repo->findOneBy(
+            [
             'match_id' => $nextMatchId,
             'game' => $match->getGame()
-        ]);
+            ]
+        );
         $even = $match->getMatchId() % 2 === 0;
         if ($even) {
             $nextMatch->setBluePlayer($winner);

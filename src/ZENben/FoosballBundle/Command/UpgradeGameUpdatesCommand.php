@@ -31,16 +31,13 @@ class UpgradeGameUpdatesCommand extends ContainerAwareCommand
             switch ($gameUpdate->getType()) {
                 case 'match.updated':
                     $oldParameters = $gameUpdate->getParameters();
-                    
                     if (! isset($oldParameters['%player_1_name%'])) {
                         continue;
                     }
-                    
-                    $p1Name = $this->getFirstName($oldParameters['%player_1_name%']);
+                                 $p1Name = $this->getFirstName($oldParameters['%player_1_name%']);
                     $p2Name = $this->getFirstName($oldParameters['%player_2_name%']);
                     $user1 = $em->getRepository('FoosballBundle:User\User')->findOneByUsername($p1Name);
                     $user2 = $em->getRepository('FoosballBundle:User\User')->findOneByUsername($p2Name);
-                    
                     if ($user1 === null) {
                         $this->report(sprintf('User "%s (%s)" could not be found, skipping GameUpdate#%s', $p1Name, $oldParameters['%player_1_name%'], $gameUpdate->getId()));
                         continue;
@@ -49,12 +46,11 @@ class UpgradeGameUpdatesCommand extends ContainerAwareCommand
                         $this->report(sprintf('User "%s" (%s) could not be found, skipping GameUpdate#%s', $p2Name, $oldParameters['%player_2_name%'], $gameUpdate->getId()));
                         continue;
                     }
-                    
-                    $parameters = [
-                       '%player_1_score%' => $oldParameters['%player_1_score%'],
-                       '%player_2_score%' => $oldParameters['%player_2_score%'],
-                       'player_1_id' => $user1->getGoogleId(),
-                       'player_2_id' => $user2->getGoogleId()
+                                 $parameters = [
+                    '%player_1_score%' => $oldParameters['%player_1_score%'],
+                    '%player_2_score%' => $oldParameters['%player_2_score%'],
+                    'player_1_id' => $user1->getGoogleId(),
+                    'player_2_id' => $user2->getGoogleId()
                     ];
                     $gameUpdate->setParameters($parameters);
                     break;
@@ -62,20 +58,17 @@ class UpgradeGameUpdatesCommand extends ContainerAwareCommand
                     break;
                 case 'new.player':
                     $oldParameters = $gameUpdate->getParameters();
-                    
                     if (! isset($oldParameters['%player%'])) {
                         continue;
                     }
                     $p1Name = $this->getFirstName($oldParameters['%player%']);
                     $user1 = $em->getRepository('FoosballBundle:User\User')->findOneByUsername($p1Name);
-                    
                     if ($user1 === null) {
                         $this->report(sprintf('User "%s (%s)" could not be found, skipping GameUpdate#%s', $p1Name, $oldParameters['%player%'], $gameUpdate->getId()));
                         continue;
                     }
-                    
-                    $parameters = [
-                       'player_id' => $user1->getGoogleId()
+                                 $parameters = [
+                    'player_id' => $user1->getGoogleId()
                     ];
                     $gameUpdate->setParameters($parameters);
                     break;
