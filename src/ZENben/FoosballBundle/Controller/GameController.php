@@ -135,5 +135,4 @@ class GameController extends Controller
         }
         $em->flush();
     }
-
 }

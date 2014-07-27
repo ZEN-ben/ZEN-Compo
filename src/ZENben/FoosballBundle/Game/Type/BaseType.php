@@ -73,5 +73,4 @@ abstract class BaseType implements GameInterface
     {
         return $this->entity->getGame();
     }
-    
 }

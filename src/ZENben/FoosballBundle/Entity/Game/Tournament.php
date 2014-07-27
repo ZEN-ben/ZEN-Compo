@@ -61,7 +61,7 @@ class Tournament
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string $name
      * @return Tournament
      */
     public function setName($name)
@@ -84,7 +84,7 @@ class Tournament
     /**
      * Set description
      *
-     * @param string $description
+     * @param  string $description
      * @return Tournament
      */
     public function setDescription($description)
@@ -107,7 +107,7 @@ class Tournament
     /**
      * Add signups
      *
-     * @param \ZENben\FoosballBundle\Entity\Game\TournamentSignup $signups
+     * @param  \ZENben\FoosballBundle\Entity\Game\TournamentSignup $signups
      * @return Tournament
      */
     public function addSignup(\ZENben\FoosballBundle\Entity\Game\TournamentSignup $signups)
@@ -140,7 +140,7 @@ class Tournament
     /**
      * Add matches
      *
-     * @param \ZENben\FoosballBundle\Entity\Game\Match $matches
+     * @param  \ZENben\FoosballBundle\Entity\Game\Match $matches
      * @return Tournament
      */
     public function addMatch(\ZENben\FoosballBundle\Entity\Game\Match $matches)
@@ -173,7 +173,7 @@ class Tournament
     /**
      * Set game
      *
-     * @param \ZENben\FoosballBundle\Entity\Game\Game $game
+     * @param  \ZENben\FoosballBundle\Entity\Game\Game $game
      * @return Tournament
      */
     public function setGame(\ZENben\FoosballBundle\Entity\Game\Game $game = null)
@@ -186,7 +186,7 @@ class Tournament
     /**
      * Get game
      *
-     * @return \ZENben\FoosballBundle\Entity\Game\Game 
+     * @return \ZENben\FoosballBundle\Entity\Game\Game
      */
     public function getGame()
     {
@@ -196,7 +196,7 @@ class Tournament
     /**
      * Add matches
      *
-     * @param \ZENben\FoosballBundle\Entity\Game\Match $matches
+     * @param  \ZENben\FoosballBundle\Entity\Game\Match $matches
      * @return Tournament
      */
     public function addMatche(\ZENben\FoosballBundle\Entity\Game\Match $matches)
@@ -215,5 +215,4 @@ class Tournament
     {
         $this->matches->removeElement($matches);
     }
-    
 }

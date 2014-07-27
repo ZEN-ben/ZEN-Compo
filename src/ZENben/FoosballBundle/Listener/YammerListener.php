@@ -27,18 +27,20 @@ class YammerListener
      */
     protected $logger;
     
-    public function __construct(YammerService $service, Translator $translator, $logger) {
+    public function __construct(YammerService $service, Translator $translator, $logger)
+    {
         $this->service = $service;
         $this->translator = $translator;
         $this->logger = $logger;
     }
     
-    public function onGameUpdate(GameUpdateEvent $event) {
+    public function onGameUpdate(GameUpdateEvent $event)
+    {
         $gameUpdate = $event->getGameUpdate();
         $group = $gameUpdate->getGame()->getYammerGroup();
         
         
-        //TODO: this will need an update before it will work: some parameters 
+        //TODO: this will need an update before it will work: some parameters
         //      should be processed into actual string (they might be user ids now)
         /*switch ($gameUpdate->getType()) {
             case 'match.updated':

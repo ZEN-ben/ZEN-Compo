@@ -30,7 +30,7 @@ class QueueCommand extends ContainerAwareCommand
         $progressBar->setFormat('Memory: %memory%, elapsed: %elapsed% [%bar%] %message%');
         $progressBar->start();
 
-        while(true) {
+        while (true) {
             $inProgressWebhook = $webhookRepo->findOneBy(['status' => Webhook::STATUS_IN_PROGRESS]);
             if ($inProgressWebhook === null) {
                 $newWebhook = $webhookRepo->findOneBy(['status' => Webhook::STATUS_NEW], ['id' => 'ASC']);

@@ -22,7 +22,7 @@ class EliminationGenerator implements MatchesGeneratorInterface
         
         $participantsArray = [];
         for ($i = 0; $i < $amount / 2; $i++) {
-            // Strongest versus weakest mode: 
+            // Strongest versus weakest mode:
             /*
             $participantsArray[] = array_shift($participants);
             $participantsArray[] = array_pop($participants);

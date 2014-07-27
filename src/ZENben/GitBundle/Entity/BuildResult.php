@@ -37,7 +37,7 @@ class BuildResult
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -60,7 +60,7 @@ class BuildResult
     /**
      * Get status
      *
-     * @return integer 
+     * @return integer
      */
     public function getStatus()
     {
@@ -83,7 +83,7 @@ class BuildResult
     /**
      * Get log
      *
-     * @return string 
+     * @return string
      */
     public function getLog()
     {
@@ -106,7 +106,7 @@ class BuildResult
     /**
      * Get webhook
      *
-     * @return \ZENben\GitBundle\Entity\Webhook 
+     * @return \ZENben\GitBundle\Entity\Webhook
      */
     public function getWebhook()
     {
@@ -129,7 +129,7 @@ class BuildResult
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {

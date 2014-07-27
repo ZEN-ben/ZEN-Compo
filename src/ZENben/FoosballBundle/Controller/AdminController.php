@@ -11,5 +11,4 @@ class AdminController extends Controller
         //$matches = $this->getDoctrine()->getManager()->getRepository('FoosballBundle:Game\Match')->findAll();
         //return $this->render('FoosballBundle:Admin:index.html.twig', ['matches' => $matches]);
     }
-
 }

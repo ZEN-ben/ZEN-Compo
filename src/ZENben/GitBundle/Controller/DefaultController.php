@@ -17,7 +17,7 @@ class DefaultController extends Controller
         $signature = $this->getRequest()->headers->get('X-Hub-Signature');
         $requestContent = $this->getRequest()->getContent();
 
-        if ( ! $this->isGenuineGithubRequest($secret, $signature, $requestContent)) {
+        if (! $this->isGenuineGithubRequest($secret, $signature, $requestContent)) {
             return new JsonResponse(['error' => 'Incorrect secret'], 403);
         }
         $event = $this->getRequest()->headers->get('X-GitHub-Event');
@@ -35,7 +35,7 @@ class DefaultController extends Controller
             [
                 'pull_request'
             ];
-        if ( ! in_array($event, $supportedWebhooks)) {
+        if (! in_array($event, $supportedWebhooks)) {
             return new JsonResponse(['error' => sprintf("Event '%s' is not implemented.", $event)], 400);
         }
 

@@ -66,5 +66,4 @@ class UtilsExtension extends \Twig_Extension
     {
         return 'utils';
     }
-
 }

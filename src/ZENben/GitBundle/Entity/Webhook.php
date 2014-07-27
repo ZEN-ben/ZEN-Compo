@@ -89,7 +89,7 @@ class Webhook
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -112,7 +112,7 @@ class Webhook
     /**
      * Get dateCreated
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateCreated()
     {
@@ -135,7 +135,7 @@ class Webhook
     /**
      * Get payload
      *
-     * @return string 
+     * @return string
      */
     public function getPayload()
     {
@@ -158,7 +158,7 @@ class Webhook
     /**
      * Get status
      *
-     * @return integer 
+     * @return integer
      */
     public function getStatus()
     {
@@ -181,7 +181,7 @@ class Webhook
     /**
      * Get dateFinished
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateFinished()
     {
@@ -204,7 +204,7 @@ class Webhook
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -232,7 +232,7 @@ class Webhook
     /**
      * Get event
      *
-     * @return string 
+     * @return string
      */
     public function getEvent()
     {

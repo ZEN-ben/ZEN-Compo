@@ -6,15 +6,15 @@ class Commit
 {
 
     /**
-    * 
+    *
     * @var string */
     protected $user;
     /**
-    * 
+    *
     * @var  string */
     protected $repo;
     /**
-    * 
+    *
     * @var  string */
     protected $sha;
 
@@ -72,5 +72,4 @@ class Commit
     {
         $this->user = $user;
     }
-
 }

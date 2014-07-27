@@ -77,5 +77,4 @@ class FoosballExtension extends \Twig_Extension
     {
         return 'foosball';
     }
-
 }

@@ -32,7 +32,7 @@ class UpgradeGameUpdatesCommand extends ContainerAwareCommand
                 case 'match.updated':
                     $oldParameters = $gameUpdate->getParameters();
                     
-                    if ( ! isset($oldParameters['%player_1_name%'])) {
+                    if (! isset($oldParameters['%player_1_name%'])) {
                         continue;
                     }
                     
@@ -55,7 +55,7 @@ class UpgradeGameUpdatesCommand extends ContainerAwareCommand
                        '%player_2_score%' => $oldParameters['%player_2_score%'],
                        'player_1_id' => $user1->getGoogleId(),
                        'player_2_id' => $user2->getGoogleId()
-                   ];
+                    ];
                     $gameUpdate->setParameters($parameters);
                     break;
                 case 'round.played':
@@ -63,7 +63,7 @@ class UpgradeGameUpdatesCommand extends ContainerAwareCommand
                 case 'new.player':
                     $oldParameters = $gameUpdate->getParameters();
                     
-                    if ( ! isset($oldParameters['%player%'])) {
+                    if (! isset($oldParameters['%player%'])) {
                         continue;
                     }
                     $p1Name = $this->getFirstName($oldParameters['%player%']);
@@ -76,7 +76,7 @@ class UpgradeGameUpdatesCommand extends ContainerAwareCommand
                     
                     $parameters = [
                        'player_id' => $user1->getGoogleId()
-                   ];
+                    ];
                     $gameUpdate->setParameters($parameters);
                     break;
             }
@@ -95,8 +95,8 @@ class UpgradeGameUpdatesCommand extends ContainerAwareCommand
         $parts = explode(' ', $fullName);
         $useParts = [];
         if (count($parts) > 1) {
-            foreach($parts as $part) {
-                if (in_array(strtolower($part), ['van', 'de', 'den'])) { 
+            foreach ($parts as $part) {
+                if (in_array(strtolower($part), ['van', 'de', 'den'])) {
                     break;
                 }
                 $useParts[] = $part;
@@ -122,5 +122,4 @@ class UpgradeGameUpdatesCommand extends ContainerAwareCommand
     {
         return $this->reportLog;
     }
-    
 }

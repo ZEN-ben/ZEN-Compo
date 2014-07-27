@@ -27,5 +27,4 @@ class DefaultController extends Controller
         $description = $this->getRequest()->request->get('description');
         $this->get('targetprocess')->addRequest($title, $description);
     }
-
 }

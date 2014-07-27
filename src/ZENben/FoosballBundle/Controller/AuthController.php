@@ -332,5 +332,4 @@ class AuthController extends Controller
     {
         return $this->container->getParameter('hwi_oauth.templating.engine');
     }
-
 }

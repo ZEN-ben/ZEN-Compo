@@ -16,5 +16,4 @@ class GameRepository extends EntityRepository
                 ->orderBy('game.dateEnded', $order)
                 ->getQuery()->getResult();
     }
-    
 }

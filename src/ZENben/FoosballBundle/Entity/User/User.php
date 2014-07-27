@@ -75,7 +75,7 @@ class User implements UserInterface
     /**
      * Set google_id
      *
-     * @param string $googleId
+     * @param  string $googleId
      * @return User
      */
     public function setGoogleId($googleId)
@@ -98,7 +98,7 @@ class User implements UserInterface
     /**
      * Set email
      *
-     * @param string $email
+     * @param  string $email
      * @return User
      */
     public function setEmail($email)
@@ -121,7 +121,7 @@ class User implements UserInterface
     /**
      * Set username
      *
-     * @param string $username
+     * @param  string $username
      * @return User
      */
     public function setUsername($username)
@@ -144,7 +144,7 @@ class User implements UserInterface
     /**
      * Set profile_picture
      *
-     * @param string $profilePicture
+     * @param  string $profilePicture
      * @return User
      */
     public function setProfilePicture($profilePicture)
@@ -167,7 +167,7 @@ class User implements UserInterface
     /**
      * Set roles
      *
-     * @param array $roles
+     * @param  array $roles
      * @return User
      */
     public function setRoles($roles)
@@ -212,7 +212,7 @@ class User implements UserInterface
     /**
      * Set signed_up_date
      *
-     * @param \DateTime $signedUpDate
+     * @param  \DateTime $signedUpDate
      * @return User
      */
     public function setSignedUpDate($signedUpDate)

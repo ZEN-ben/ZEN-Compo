@@ -72,7 +72,7 @@ class Game
     /**
      * Set active
      *
-     * @param boolean $active
+     * @param  boolean $active
      * @return Game
      */
     public function setActive($active)
@@ -95,7 +95,7 @@ class Game
     /**
      * Set game_form
      *
-     * @param string $gameForm
+     * @param  string $gameForm
      * @return Game
      */
     public function setGameForm($gameForm)
@@ -118,7 +118,7 @@ class Game
     /**
      * Set game_id
      *
-     * @param \int $gameId
+     * @param  \int $gameId
      * @return Game
      */
     public function setGameId($gameId)
@@ -141,7 +141,7 @@ class Game
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string $name
      * @return Game
      */
     public function setName($name)
@@ -170,7 +170,7 @@ class Game
     /**
      * Set type
      *
-     * @param string $type
+     * @param  string $type
      * @return Game
      */
     public function setType($type)
@@ -199,7 +199,7 @@ class Game
     /**
      * Set description
      *
-     * @param string $description
+     * @param  string $description
      * @return Game
      */
     public function setDescription($description)
@@ -222,7 +222,7 @@ class Game
     /**
      * Add updates
      *
-     * @param \ZENben\FoosballBundle\Entity\Game\GameUpdate $updates
+     * @param  \ZENben\FoosballBundle\Entity\Game\GameUpdate $updates
      * @return Game
      */
     public function addUpdate(\ZENben\FoosballBundle\Entity\Game\GameUpdate $updates)
@@ -245,7 +245,7 @@ class Game
     /**
      * Get updates
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUpdates()
     {
@@ -255,7 +255,7 @@ class Game
     /**
      * Set yammer_group
      *
-     * @param integer $yammerGroup
+     * @param  integer $yammerGroup
      * @return Game
      */
     public function setYammerGroup($yammerGroup)
@@ -268,7 +268,7 @@ class Game
     /**
      * Get yammer_group
      *
-     * @return integer 
+     * @return integer
      */
     public function getYammerGroup()
     {
@@ -278,7 +278,7 @@ class Game
     /**
      * Add matches
      *
-     * @param \ZENben\FoosballBundle\Entity\Game\Match $matches
+     * @param  \ZENben\FoosballBundle\Entity\Game\Match $matches
      * @return Game
      */
     public function addMatch(\ZENben\FoosballBundle\Entity\Game\Match $matches)
@@ -301,7 +301,7 @@ class Game
     /**
      * Get matches
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getMatches()
     {
@@ -311,7 +311,7 @@ class Game
     /**
      * Add matches
      *
-     * @param \ZENben\FoosballBundle\Entity\Game\Match $matches
+     * @param  \ZENben\FoosballBundle\Entity\Game\Match $matches
      * @return Game
      */
     public function addMatche(\ZENben\FoosballBundle\Entity\Game\Match $matches)
@@ -344,7 +344,7 @@ class Game
     /**
      * Set dateStart
      *
-     * @param \DateTime $dateStart
+     * @param  \DateTime $dateStart
      * @return Game
      */
     public function setDateStart($dateStart)
@@ -357,7 +357,7 @@ class Game
     /**
      * Get dateStart
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateStart()
     {
@@ -367,7 +367,7 @@ class Game
     /**
      * Set dateEnded
      *
-     * @param \DateTime $dateEnded
+     * @param  \DateTime $dateEnded
      * @return Game
      */
     public function setDateEnded($dateEnded)
@@ -380,7 +380,7 @@ class Game
     /**
      * Get dateEnded
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateEnded()
     {

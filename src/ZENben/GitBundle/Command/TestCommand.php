@@ -23,5 +23,4 @@ class TestCommand extends ContainerAwareCommand
 
 
     }
-
 }

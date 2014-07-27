@@ -57,7 +57,7 @@ class GameUpdate
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -67,7 +67,7 @@ class GameUpdate
     /**
      * Set type
      *
-     * @param string $type
+     * @param  string $type
      * @return GameUpdate
      */
     public function setType($type)
@@ -80,7 +80,7 @@ class GameUpdate
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -90,7 +90,7 @@ class GameUpdate
     /**
      * Set title
      *
-     * @param string $title
+     * @param  string $title
      * @return GameUpdate
      */
     public function setTitle($title)
@@ -103,7 +103,7 @@ class GameUpdate
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -113,7 +113,7 @@ class GameUpdate
     /**
      * Set description
      *
-     * @param string $description
+     * @param  string $description
      * @return GameUpdate
      */
     public function setDescription($description)
@@ -126,7 +126,7 @@ class GameUpdate
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -136,7 +136,7 @@ class GameUpdate
     /**
      * Set dateCreated
      *
-     * @param \DateTime $dateCreated
+     * @param  \DateTime $dateCreated
      * @return GameUpdate
      */
     public function setDateCreated($dateCreated)
@@ -149,7 +149,7 @@ class GameUpdate
     /**
      * Get dateCreated
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateCreated()
     {
@@ -159,7 +159,7 @@ class GameUpdate
     /**
      * Set dateModified
      *
-     * @param \DateTime $dateModified
+     * @param  \DateTime $dateModified
      * @return GameUpdate
      */
     public function setDateModified($dateModified)
@@ -172,7 +172,7 @@ class GameUpdate
     /**
      * Get dateModified
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateModified()
     {
@@ -187,7 +187,7 @@ class GameUpdate
     /**
      * Set game
      *
-     * @param \ZENben\FoosballBundle\Entity\Game\Game $game
+     * @param  \ZENben\FoosballBundle\Entity\Game\Game $game
      * @return GameUpdate
      */
     public function setGame(\ZENben\FoosballBundle\Entity\Game\Game $game = null)
@@ -200,7 +200,7 @@ class GameUpdate
     /**
      * Get game
      *
-     * @return \ZENben\FoosballBundle\Entity\Game\Game 
+     * @return \ZENben\FoosballBundle\Entity\Game\Game
      */
     public function getGame()
     {
@@ -210,7 +210,7 @@ class GameUpdate
     /**
      * Set parameters
      *
-     * @param array $parameters
+     * @param  array $parameters
      * @return GameUpdate
      */
     public function setParameters($parameters)
@@ -223,7 +223,7 @@ class GameUpdate
     /**
      * Get parameters
      *
-     * @return array 
+     * @return array
      */
     public function getParameters()
     {

@@ -48,7 +48,8 @@ class GitHubService
         return json_decode($diffResp->getBody())->files;
     }
 
-    public function createCodeComment(CodeComment $codeComment) {
+    public function createCodeComment(CodeComment $codeComment)
+    {
         $json = json_encode(
             [
                 'body' => $codeComment->getMessage(),
@@ -59,7 +60,8 @@ class GitHubService
         );
 
         $this->gitHubClient->getHttpClient()->post(
-            sprintf('/repos/%s/%s/pulls/%s/comments',
+            sprintf(
+                '/repos/%s/%s/pulls/%s/comments',
                 $codeComment->getCommit()->getUser(),
                 $codeComment->getCommit()->getRepo(),
                 $codeComment->getPullRequest()

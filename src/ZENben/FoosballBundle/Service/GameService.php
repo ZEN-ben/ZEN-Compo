@@ -38,5 +38,4 @@ class GameService
         $this->em->flush();
         $this->dispatcher->dispatch(self::EVENT_GAME_UPDATED, new GameUpdateEvent($gameUpdate));
     }
-
 }

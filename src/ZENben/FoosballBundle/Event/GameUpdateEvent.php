@@ -9,7 +9,8 @@ class GameUpdateEvent extends Event
     
     protected $gameUpdate;
     
-    public function __construct($gameUpdate) {
+    public function __construct($gameUpdate)
+    {
         $this->gameUpdate = $gameUpdate;
     }
     

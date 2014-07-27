@@ -301,7 +301,7 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
             foreach ($changedLine as $line) {
                 if (strpos($line, '+') !== 0) {
                     if (strpos($line, '@@') === 0) {
-                        $stripped = \strtr($line,['@'=>'','-'=>'','+'=>'',' '=>',']);
+                        $stripped = \strtr($line, ['@'=>'','-'=>'','+'=>'',' '=>',']);
                         $position = intval(explode(',', $stripped)[1]);
                     }
                 } else {
@@ -411,7 +411,7 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
             $this->status = $status;
             $firstError = true;
         }
-        if ( ! $firstError && $this->status === GitHubService::STATUS_ERROR) {
+        if (! $firstError && $this->status === GitHubService::STATUS_ERROR) {
             return;
         }
         if ($remote === true) {
@@ -430,13 +430,13 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
     {
         switch ($color) {
             case 'green':
-                $this->nextColor = "\033[30;42m";
+                $this->nextColor = "\033[37;42m";
                 break;
             case 'blue':
-                $this->nextColor = "\033[30;44m";
+                $this->nextColor = "\033[37;44m";
                 break;
             case 'red':
-                $this->nextColor = "\033[30;41m";
+                $this->nextColor = "\033[37;41m";
                 break;
             case 'end':
                 $this->nextColor = "\033[0m";
@@ -445,6 +445,4 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
                 throw new \Exception('Color not supported.');
         }
     }
-
 }
-

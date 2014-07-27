@@ -57,7 +57,7 @@ class Match
     /**
      * Set datePlayed
      *
-     * @param \DateTime $datePlayed
+     * @param  \DateTime $datePlayed
      * @return Match
      */
     public function setDatePlayed($datePlayed)
@@ -80,7 +80,7 @@ class Match
     /**
      * Set scoreRed
      *
-     * @param integer $scoreRed
+     * @param  integer $scoreRed
      * @return Match
      */
     public function setScoreRed($scoreRed)
@@ -103,7 +103,7 @@ class Match
     /**
      * Set scoreBlue
      *
-     * @param integer $scoreBlue
+     * @param  integer $scoreBlue
      * @return Match
      */
     public function setScoreBlue($scoreBlue)
@@ -126,7 +126,7 @@ class Match
     /**
      * Set red_player
      *
-     * @param \ZENben\FoosballBundle\Entity\User\User $redPlayer
+     * @param  \ZENben\FoosballBundle\Entity\User\User $redPlayer
      * @return Match
      */
     public function setRedPlayer(\ZENben\FoosballBundle\Entity\User\User $redPlayer = null)
@@ -149,7 +149,7 @@ class Match
     /**
      * Set blue_player
      *
-     * @param \ZENben\FoosballBundle\Entity\User\User $bluePlayer
+     * @param  \ZENben\FoosballBundle\Entity\User\User $bluePlayer
      * @return Match
      */
     public function setBluePlayer(\ZENben\FoosballBundle\Entity\User\User $bluePlayer = null)
@@ -178,7 +178,7 @@ class Match
     /**
      * Set match_id
      *
-     * @param string $matchId
+     * @param  string $matchId
      * @return Match
      */
     public function setMatchId($matchId)
@@ -207,7 +207,7 @@ class Match
     /**
      * Set bye
      *
-     * @param boolean $bye
+     * @param  boolean $bye
      * @return Match
      */
     public function setBye($bye)
@@ -235,7 +235,7 @@ class Match
     /**
      * Set match
      *
-     * @param \ZENben\FoosballBundle\Entity\Game\Game $match
+     * @param  \ZENben\FoosballBundle\Entity\Game\Game $match
      * @return Match
      */
     public function setMatch(\ZENben\FoosballBundle\Entity\Game\Game $match = null)
@@ -248,7 +248,7 @@ class Match
     /**
      * Get match
      *
-     * @return \ZENben\FoosballBundle\Entity\Game\Game 
+     * @return \ZENben\FoosballBundle\Entity\Game\Game
      */
     public function getMatch()
     {
@@ -263,7 +263,7 @@ class Match
     /**
      * Set game
      *
-     * @param \ZENben\FoosballBundle\Entity\Game\Game $game
+     * @param  \ZENben\FoosballBundle\Entity\Game\Game $game
      * @return Match
      */
     public function setGame(\ZENben\FoosballBundle\Entity\Game\Game $game = null)
@@ -276,7 +276,7 @@ class Match
     /**
      * Get game
      *
-     * @return \ZENben\FoosballBundle\Entity\Game\Game 
+     * @return \ZENben\FoosballBundle\Entity\Game\Game
      */
     public function getGame()
     {

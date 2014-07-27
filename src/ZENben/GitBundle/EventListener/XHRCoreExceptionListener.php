@@ -12,7 +12,9 @@ class XHRCoreExceptionListener
     public function onCoreException(GetResponseForExceptionEvent $event)
     {
         $request = $event->getRequest();
-        if (! $request->isXmlHttpRequest()) { return; }
+        if (! $request->isXmlHttpRequest()) {
+            return;
+        }
         $exception = $event->getException();
         
         $statusCode = $exception->getCode();
@@ -21,7 +23,7 @@ class XHRCoreExceptionListener
         }
 
         $content = [
-            'type' => 'exception', 
+            'type' => 'exception',
             'message' => [
                 'type' => 'error',
                 'content' => $exception->getMessage()

@@ -18,7 +18,8 @@ var delay = (function () {
 ;
 jQuery.fn.loading = function (mixed) {
 
-    if (this.length > 1) throw new Error('More then one element supplied');
+    if (this.length > 1) {
+throw new Error('More then one element supplied'); }
 
     if (mixed == 'hide') {
         var $mask = this.find('.load-mask')
@@ -32,7 +33,8 @@ jQuery.fn.loading = function (mixed) {
         });
         return this;
     }
-    if (this.find('.load-mask').length > 0) return this;
+    if (this.find('.load-mask').length > 0) {
+return this; }
     var $loaderDOM = jQuery('<div class="load-mask" style="opacity:0;cursor:wait;position:absolute;top:0;right:0;bottom:0;left:0;background:white;"><div class="ajaxloader" style="margin:0 auto; margin-top:100px;"></div></div>');
     if (this.parent().css('position') == 'static') {
         this.attr('data-old-position', this.css('position'));

@@ -9,7 +9,7 @@ use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use ZENben\FoosballBundle\Entity\User\User;
 
-class OAuthuserProvider extends BaseEntityUserProvider implements UserProviderInterface
+class OAuthUserProvider extends BaseEntityUserProvider implements UserProviderInterface
 {
     protected $em;
 
@@ -67,5 +67,4 @@ class OAuthuserProvider extends BaseEntityUserProvider implements UserProviderIn
     {
         return true;
     }
-
 }

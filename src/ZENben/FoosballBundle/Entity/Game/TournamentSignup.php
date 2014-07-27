@@ -43,7 +43,7 @@ class TournamentSignup
     /**
      * Set date
      *
-     * @param \DateTime $date
+     * @param  \DateTime $date
      * @return TournamentSignup
      */
     public function setDate($date)
@@ -66,7 +66,7 @@ class TournamentSignup
     /**
      * Set tournament
      *
-     * @param \ZENben\FoosballBundle\Entity\Game\Tournament $tournament
+     * @param  \ZENben\FoosballBundle\Entity\Game\Tournament $tournament
      * @return TournamentSignup
      */
     public function setTournament(\ZENben\FoosballBundle\Entity\Game\Tournament $tournament = null)
@@ -89,7 +89,7 @@ class TournamentSignup
     /**
      * Set user
      *
-     * @param \ZENben\FoosballBundle\Entity\User\User $user
+     * @param  \ZENben\FoosballBundle\Entity\User\User $user
      * @return TournamentSignup
      */
     public function setUser(\ZENben\FoosballBundle\Entity\User\User $user = null)
@@ -117,7 +117,7 @@ class TournamentSignup
     /**
      * Set seed
      *
-     * @param integer $seed
+     * @param  integer $seed
      * @return TournamentSignup
      */
     public function setSeed($seed)
@@ -130,7 +130,7 @@ class TournamentSignup
     /**
      * Get seed
      *
-     * @return integer 
+     * @return integer
      */
     public function getSeed()
     {

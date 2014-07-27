@@ -115,8 +115,4 @@ class CodeComment
     {
         $this->pullRequest = $pullRequest;
     }
-
-
-
-
 }
