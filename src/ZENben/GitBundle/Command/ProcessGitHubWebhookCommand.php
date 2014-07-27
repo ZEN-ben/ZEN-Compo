@@ -66,7 +66,7 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         $this->git('branch', ['-D', 'build-' . $this->commit->getSha()]);
         $this->git('checkout', ['-B', 'build-' . $this->commit->getSha(), 'origin/master']);
         $this->git('merge', [$this->commit->getSha()]);
-    }
+    } 
 
     public function configure()
     {
