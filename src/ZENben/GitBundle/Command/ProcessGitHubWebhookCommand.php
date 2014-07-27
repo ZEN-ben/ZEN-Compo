@@ -228,18 +228,11 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
 
     protected function phpCs()
     {
-        $phpCsFixerDir = sprintf(
-            '%s/%s/vendor/squizlabs/php_codesniffer/scripts',
-            $this->buildsDir,
-            $this->commit->getRepo()
-        );
-        $this->output($phpCsFixerDir);
         $processBuilder = new ProcessBuilder();
         $repoDirectory = sprintf('%s/%s/src', $this->buildsDir, $this->commit->getRepo());
         $processBuilder
             ->setTimeout(false)
-            ->setWorkingDirectory($phpCsFixerDir)
-            ->setPrefix('php')
+            ->setWorkingDirectory('./bin/')
             ->add('phpcs')
         //            ->add('--report=summary')
             ->add('--report-width=120')
@@ -293,7 +286,7 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         }
         $argmentsString = implode(' ', $argments);
 
-        $process = new Process(sprintf('phpunit %s', $argmentsString), $buildDir);
+        $process = new Process(sprintf('./bin/phpunit %s', $argmentsString), $buildDir);
         $process->setTimeout(null);
         $process->start();
         $process->wait(

@@ -26,7 +26,8 @@
         "zenben/yammer-bundle": "dev-master",
         "knplabs/github-api": "1.2.*",
         "sensiolabs/ansi-to-html": "1.0.*@dev",
-        "squizlabs/php_codesniffer": "2.*@dev"
+        "squizlabs/php_codesniffer": "2.*@dev",
+        "phpunit/phpunit": "4.1.*"
     },
     "scripts": {
         "post-install-cmd": [
