@@ -248,7 +248,7 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         $process->setTimeout(false);
         $process->wait(
             function ($type, $buffer) {
-            $this->output($buffer);
+                $this->output($buffer);
             }
         );
 
@@ -266,7 +266,7 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         $process->setTimeout(false);
         $process->wait(
             function ($type, $buffer) {
-            $this->output($buffer, null, GitHubService::STATUS_PENDING, false);
+                $this->output($buffer, null, GitHubService::STATUS_PENDING, false);
             }
         );
     }
@@ -277,21 +277,22 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         $config = $container->getParameter('phpunit');
         $buildDir = $this->buildsDir . '/' . $this->commit->getRepo();
 
-        $argments = [
-            '-c ' . $config['config'],
-            '--log-json phpunit-json-output.json'
-        ];
+        $processBuilder = ProcessBuilder::create();
+        $processBuilder
+            ->setWorkingDirectory($buildDir)
+            ->setTimeout(false)
+            ->add('bin/phpunit.bat')
+            ->add('-c ' . $config['config'])
+            ->add('--log-json phpunit-json-output.json')
+        ;
         if ($config['filter']) {
-            $argments[] = '--filter ' . $config['filter'];
+            $processBuilder->add('--filter ' . $config['filter']);
         }
-        $argmentsString = implode(' ', $argments);
-
-        $process = new Process(sprintf('./bin/phpunit %s', $argmentsString), $buildDir);
-        $process->setTimeout(null);
+        $process = $processBuilder->getProcess();
         $process->start();
         $process->wait(
             function ($type, $buffer) {
-            $this->output($buffer, null, GitHubService::STATUS_PENDING, false);
+                $this->output($buffer, null, GitHubService::STATUS_PENDING, false);
             }
         );
 
