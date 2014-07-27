@@ -68,8 +68,8 @@ class Webhook
     {
         $data = $this->getData();
         return new Commit(
-            $data->repository->owner->login,
-            $data->repository->name,
+            $data->pull_request->head->repo->owner->login,
+            $data->pull_request->head->repo->name,
             $data->pull_request->head->sha
         );
     }
