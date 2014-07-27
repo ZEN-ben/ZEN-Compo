@@ -30,7 +30,7 @@ class DefaultController extends Controller
         }
         $content = json_decode($requestContent, true);
         switch ($content['action']) {
-            case 'open':
+            case 'opened':
             case 'synchronize':
                 $this->placeWebhookInQueue($event, $requestContent);
                 break;
