@@ -60,11 +60,11 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
 
     protected function checkoutBranch()
     {
-        $this->git('fetch', ['origin']);
+        $this->git('fetch', ['upstream']);
         $this->git('clean', ['--force']);
-        $this->git('checkout', ['origin/master', '--force']);
+        $this->git('checkout', ['upstream/master', '--force']);
         $this->git('branch', ['-D', 'build-' . $this->commit->getSha()]);
-        $this->git('checkout', ['-B', 'build-' . $this->commit->getSha(), 'origin/master']);
+        $this->git('checkout', ['-B', 'build-' . $this->commit->getSha(), 'upstream/master']);
         $this->git('merge', [$this->commit->getSha()]);
     }
 
