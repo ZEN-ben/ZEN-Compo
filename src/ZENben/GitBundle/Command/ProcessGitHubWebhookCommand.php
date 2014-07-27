@@ -235,7 +235,7 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
     }
 
     /***
-     * @return string force error -----------------------------------------------------------------------------------------
+     * @return string force error ----------------------------------------------------------------------------------------------------
      */
     protected function phpCs()
     {
