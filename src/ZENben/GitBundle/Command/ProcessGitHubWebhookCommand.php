@@ -94,35 +94,35 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         $this->commit = $this->webhook->getHeadCommit();
 
         $this->github = $this->getContainer()->get('zengit.github');
-//        $this->outputColor('blue');
-//        $this->output('Code check starting...', true, GitHubService::STATUS_PENDING);
-//        $this->outputColor('end');
-//
-//        $this->output(sprintf('Getting diff for commit %s', $this->commit->getSha()));
-//        $diffs = $this->github->getDiffs($this->commit);
-//
-//        $this->output('Checking diff for forbidden expressions..');
-//
-//        $errors = $this->checkDiffs($diffs);
-//        if (count($errors) > 0) {
-//            $this->handleErrors($errors);
-//        } else {
-//            $this->outputColor('green');
-//            $this->output('Code check OK! Checking out code to build..', true, GitHubService::STATUS_PENDING);
-//        }
-//        $this->outputColor('end');
-//
-//        $this->outputColor('blue');
-//        $this->output('Fetching origin and checking out master branch + merge commit..');
-//        $this->outputColor('end');
-//        $this->cloneIfNotExists();
-//        $this->checkoutBranch();
-//
-//        $this->outputColor('blue');
-//        $this->output('Running PHPUnit..', true);
-//        $this->outputColor('end');
-//        $phpunitOutput = $this->phpunit();
-//        $this->handlePhpUnitErrors($phpunitOutput);
+        $this->outputColor('blue');
+        $this->output('Code check starting...', true, GitHubService::STATUS_PENDING);
+        $this->outputColor('end');
+
+        $this->output(sprintf('Getting diff for commit %s', $this->commit->getSha()));
+        $diffs = $this->github->getDiffs($this->commit);
+
+        $this->output('Checking diff for forbidden expressions..');
+
+        $errors = $this->checkDiffs($diffs);
+        if (count($errors) > 0) {
+            $this->handleErrors($errors);
+        } else {
+            $this->outputColor('green');
+            $this->output('Code check OK! Checking out code to build..', true, GitHubService::STATUS_PENDING);
+        }
+        $this->outputColor('end');
+
+        $this->outputColor('blue');
+        $this->output('Fetching origin and checking out master branch + merge commit..');
+        $this->outputColor('end');
+        $this->cloneIfNotExists();
+        $this->checkoutBranch();
+
+        $this->outputColor('blue');
+        $this->output('Running PHPUnit..', true);
+        $this->outputColor('end');
+        $phpunitOutput = $this->phpunit();
+        $this->handlePhpUnitErrors($phpunitOutput);
 
         $this->outputColor('blue');
         $this->output('Running PHP_CS_Fixer..', true);
