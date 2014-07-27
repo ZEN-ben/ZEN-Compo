@@ -83,7 +83,7 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
             ->setDescription('Processes GitHub webhooks')
             ->addArgument(
                 'webhook_id',
-                InputArgument::REQUIRED, 
+                InputArgument::REQUIRED,
                 'The ID for the webhook in the DB'
             )
         ;
@@ -234,9 +234,6 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         }
     }
 
-    /***
-     * @return string force error -----------------------------------------------------------------------------------------
-     */
     protected function phpCs()
     {
         $processBuilder = new ProcessBuilder();
