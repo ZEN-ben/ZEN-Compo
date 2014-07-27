@@ -18,7 +18,7 @@ class Commit
     * @var  string */
     protected $sha;
 
-    function __construct($user, $repo, $sha)
+    public function __construct($user, $repo, $sha)
     {
         $this->user = $user;
         $this->repo = $repo;

@@ -135,10 +135,11 @@ class Tournament extends BaseType
     {
         $signups = $this->em->getRepository('FoosballBundle:Game\TournamentSignup')->findBy(
             [
-            'tournament' => $this->entity->getId()
-            ], [
-            'seed' => 'DESC',
-            'id' => 'DESC'
+                'tournament' => $this->entity->getId()
+            ],
+            [
+                'seed' => 'DESC',
+                'id' => 'DESC'
             ]
         );
         $users = [];
@@ -251,7 +252,9 @@ class Tournament extends BaseType
         foreach ($round as $match) {
             if ($match->getBluePlayer() !== null && $match->getScoreBlue() !== null) {
                 $matchesPlayed++;
-                $loser = $match->getScoreRed() < $match->getScoreBlue() ? $match->getRedPlayer() : $match->getBluePlayer();
+                $scoreRed = $match->getScoreRed();
+                $scoreBlue = $match->getScoreBlue();
+                $loser = $scoreRed < $scoreBlue ? $match->getRedPlayer() : $match->getBluePlayer();
                 $loserId = $loser->getId();
                 $losers["$loserId "] = $this->em->getRepository('FoosballBundle:Game\TournamentSignup')
                     ->findOneByUser($loser)->getSeed();

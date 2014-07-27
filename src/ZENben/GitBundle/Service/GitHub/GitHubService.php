@@ -83,9 +83,11 @@ class GitHubService
                 'state' => $state,
                 'description' => $description,
                 'target_url' => $this->router->generate(
-                    'zenben_git_status', [
+                    'zenben_git_status',
+                    [
                         'id' => $webhookId
-                    ], UrlGeneratorInterface::ABSOLUTE_URL
+                    ],
+                    UrlGeneratorInterface::ABSOLUTE_URL
                 )
             ]
         );
@@ -97,7 +99,8 @@ class GitHubService
                 $commit->getUser(),
                 $commit->getRepo(),
                 $commit->getSha()
-            ), $json
+            ),
+            $json
         );
     }
 }

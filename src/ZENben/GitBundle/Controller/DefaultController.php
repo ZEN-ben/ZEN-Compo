@@ -46,7 +46,8 @@ class DefaultController extends Controller
         $webhook = $this->getDoctrine()->getManager()->find('ZENbenGitBundle:Webhook', $id);
 
         return $this->render(
-            'ZENbenGitBundle:Default:status.html.twig', [
+            'ZENbenGitBundle:Default:status.html.twig',
+            [
                 'webhook' => $webhook
             ]
         );

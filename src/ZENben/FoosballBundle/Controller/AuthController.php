@@ -62,7 +62,8 @@ class AuthController extends Controller
         }
 
         return $this->container->get('templating')->renderResponse(
-            'FoosballBundle:Auth:login.html.' . $this->getTemplatingEngine(), array(
+            'FoosballBundle:Auth:login.html.' . $this->getTemplatingEngine(),
+            array(
                 'error' => $error,
             )
         );
@@ -121,9 +122,10 @@ class AuthController extends Controller
             $this->authenticateUser($form->getData(), $error->getResourceOwnerName(), $error->getRawToken());
 
             return $this->container->get('templating')->renderResponse(
-                'HWIOAuthBundle:Connect:registration_success.html.' . $this->getTemplatingEngine(), array(
+                'HWIOAuthBundle:Connect:registration_success.html.' . $this->getTemplatingEngine(),
+                [
                     'userInformation' => $userInformation,
-                )
+                ]
             );
         }
 
@@ -132,11 +134,12 @@ class AuthController extends Controller
         $session->set('_hwi_oauth.registration_error.' . $key, $error);
 
         return $this->container->get('templating')->renderResponse(
-            'HWIOAuthBundle:Connect:registration.html.' . $this->getTemplatingEngine(), array(
+            'HWIOAuthBundle:Connect:registration.html.' . $this->getTemplatingEngine(),
+            [
                 'key' => $key,
                 'form' => $form->createView(),
                 'userInformation' => $userInformation,
-            )
+            ]
         );
     }
 
@@ -174,7 +177,7 @@ class AuthController extends Controller
         if ($resourceOwner->handles($request)) {
             $accessToken = $resourceOwner->getAccessToken(
                 $request,
-                $this->generate('hwi_oauth_connect_service', array('service' => $service), true)
+                $this->generate('hwi_oauth_connect_service', ['service' => $service], true)
             );
 
             // save in session
@@ -212,20 +215,22 @@ class AuthController extends Controller
                 $this->container->get('hwi_oauth.account.connector')->connect($user, $userInformation);
 
                 return $this->container->get('templating')->renderResponse(
-                    'HWIOAuthBundle:Connect:connect_success.html.' . $this->getTemplatingEngine(), array(
+                    'HWIOAuthBundle:Connect:connect_success.html.' . $this->getTemplatingEngine(),
+                    [
                         'userInformation' => $userInformation,
-                    )
+                    ]
                 );
             }
         }
 
         return $this->container->get('templating')->renderResponse(
-            'HWIOAuthBundle:Connect:connect_confirm.html.' . $this->getTemplatingEngine(), array(
+            'HWIOAuthBundle:Connect:connect_confirm.html.' . $this->getTemplatingEngine(),
+            [
                 'key' => $key,
                 'service' => $service,
                 'form' => $form->createView(),
                 'userInformation' => $userInformation,
-            )
+            ]
         );
     }
 
@@ -245,7 +250,8 @@ class AuthController extends Controller
             $request->getSession()->set('_security.' . $providerKey . '.target_path', $targetUrl);
         }
 
-        return new RedirectResponse($this->container->get('hwi_oauth.security.oauth_utils')->getAuthorizationUrl($service));
+        $authorizationUrl = $this->container->get('hwi_oauth.security.oauth_utils')->getAuthorizationUrl($service);
+        return new RedirectResponse($authorizationUrl);
     }
 
     /**
@@ -281,7 +287,8 @@ class AuthController extends Controller
      */
     protected function getResourceOwnerByName($name)
     {
-        $ownerMap = $this->container->get('hwi_oauth.resource_ownermap.' . $this->container->getParameter('hwi_oauth.firewall_name'));
+        $firewallName = $this->container->getParameter('hwi_oauth.firewall_name');
+        $ownerMap = $this->container->get('hwi_oauth.resource_ownermap.' . $firewallName);
 
         if (null === $resourceOwner = $ownerMap->getResourceOwnerByName($name)) {
             throw new \RuntimeException(sprintf("No resource owner with name '%s'.", $name));

@@ -4,6 +4,7 @@ namespace ZENben\FoosballBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use ZENben\Bundle\YammerBundle\Service\YammerService;
 use ZENben\FoosballBundle\Game\MatchesGenerator\Tournament\EliminationGenerator;
 
@@ -33,9 +34,10 @@ class GameController extends Controller
         }
 
         return $this->render(
-            'FoosballBundle:Game:index.html.twig', [
-            'game' => $game,
-            'id' => $id
+            'FoosballBundle:Game:index.html.twig',
+            [
+                'game' => $game,
+                'id' => $id
             ]
         );
     }
@@ -123,10 +125,17 @@ class GameController extends Controller
         }
         $generator = new EliminationGenerator($this->getDoctrine()->getManager());
         $generator->generate($game->getParticipants(), $game);
-        $this->get('game')->addUpdate($game, 'tournament.started.title', 'tournament.started.description', 'game.started');
+        $this->get('game')->addUpdate(
+            $game,
+            'tournament.started.title',
+            'tournament.started.description',
+            'game.started'
+        );
     }
 
     /**
+     * @param $id
+     * @throws AccessDeniedException
      * @return array
      */
     private function deleteTournament($id)

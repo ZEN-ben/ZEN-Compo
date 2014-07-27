@@ -32,14 +32,16 @@ class OAuthUserProvider extends BaseEntityUserProvider implements UserProviderIn
         $resourceOwnerName = $response->getResourceOwner()->getName();
 
         if (!isset($this->properties[$resourceOwnerName])) {
-            throw new \RuntimeException(sprintf("No property defined for entity for resource owner '%s'.", $resourceOwnerName));
+            $error = sprintf("No property defined for entity for resource owner '%s'.", $resourceOwnerName);
+            throw new \RuntimeException($error);
         }
 
         $username = $response->getUsername();
         $user = $this->repository->findOneBy(array($this->properties[$resourceOwnerName] => $username));
 
         if (null === $user) {
-            $profilePicture = $response->getProfilePicture() ? $response->getProfilePicture() : 'https://open.spotify.com/static/images/user.png';
+            $defaultAvatar = 'https://open.spotify.com/static/images/user.png';
+            $profilePicture = $response->getProfilePicture() ? $response->getProfilePicture() : $defaultAvatar;
 
             $user = new User();
             $user->setEmail($response->getEmail());

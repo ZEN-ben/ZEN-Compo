@@ -16,9 +16,10 @@ class DefaultController extends Controller
             ->getRepository('FoosballBundle:Game\Game')->findAllPlayed();
         
         return $this->render(
-            'FoosballBundle:Default:index.html.twig', [
-            'games' => $games,
-            'gamesPlayed' => $gamesPlayed,
+            'FoosballBundle:Default:index.html.twig',
+            [
+                'games' => $games,
+                'gamesPlayed' => $gamesPlayed,
             ]
         );
     }

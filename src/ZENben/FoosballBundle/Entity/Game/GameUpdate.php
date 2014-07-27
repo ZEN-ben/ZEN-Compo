@@ -44,7 +44,7 @@ class GameUpdate
      */
     private $parameters;
 
-    public function __construct($game, $title, $description, $type = 'default', $parameters)
+    public function __construct($game, $title, $description, $type = 'default', $parameters = null)
     {
         $this->dateCreated = new \DateTime();
         $this->game = $game;

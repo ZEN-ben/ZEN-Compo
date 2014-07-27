@@ -140,12 +140,14 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         $phpCsOutput = $this->phpCs();
         if (strpos($phpCsOutput, 'ERROR')) {
             $this->outputColor('red');
-            $this->output('This code is not PSR2 compliant, please check the log for details.', true, GitHubService::STATUS_ERROR);
+            $message = 'This code is not PSR2 compliant, please check the log for details.';
+            $this->output($message, true, GitHubService::STATUS_ERROR);
         }
 
         if ($this->status === GitHubService::STATUS_PENDING) {
             $this->outputColor('green');
-            $this->output('Your code passed all checks! Click details for the log.', true, GitHubService::STATUS_SUCCESS);
+            $message = 'Your code passed all checks! Click details for the log.';
+            $this->output($message, true, GitHubService::STATUS_SUCCESS);
         } else {
             $this->outputColor('red');
             $this->output('Issues have been detected. Please fix them and push again to this pull request.');
@@ -215,16 +217,22 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
                 $test = $failedTests[0];
                 $testName = $test['test'];
                 $message = $test['message'];
-                $this->output(sprintf('PHPUnit test failed: [%s] %s', $testName, $message), true, GitHubService::STATUS_ERROR);
+                $message = sprintf('PHPUnit test failed: [%s] %s', $testName, $message);
+                $this->output($message, true, GitHubService::STATUS_ERROR);
             } else {
-                $this->output(sprintf('Multiple PHPUnit test failed, click details to see log.'), true, GitHubService::STATUS_ERROR);
+                $message = sprintf('Multiple PHPUnit test failed, click details to see log.');
+                $this->output($message, true, GitHubService::STATUS_ERROR);
             }
         }
     }
 
     protected function phpCs()
     {
-        $phpCsFixerDir = sprintf('%s/%s/vendor/squizlabs/php_codesniffer/scripts', $this->buildsDir, $this->commit->getRepo());
+        $phpCsFixerDir = sprintf(
+            '%s/%s/vendor/squizlabs/php_codesniffer/scripts',
+            $this->buildsDir,
+            $this->commit->getRepo()
+        );
         $this->output($phpCsFixerDir);
         $processBuilder = new ProcessBuilder();
         $repoDirectory = sprintf('%s/%s/src', $this->buildsDir, $this->commit->getRepo());
