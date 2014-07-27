@@ -25,7 +25,8 @@
         "zenben/targetprocess-bundle": "dev-master",
         "zenben/yammer-bundle": "dev-master",
         "knplabs/github-api": "1.2.*",
-        "sensiolabs/ansi-to-html": "1.0.*@dev"
+        "sensiolabs/ansi-to-html": "1.0.*@dev",
+        "squizlabs/php_codesniffer": "2.*@dev"
     },
     "scripts": {
         "post-install-cmd": [

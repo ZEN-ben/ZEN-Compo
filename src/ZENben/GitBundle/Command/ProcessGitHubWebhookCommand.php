@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\ProcessBuilder;
 use ZENben\GitBundle\Entity\BuildResult;
 use ZENben\GitBundle\Entity\Webhook;
 use ZENben\GitBundle\Service\GitHub\CodeComment;
@@ -93,35 +94,40 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         $this->commit = $this->webhook->getHeadCommit();
 
         $this->github = $this->getContainer()->get('zengit.github');
+//        $this->outputColor('blue');
+//        $this->output('Code check starting...', true, GitHubService::STATUS_PENDING);
+//        $this->outputColor('end');
+//
+//        $this->output(sprintf('Getting diff for commit %s', $this->commit->getSha()));
+//        $diffs = $this->github->getDiffs($this->commit);
+//
+//        $this->output('Checking diff for forbidden expressions..');
+//
+//        $errors = $this->checkDiffs($diffs);
+//        if (count($errors) > 0) {
+//            $this->handleErrors($errors);
+//        } else {
+//            $this->outputColor('green');
+//            $this->output('Code check OK! Checking out code to build..', true, GitHubService::STATUS_PENDING);
+//        }
+//        $this->outputColor('end');
+//
+//        $this->outputColor('blue');
+//        $this->output('Fetching origin and checking out master branch + merge commit..');
+//        $this->outputColor('end');
+//        $this->cloneIfNotExists();
+//        $this->checkoutBranch();
+//
+//        $this->outputColor('blue');
+//        $this->output('Running PHPUnit..', true);
+//        $this->outputColor('end');
+//        $phpunitOutput = $this->phpunit();
+//        $this->handlePhpUnitErrors($phpunitOutput);
+
         $this->outputColor('blue');
-        $this->output('Code check starting...', true, GitHubService::STATUS_PENDING);
+        $this->output('Running PHP_CS_Fixer..', true);
         $this->outputColor('end');
-
-        $this->output(sprintf('Getting diff for commit %s', $this->commit->getSha()));
-        $diffs = $this->github->getDiffs($this->commit);
-
-        $this->output('Checking diff for forbidden expressions..');
-
-        $errors = $this->checkDiffs($diffs);
-        if (count($errors) > 0) {
-            $this->handleErrors($errors);
-        } else {
-            $this->outputColor('green');
-            $this->output('Code check OK! Checking out code to build..', true, GitHubService::STATUS_PENDING);
-        }
-        $this->outputColor('end');
-
-        $this->outputColor('blue');
-        $this->output('Fetching origin and checking out master branch + merge commit..');
-        $this->outputColor('end');
-        $this->cloneIfNotExists();
-        $this->checkoutBranch();
-
-        $this->outputColor('blue');
-        $this->output('Running PHPUnit..', true);
-        $this->outputColor('end');
-        $phpunitOutput = $this->phpunit();
-        $this->handlePhpUnitErrors($phpunitOutput);
+        $this->phpCsFixer();
 
         if ($this->status === GitHubService::STATUS_PENDING) {
             $this->outputColor('green');
@@ -164,7 +170,7 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
 
         $composer = $this->getContainer()->getParameter('composer');
         $process = new Process(
-            sprintf('php %s install', $composer),
+            sprintf('php %s install --no-interaction', $composer),
             $repoDir
         );
         $process->setTimeout(null);
@@ -200,7 +206,24 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
 
     protected function phpCsFixer()
     {
-        //TODO
+        $phpCsFixerDir = sprintf('%s/%s/vendor/squizlabs/php_codesniffer/scripts', $this->buildsDir, $this->commit->getRepo());
+        $this->output($phpCsFixerDir);
+        $processBuilder = new ProcessBuilder();
+        $repoDirectory = sprintf('%s/%s/src', $this->buildsDir, $this->commit->getRepo());
+        $processBuilder
+            ->setTimeout(false)
+            ->setWorkingDirectory($phpCsFixerDir)
+            ->setPrefix('php')
+            ->add('phpcs')
+            ->add('--report=summary')
+            ->add($repoDirectory)
+        ;
+
+        $process = $processBuilder->getProcess();
+        $process->start();
+        $process->wait(function ($type, $buffer) {
+            $this->output($buffer);
+        });
     }
 
     protected function git($command, $argments = null)

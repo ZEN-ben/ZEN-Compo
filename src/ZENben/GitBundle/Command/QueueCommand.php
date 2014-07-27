@@ -3,6 +3,7 @@
 namespace ZENben\GitBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
@@ -22,13 +23,24 @@ class QueueCommand extends ContainerAwareCommand
     {
         $om = $this->getContainer()->get('doctrine.orm.entity_manager');
         $webhookRepo = $om->getRepository('ZENbenGitBundle:Webhook');
+
+        $output->setDecorated(true);
+        $progressBar = new ProgressBar($output);
+        $progressBar->setMessage('');
+        $progressBar->setFormat('Memory: %memory%, elapsed: %elapsed% [%bar%] %message%');
+        $progressBar->start();
+
         while(true) {
             $inProgressWebhook = $webhookRepo->findOneBy(['status' => Webhook::STATUS_IN_PROGRESS]);
             if ($inProgressWebhook === null) {
                 $newWebhook = $webhookRepo->findOneBy(['status' => Webhook::STATUS_NEW], ['id' => 'ASC']);
                 if ($newWebhook === null) {
+                    $progressBar->setMessage('<info>Waiting for webhook..</info>');
+                    $progressBar->display();
                     sleep(1);
                 } else {
+                    $progressBar->setMessage('<comment>Starting webhook processing..</comment>');
+                    $progressBar->display();
                     $newWebhook->setStatus(Webhook::STATUS_IN_PROGRESS);
                     $om->flush();
 
@@ -40,6 +52,8 @@ class QueueCommand extends ContainerAwareCommand
                     $process->run();
                 }
             } else {
+                $progressBar->setMessage('<comment>Webhook processing in progress..</comment>');
+                $progressBar->advance();
                 sleep(1);
             }
         }
