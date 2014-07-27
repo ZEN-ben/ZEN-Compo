@@ -43,3 +43,8 @@ span[class^="status-"] {
 }
 
 
+.log .ansi_color_bg_yellow {
+    background: #b2ab00;
+}
+
+

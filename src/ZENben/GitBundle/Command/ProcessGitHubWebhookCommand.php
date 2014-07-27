@@ -60,9 +60,17 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
 
     protected function checkoutBranch()
     {
+        $url = sprintf(
+            'git@github.com:%s/%s.git',
+            $this->commit->getUser(),
+            $this->commit->getRepo()
+        );
+
         $this->git('fetch', ['origin']);
         $this->git('clean', ['--force']);
         $this->git('checkout', ['origin/master', '--force']);
+        $this->git('remote', ['remove', 'downstream']);
+        $this->git('remote', ['add', 'downstream', '-f', $url]);
         $this->git('branch', ['-D', 'build-' . $this->commit->getSha()]);
         $this->git('checkout', ['-B', 'build-' . $this->commit->getSha(), 'origin/master']);
         $this->git('merge', [$this->commit->getSha()]);
@@ -75,7 +83,7 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
             ->setDescription('Processes GitHub webhooks')
             ->addArgument(
                 'webhook_id',
-                InputArgument::REQUIRED,
+                InputArgument::REQUIRED, 
                 'The ID for the webhook in the DB'
             )
         ;
@@ -135,7 +143,7 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         $this->handlePhpUnitErrors($phpunitOutput);
 
         $this->outputColor('blue');
-        $this->output('Running PHP_CS_Fixer..', true);
+        $this->output('Running PHP_CS..', true);
         $this->outputColor('end');
         $phpCsOutput = $this->phpCs();
         if (strpos($phpCsOutput, 'ERROR')) {
@@ -226,21 +234,24 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         }
     }
 
+    /***
+     * @return string force error -----------------------------------------------------------------------------------------
+     */
     protected function phpCs()
     {
         $processBuilder = new ProcessBuilder();
-        $repoDirectory = sprintf('%s/%s/src', $this->buildsDir, $this->commit->getRepo());
+        $repoDirectory = sprintf('%s/%s', $this->buildsDir, $this->commit->getRepo());
         $processBuilder
             ->setTimeout(false)
-            ->setWorkingDirectory('./bin/')
-            ->add('phpcs')
+            ->setWorkingDirectory($repoDirectory)
+            ->add('./bin/phpcs')
         //            ->add('--report=summary')
             ->add('--report-width=120')
             ->add('--encoding=utf-8')
         //            ->add('-p')
             ->add('--standard=PSR2')
             ->add('--ignore=lib,library')
-            ->add($repoDirectory)
+            ->add($repoDirectory.'/src')
         ;
 
         $process = $processBuilder->getProcess();
@@ -281,9 +292,9 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         $processBuilder
             ->setWorkingDirectory($buildDir)
             ->setTimeout(false)
-            ->add('bin/phpunit.bat')
-            ->add('-c ' . $config['config'])
-            ->add('--log-json phpunit-json-output.json')
+            ->add('./bin/phpunit.bat')
+            ->add('--log-json')->add('phpunit-json-output.json')
+            ->add('-c')->add($config['config'])
         ;
         if ($config['filter']) {
             $processBuilder->add('--filter ' . $config['filter']);
