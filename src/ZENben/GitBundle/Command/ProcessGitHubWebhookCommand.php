@@ -48,7 +48,7 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
     protected $log = [];
 
     const FLUSH_BUFFER_MAX = 1000;
-    protected $lastFlush = 0;
+    protected $lastFlush;
 
     /**
     * @var  AnsiToHtmlConverter */
@@ -83,6 +83,7 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->lastFlush = microtime(true);
         $this->ansiConverter = new AnsiToHtmlConverter(null, false);
         $id = $input->getArgument('webhook_id');
         $this->objectManager = $this->getContainer()->get('doctrine.orm.entity_manager');
@@ -136,7 +137,11 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         $this->outputColor('blue');
         $this->output('Running PHP_CS_Fixer..', true);
         $this->outputColor('end');
-        $this->phpCsFixer();
+        $phpCsOutput = $this->phpCs();
+        if (strpos($phpCsOutput, 'ERROR')) {
+            $this->outputColor('red');
+            $this->output('This code is not PSR2 compliant, please check the log for details.', true, GitHubService::STATUS_ERROR);
+        }
 
         if ($this->status === GitHubService::STATUS_PENDING) {
             $this->outputColor('green');
@@ -217,7 +222,7 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
         }
     }
 
-    protected function phpCsFixer()
+    protected function phpCs()
     {
         $phpCsFixerDir = sprintf('%s/%s/vendor/squizlabs/php_codesniffer/scripts', $this->buildsDir, $this->commit->getRepo());
         $this->output($phpCsFixerDir);
@@ -245,6 +250,8 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
             $this->output($buffer);
             }
         );
+
+        return $process->getOutput();
     }
 
     protected function git($command, $argments = null)
@@ -425,9 +432,10 @@ class ProcessGitHubWebhookCommand extends ContainerAwareCommand
             $this->buildResult->setLog($this->ansiConverter->convert(implode("\n", $this->log)));
             $this->buildResult->setStatus($this->status);
 
-            if (($this->lastFlush - microtime(true)) * 1000000 > self::FLUSH_BUFFER_MAX) {
+            $msPassed = (microtime(true) - $this->lastFlush) * 1000;
+            if ($msPassed > self::FLUSH_BUFFER_MAX) {
                 $this->objectManager->flush();
-                $this->lastFlush = microtime();
+                $this->lastFlush = microtime(true);
             }
         }
 

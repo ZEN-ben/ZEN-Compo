@@ -50,7 +50,7 @@ class QueueCommand extends ContainerAwareCommand
 
                     $process = new Process($cmd, $workingDir);
                     $process->setTimeout(false);
-                    $process->run();
+                    $process->start();
                 }
             } else {
                 $progressBar->setMessage('<comment>Webhook processing in progress..</comment>');
