@@ -1,0 +1,33 @@
+body {
+    background: #111111;
+    font-family: 'Oswald', sans-serif;
+}
+
+h1, h2, h3, h4 {
+    color: #f0f0f0;
+}
+h1 {
+    font-size: 64px;
+}
+
+.app-row {
+    background: #363636;
+    padding: 15px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.app-row > div {
+    height: 132px;
+}
+
+.logo {
+    max-height: 90px;
+    display: inline-block;
+}
+
+.logo.nzbget {
+}
+
+.logo.couchpotato {
+}
