@@ -1,0 +1,9 @@
+[
+  { "id": "apache",         "process": "httpd" },
+  { "id": "mysql",          "process": "mysqld" },
+  { "id": "squeezeserver",  "process": "squeezesvr" },
+  { "id": "nzbget",         "process": "nzbget" },
+  { "id": "couchpotato",    "process": "python" },
+  { "id": "sonarr",         "process": "nzbdrone" },
+  { "id": "plex",           "process": "plex media server" }
+]

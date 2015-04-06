@@ -1,1 +1,65 @@
-<h1>Welcome to the secure ZEN-ben HTTP server.</h1>
+{% import _self as macros %}
+{% extends 'DefaultBundle::layout.html.twig' %}
+{% block body %}
+    {% set apps = [
+        [
+            {
+                id:'nzbget',
+                url: '/nzbget/'
+            },
+            {
+                id:'sonarr',
+                url: '/nzbdrone/'
+            },
+            {
+                id:'couchpotato',
+                url: '/couchpotato/'
+            },
+            {
+                id:'plex',
+                url: 'http://plex.zen-ben.com/web/index.html'
+            },
+            {
+                id:'squeezeserver',
+                url: 'http://apollo:9000/'
+            },
+        ],
+        [
+            {
+                id:'apache',
+                url: null
+            },
+
+            {
+                id:'mysql',
+                url: null
+            },
+        ]
+    ] %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>ZEN-ben</h1>
+                {% for category in apps %}
+                    <div class="row app-row">
+                    {% for app in category %}
+                        {{ macros.app(app, (12/category|length)|round(0, 'ceil')) }}
+                    {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% macro app(app, size) %}
+    <div class="col-sm-{{ size }} stopped" data-app="{{ app.id }}">
+        <div class="progress">
+            <div class="progress-bar progress-bar-danger progress-bar-striped active animate" style="width: 100%"></div>
+        </div>
+        {% if app.url %}<a href="{{ app.url }}">{% endif %}
+        <img class="logo img-responsive {{ app.id }}" src="{{ asset('bundles/default/img/'~ app.id ~'.png') }}">
+        {% if app.url %}</a>{% endif %}
+    </div>
+{% endmacro %}
