@@ -1,7 +1,22 @@
-var io = require('socket.io')(8080);
+var fs = require('fs');
+var express = require('express');
+var cfg = require('./config.json');
+
+var key = fs.readFileSync(cfg.key).toString();
+var cert = fs.readFileSync(cfg.cert).toString();
+
+var ca = cfg.ca ? fs.readFileSync(cfg.ca).toString() : null;
+
+var app = require('express')();
+var http = require('http');
+var https = require('https');
+var server = https.createServer({ key: key, cert: cert, ca: ca}, app);
+server.listen(8443);
+var io = require('socket.io')(server);
+
 var Ps = require('ps-node');
 var debounce = require('debounce');
-var slowSendStatus = debounce(sendStatus, 250);
+var slowSendStatus = debounce(sendStatus, 1000);
 
 var runningApps = [];
 var monitorApps = require('./monitor.json');
@@ -13,6 +28,11 @@ function monitor() {
             Ps.lookup({
                 command: app.process
             }, function(error, results) {
+                if (error || typeof results === 'undefined ' || results === null) {
+                    slowSendStatus(null);
+                    return;
+                }
+
                 var running = results.length > 0;
                 if (runningApps.indexOf(app.id) === -1 && running) {
                     slowSendStatus(null);
@@ -27,7 +47,7 @@ function monitor() {
     }
 }
 
-setInterval(monitor, 1000);
+setInterval(monitor, 5000);
 
 io.on('connection', function (socket) {
     console.log('connected');
