@@ -1,4 +1,4 @@
-var socket = io(window.location.host+':8080/');
+var socket = io('https://'+window.location.host+':8443/');
 socket.on('notification', function(msg) {
     new PNotify(msg);
 });
